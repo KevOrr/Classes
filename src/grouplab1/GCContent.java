@@ -1,3 +1,5 @@
+package grouplab1;
+
 // **********************************************************
 //   DNA.java      Michael Palermo  and Kevin Orr
 //
