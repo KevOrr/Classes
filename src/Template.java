@@ -1,5 +1,4 @@
-/* Student: Kevin Orr U45623430
- * Class:   COP 2510-004
+/* Student: Kevin Orr
  * Program: 
  * Desc:    
  */
