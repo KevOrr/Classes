@@ -1,4 +1,4 @@
-package lab9.UsingNumber;
+package lab9;
 /* Program:    ZeroSum.java
  * Student:    Kevin Orr
  * Desc:       Changes methods in OverloadingSum to return zeros instead of actual sums 

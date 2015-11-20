@@ -1,4 +1,4 @@
-package lab9.UsingNumber;
+package lab9;
 /* Program:    DrivingSum.java
  * Student:    Kevin Orr
  * Desc:       Tests the methods in ZeroSum and RealSum

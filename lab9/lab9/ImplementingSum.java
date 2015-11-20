@@ -1,4 +1,4 @@
-package lab9.UsingNumber;
+package lab9;
 /* Program:    ImplementingSum.java
  * Student:    Kevin Orr
  * Desc:       Implements the methods specified by InterSum and Multiply

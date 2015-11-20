@@ -1,4 +1,4 @@
-package lab9.UsingNumber;
+package lab9;
 /* Program:    RealSum.java
  * Student:    Kevin Orr
  * Desc:       Extends RealSum to return correct sums

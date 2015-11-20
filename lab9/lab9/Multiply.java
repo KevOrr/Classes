@@ -1,4 +1,4 @@
-package lab9.UsingNumber;
+package lab9;
 /* Program:    Multiply.java
  * Student:    Kevin Orr
  * Desc:       Specifies methods for multiplying 2 or 3 Numbers

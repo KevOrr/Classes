@@ -3,7 +3,7 @@
  * Desc:       Tests ImplementingSum.java
  */
 
-package lab9.UsingNumber;
+package lab9;
 
 import java.text.DecimalFormat;
 

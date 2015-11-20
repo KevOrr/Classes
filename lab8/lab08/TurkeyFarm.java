@@ -1,9 +1,9 @@
-package Lab08;
+package lab08;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import Lab08.Turkey;
+import lab08.Turkey;
 
 public class TurkeyFarm {
 

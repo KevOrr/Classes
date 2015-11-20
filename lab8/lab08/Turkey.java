@@ -1,4 +1,4 @@
-package Lab08;
+package lab08;
 
 import java.util.Random;
 

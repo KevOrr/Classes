@@ -1,4 +1,4 @@
-package lab9.UsingNumber;
+package lab9;
 /* Program:    OverloadingSum.java
  * Student:    Kevin Orr
  * Desc:       Defines the sum between 2 or 3 Numbers
