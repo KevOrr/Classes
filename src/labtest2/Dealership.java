@@ -1,6 +1,6 @@
 /* Program:    NorthAmericanDealerships.java
  * Student:    Kevin Orr
- * Desc:       
+ * Desc:       Describes a dealer
  */
 
 package labtest2;
@@ -23,6 +23,7 @@ public class Dealership {
 
     public Dealership(String name) {
         this.name = name;
+        Dealership.dealershipCount++;
     }
 
     // Create a car with random id (0..NUM_MODELS)
@@ -64,8 +65,8 @@ public class Dealership {
     public String toString() {
         return String.format(
                 "#%d: %s, cars sold: %d, total sales $%,.2f, average cost $%,.2f, bestseller model: %d",
-                this.id, this.name, this.getTotalSales(), this.getAveragePrice(),
-                this.getMostCommonModel()
+                this.id, this.name, this.salesCount, this.getTotalSales(),
+                this.getAveragePrice(), this.getMostCommonModel()
         );
     }
 

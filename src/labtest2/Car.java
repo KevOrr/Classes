@@ -1,6 +1,6 @@
 /* Program:    Car.java
  * Student:    Kevin Orr
- * Desc:       
+ * Desc:       Describes a car
  */
 
 package labtest2;
@@ -34,7 +34,7 @@ public class Car {
 
     @Override
     public String toString() {
-        return String.format("type %d cost: $,.2f", this.type, this.price);
+        return String.format("type %d cost: $%,.2f", this.type, this.price);
     }
 
 }
