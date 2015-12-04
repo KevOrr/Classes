@@ -3,7 +3,7 @@
  * Desc:       Describes a car
  */
 
-package labtest2;
+package labtest3;
 
 import java.util.Random;
 

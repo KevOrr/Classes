@@ -3,7 +3,7 @@
  * Desc:       Runs a weeklong simulation of three dealers
  */
 
-package labtest2;
+package labtest3;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
