@@ -7,7 +7,6 @@ package labtest2;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.AbstractList;
 
 public class Dealership {
 
@@ -63,11 +62,16 @@ public class Dealership {
 
     @Override
     public String toString() {
-        return String.format(
-                "#%d: %s, cars sold: %d, total sales $%,.2f, average cost $%,.2f, bestseller model: %d",
-                this.id, this.name, this.salesCount, this.getTotalSales(),
-                this.getAveragePrice(), this.getMostCommonModel()
+        String res = String.format(
+                "#%d %s: cars sold %d, total sales $%,.2f",
+                this.id, this.name, this.salesCount, this.getTotalSales()
         );
+        if (this.salesCount > 0) {
+            res += String.format(", average cost $%,.2f, bestseller model #%d",
+                    this.getAveragePrice(), this.getMostCommonModel()
+            );
+        }
+        return res;
     }
 
     public String toStringSoldCars() {
