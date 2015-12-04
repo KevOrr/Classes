@@ -63,7 +63,7 @@ public class Dealership {
     @Override
     public String toString() {
         return String.format(
-                "#%d: %s, cars sold: %d, total sales $%f.2, average cost $%f.2, bestseller model: %d",
+                "#%d: %s, cars sold: %d, total sales $%,.2f, average cost $%,.2f, bestseller model: %d",
                 this.id, this.name, this.getTotalSales(), this.getAveragePrice(),
                 this.getMostCommonModel()
         );
