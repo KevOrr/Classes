@@ -1,0 +1,100 @@
+#!/bin/bash
+
+# Written by Jing Wang for Program Design
+# try_convert is a Unix shell script that will be used to test project 2.
+# To use the script, copy it into the same directory as your scource file
+# Set execute permission for the file by issuing the command:
+# chmod +x try_convert
+# Compile your program, producing a.out as the executable
+# To run the script, type 
+# ./try_convert
+# The user input from the script will not be shown on the screen.
+# Compare the results from your program with the expected results on the test cases.
+echo '===================================================='
+./a.out <<-EndOfInput
+0
+EndOfInput
+echo 
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Please select one of the following operations'
+echo '1 - Miles to Kilometers'
+echo '2 - Kilometers to Miles'
+echo '3 - Inches to Centimeters'
+echo '4 - Centimeters to Inches'
+echo 'Ouput: Invalid input, please select  between 1 and 4'
+echo '===================================================='
+./a.out <<-EndOfInput
+8
+EndOfInput
+echo
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Please select one of the following operations'
+echo '1 - Miles to Kilometers'
+echo '2 - Kilometers to Miles'
+echo '3 - Inches to Centimeters'
+echo '4 - Centimeters to Inches'
+echo 'Ouput: Invalid input, please select  between 1 and 4'
+echo '===================================================='
+./a.out <<-EndOfInput
+1
+4.5
+EndOfInput
+echo
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Please select one of the following operations'
+echo '1 - Miles to Kilometers'
+echo '2 - Kilometers to Miles'
+echo '3 - Inches to Centimeters'
+echo '4 - Centimeters to Inches'
+echo 'Enter the number of miles:'
+echo '4.5 miles =  7.24 kilometers'
+echo '===================================================='
+./a.out <<-EndOfInput
+2
+9.23
+EndOfInput
+echo
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Please select one of the following operations'
+echo '1 - Miles to Kilometers'
+echo '2 - Kilometers to Miles'
+echo '3 - Inches to Centimeters'
+echo '4 - Centimeters to Inches'
+echo 'Enter the number of kilometers:'
+echo '9.23 kilometers =  5.74 miles'
+echo '===================================================='
+./a.out <<-EndOfInput
+3
+9.2
+EndOfInput
+echo
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Please select one of the following operations'
+echo '1 - Miles to Kilometers'
+echo '2 - Kilometers to Miles'
+echo '3 - Inches to Centimeters'
+echo '4 - Centimeters to Inches'
+echo 'Enter the number of inches:'
+echo '9.2 inches =  23.37 centimeters'
+echo '===================================================='
+./a.out <<-EndOfInput
+4
+2.4
+EndOfInput
+echo
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Please select one of the following operations'
+echo '1 - Miles to Kilometers'
+echo '2 - Kilometers to Miles'
+echo '3 - Inches to Centimeters'
+echo '4 - Centimeters to Inches'
+echo 'Enter the number of centimeters'
+echo '2.4 centimeters =  0.94 inches'
+echo '===================================================='
+
