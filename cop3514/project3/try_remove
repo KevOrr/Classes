@@ -1,0 +1,41 @@
+#iAuthor: Jing Wang, for Program Design
+# try_remove is a Unix shell script that will be used to test project 3, problem #2.
+# To use the script, copy it into the same directory as your scource file
+# Set execute permission for the file by issuing the command:
+# chmod +x try_remove
+# Compile your program, producing a.out as the executable
+# To run the script, type 
+# ./try_remove
+# The user input from the script will not be shown on the screen.
+# Compare the results from your program with the expected results on the test cases.
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+I came, I saw, I conquered!
+EndOfInput
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Enter the message: I came, I saw, I conquered!'
+echo 'Output: I CAME I SAW I CONQUERED'
+#
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+To err is human;         to forgive, divine 
+EndOfInput
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Enter the message: To err is human;         to forgive, divine' 
+echo 'Output: TO ERR IS HUMAN         TO FORGIVE DIVINE' 
+#
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+All progess~ takes place outside the comfort zone.
+EndOfInput
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Enter the message: All progess~ takes place outside the comfort zone.'
+echo 'Output: ALL PROGRESS TAKES PLACE OUTSIDE THE COMFORT ZONE' 
+echo '===================================================='
+#
