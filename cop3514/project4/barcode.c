@@ -1,7 +1,7 @@
 // Kevin Orr
 // Prof. Jing Wang MW 12:30-1:45
 
-// 
+// Detects edges on an 8-bit barcode
 
 #include <stdio.h>
 #include <stdint.h>
