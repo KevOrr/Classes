@@ -1,0 +1,44 @@
+# Written by Jing Wang for Program Design
+# try_replace2 is a Unix shell script that will be used to test project 6.
+# To use the script, copy it into the same directory as your scource file
+# Set execute permission for the file by issuing the command:
+# chmod +x try_replace2
+# Compile your program, producing a.out as the executable
+# To run the script, type 
+# ./try_replace2
+# The user input from the script will not be shown on the screen.
+# Compare the results from your program with the expected results on the test cases.
+echo '===================================================='
+./a.out <<-EndOfInput
+3
+597
+EndOfInput
+echo
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Enter the number of digits of the number: 3'
+echo 'Enter the number: 597'
+echo 'Output: 351' 
+echo '===================================================='
+./a.out <<-EndOfInput
+4
+1050
+EndOfInput
+echo
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Enter the number of digits of the number: 4'
+echo 'Enter the number: 1050'
+echo 'Output: 6617'
+echo '===================================================='
+./a.out <<-EndOfInput
+5
+99991
+EndOfInput
+echo
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Enter the number of digits of the number: 5'
+echo 'Enter the number: 99991'
+echo 'Output: 75555'
+echo '===================================================='

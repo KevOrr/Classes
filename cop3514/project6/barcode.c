@@ -1,3 +1,6 @@
+// Kevin Orr
+// Prof. Jing Wang MW 12:30-1:45
+
 /*****************************************************************
  * This program finds the edges of light and dark regions of the
  * input binary bit pattern.
@@ -5,7 +8,7 @@
 
 #include <stdio.h>
 
-void edge(int n, int a[], int b[]);
+void edge(int n, int a[], int b[]); // a is input, b output
 int main(void)
 {
 	int input[8]={0};
@@ -21,6 +24,7 @@ int main(void)
 	for(i=0;i<8;i++)
 		printf("%d", output[i]);
     printf("\n");
+
 	return 0;
 }
 
