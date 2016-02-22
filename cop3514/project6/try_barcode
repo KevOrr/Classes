@@ -1,0 +1,31 @@
+# Author: Jing Wang,  for Program Design
+# try_barcode is a Unix shell script that will be used to test project 4.
+# To use the script, copy it into the same directory as your scource file
+# Set execute permission for the file by issuing the command:
+# chmod +x try_barcode
+# Compile your program, producing a.out as the executable
+# To run the script, type 
+# ./try_barcode
+# The user input from the script will not be shown on the screen.
+# Compare the results from your program with the expected results on the test cases.
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+00101101
+EndOfInput
+echo
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Enter the 8-bit barcode: 00101101'
+echo 'Output: 00111011'
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+11001100
+EndOfInput
+echo
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Enter the 8-bit barcode: 11001100'
+echo 'Output: 00101010'
+echo '===================================================='
