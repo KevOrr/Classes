@@ -1,3 +1,4 @@
+#!/bin/sh
 # Author: Jing Wang, for Program Design
 # try_sets is a Unix shell script that will be used to test project 4.
 # To use the script, copy it into the same directory as your scource file

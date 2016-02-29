@@ -1,3 +1,4 @@
+#!/bin/sh
 #iAuthor: Jing Wang, for Program Design
 # try_remove is a Unix shell script that will be used to test project 3, problem #2.
 # To use the script, copy it into the same directory as your scource file

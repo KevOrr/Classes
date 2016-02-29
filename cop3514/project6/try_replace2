@@ -1,3 +1,4 @@
+#!/bin/sh
 # Written by Jing Wang for Program Design
 # try_replace2 is a Unix shell script that will be used to test project 6.
 # To use the script, copy it into the same directory as your scource file

@@ -1,3 +1,4 @@
+#!/bin/sh
 #Author: Jing Wang, for Program Design
 # try_extra is a Unix shell script that will be used to test project 7, problem #1.
 # To use the script, copy it into the same directory as your scource file

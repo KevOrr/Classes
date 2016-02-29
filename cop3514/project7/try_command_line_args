@@ -1,3 +1,4 @@
+#!/bin/sh
 # Author: Jing Wang, for Program Design
 # try_command_line_args is a Unix shell script that will be used to test project 7.
 # To use the script, copy it into the same directory as your scource file
