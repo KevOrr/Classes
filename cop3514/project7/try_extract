@@ -1,0 +1,78 @@
+#Author: Jing Wang, for Program Design
+# try_extra is a Unix shell script that will be used to test project 7, problem #1.
+# To use the script, copy it into the same directory as your scource file
+# Set execute permission for the file by issuing the command:
+# chmod +x try_extract
+# Compile your program, producing a.out as the executable
+# To run the script, type 
+# ./try_extract
+# The user input from the script will not be shown on the screen.
+# Compare the results from your program with the expected results on the test cases.
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+http://www.npr.org
+EndOfInput
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Input: http://www.npr.org'
+echo 'Output: web address starting with www. and ending with .edu not found'
+#
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+http://www.usf.edu/admission/
+EndOfInput
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Input: http://www.usf.edu/admission/' 
+echo 'Output: www.usf.edu' 
+#
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+http://www.stanford.edu
+EndOfInput
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Input: http://www.usf.edu/admission/' 
+echo 'Output: www.stanford.edu' 
+#
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+http://usf.edu
+EndOfInput
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Input: http://usf.edu'
+echo 'Output: web address starting with www. and ending with .edu not found' 
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+http://usf.edu.www.
+EndOfInput
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Input: http://usf.edu.www.'
+echo 'Output: web address that starting with www. and ending with .edu not found' 
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+http://ww.usf.edu
+EndOfInput
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Input: http://ww.usf.edu'
+echo 'Output: web address starting with www. and ending with .edu not found' 
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+http://www.usf.ed
+EndOfInput
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Input: http://www.usf.ed'
+echo 'Output: web address starting with www. and ending with .edu not found' 
+echo '===================================================='
+#
