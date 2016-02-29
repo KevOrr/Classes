@@ -6,12 +6,30 @@
 #include <stdio.h>
 #include <string.h>
 
+#define MAX_LEN 1000
+
 void extract(char *s1, char *s2);
 int read_line(char *str, int n);
 
 int main(void) {
-    char input[1000] = {0};
-    char output[1000] = {0};
+    char input[MAX_LEN] = {0};
+    char output[MAX_LEN] = {0};
+
+    // Get input
+    fputs("Input: ", stdout);
+    read_line(input, MAX_LEN);
+
+    // Extract /(www\..+\.edu)/
+    extract(input, output);
+
+    if (output[0] == '\0') {
+        // Couldn't find /(www\..+\.edu)/
+        puts("Web address starting with www. and ending with .edu not found");
+        return 1;
+    } else {
+        // Success
+        printf("%s\n", output);
+    }
 
     return 0;
 }
@@ -19,17 +37,18 @@ int main(void) {
 void extract(char *s1, char *s2) {
     char *beg = strstr(s1, "www.");
     char *end = strstr(s1, ".edu");
-    if (beg == NULL || end == NULL) {
+    if (beg == NULL || end == NULL || end <= beg) {
         // substr not found
-        s2 = NULL;
+        *s2 = '\0';
         return;
     }
 
-    beg += 4; // Skips 4 chars of "www."
-    int length = (end - 1) - beg; // Rewind 1 character on `end` (points to '.')
-    strncpy(beg, s2, length);
+    end += 4; // Include ".edu"
+    int length = end - beg;
+    strncpy(s2, beg, length);
 }
 
+// From lecture notes
 int read_line(char *str, int n)
 {
     int ch, i = 0; 
