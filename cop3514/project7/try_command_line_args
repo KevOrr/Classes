@@ -1,0 +1,52 @@
+# Author: Jing Wang, for Program Design
+# try_command_line_args is a Unix shell script that will be used to test project 7.
+# To use the script, copy it into the same directory as your scource file
+# Set execute permission for the file by issuing the command:
+# chmod +x try_command_line_args
+# Compile your program, producing a.out as the executable
+# To run the script, type 
+# ./try_command_line_args
+# The user input from the script will not be shown on the screen.
+# Compare the results from your program with the expected results on the test cases.
+echo '===================================================='
+#
+./find_largest_smallest -l 4 9 12 43 23 26 32 41 17 5
+#
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'The largest number is 43'
+#
+echo '===================================================='
+#
+./find_largest_smallest -s 14 9 12 43 23 26 32 41 17 25
+#
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'The smallest number is 9'
+#
+echo '===================================================='
+#
+./find_largest_smallest -k 4 9 12 43 23 26 32 41 17 5
+#
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Invalid option.'
+#
+echo '===================================================='
+#
+./find_largest_smallest 4 9 12 43 23 26 32 41 17 5
+#
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Invalid option'
+#
+echo '====================================================='
+#
+./find_largest_smallest
+#
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Invalid option. -l for largest number or -s for smallest'
+echo 'number followed by ten numbers.'
+#
+echo '====================================================='
