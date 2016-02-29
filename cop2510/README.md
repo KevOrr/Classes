@@ -1,1 +1,3 @@
-COP 2510 Programming Concepts
+## COP 2510 Programming Concepts
+
+Fall 2015
