@@ -11,13 +11,13 @@
 #define POT_INPUT A0
 
 #define REVOLUTION_STEPS 4096
-#define MAXSPEED 600.0 // 11.25 rpm
+#define MAXSPEED 600.0 // ~8.8 rpm
 #define POT_STEPPER_SPEED_RATIO MAXSPEED / 1024.0 // 10-bit ADC
 
 LiquidCrystal_I2C myDisplay(0x27, 16, 2);
 AccelStepper stepper = AccelStepper(AccelStepper::HALF4WIRE, A, C, B, D);
 
-int t;
+int iter;
 float currSpeed;
 float rpm;
 
@@ -30,20 +30,20 @@ void setup() {
   stepper.run();
 
   myDisplay.init();
-  myDisplay.noBacklight();
-  myDisplay.setCursor(6,0);
-  myDisplay.print("rpm");
+  myDisplay.backlight();
+  myDisplay.setCursor(4,0);
+  myDisplay.print(" rpm");
 
-  if (DEBUG) Serial.begin(115200);
-
-  t = millis();
+  iter = 0;
 }
 
 void loop() {
   stepper.run();
-  if (millis() - t > 200) {
-    t = millis();
+  if (++iter == 25000) {
+    iter = 0;
     checkPot();
+    stepper.run();
+    flashLcd();
   }
 }
 
@@ -57,11 +57,13 @@ void checkPot() {
 }
 
 void flashLcd() {
-  //myDisplay.setCursor(4,0);
-  //myDisplay.print(" "); // clear
   myDisplay.setCursor(0,0);
   stepper.run();
-  myDisplay.print(rpm);
+  myDisplay.print(int(rpm));
+  stepper.run();
+  myDisplay.print(".");
+  stepper.run();
+  myDisplay.print(int((rpm - int(rpm)) * 100));
   stepper.run();
 }
 
