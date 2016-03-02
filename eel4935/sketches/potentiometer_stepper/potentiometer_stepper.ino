@@ -1,9 +1,11 @@
+// Note that this sketch works best when you change TWI_FREQ in twi.h
+// from 100000L to 400000L. This puts the I2C bus in fastmode (400 kHz).
+// On my machine, twi.h was in /usr/local/arduino-1.6.5-r5/hardware/arduino/avr/libraries/Wire/utility
+
 #include <stdlib.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <AccelStepper.h>
-
-#define DEBUG false
 
 #define A 6
 #define B 7
