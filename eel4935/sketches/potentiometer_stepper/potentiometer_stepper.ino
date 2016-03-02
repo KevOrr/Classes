@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <AccelStepper.h>
@@ -11,7 +12,7 @@
 #define POT_INPUT A0
 
 #define REVOLUTION_STEPS 4096
-#define MAXSPEED 600.0 // ~8.8 rpm
+#define MAXSPEED 900.0 // ~13 rpm
 #define POT_STEPPER_SPEED_RATIO MAXSPEED / 1024.0 // 10-bit ADC
 
 LiquidCrystal_I2C myDisplay(0x27, 16, 2);
@@ -31,8 +32,8 @@ void setup() {
 
   myDisplay.init();
   myDisplay.backlight();
-  myDisplay.setCursor(4,0);
-  myDisplay.print(" rpm");
+  myDisplay.setCursor(6,0);
+  myDisplay.print("rpm");
 
   iter = 0;
 }
@@ -57,13 +58,21 @@ void checkPot() {
 }
 
 void flashLcd() {
+  // Convert rpm -> str
+  char *str = new char[7];
+  dtostrf(rpm, 4, 2, str);
+  stepper.run();
+
+  // print rpm
   myDisplay.setCursor(0,0);
   stepper.run();
-  myDisplay.print(int(rpm));
-  stepper.run();
-  myDisplay.print(".");
-  stepper.run();
-  myDisplay.print(int((rpm - int(rpm)) * 100));
-  stepper.run();
+  for (int i=0; i<7; i++) {
+    if (*(str+i) == '\0') break;
+    myDisplay.print(*(str+i));
+    stepper.run();
+  }
+
+  // cleanup
+  delete str;
 }
 
