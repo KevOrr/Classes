@@ -2,7 +2,7 @@
 #include <LiquidCrystal_I2C.h>
 #include <AccelStepper.h>
 
-#define DEBUG true
+#define DEBUG false
 
 #define A 6
 #define B 7
@@ -11,52 +11,57 @@
 #define POT_INPUT A0
 
 #define REVOLUTION_STEPS 4096
-#define MAXSPEED 800.0 // ~11.7 rpm
-#define POT_STEPPER_SPEED_RATIO MAXSPEED / 1024.0
+#define MAXSPEED 600.0 // 11.25 rpm
+#define POT_STEPPER_SPEED_RATIO MAXSPEED / 1024.0 // 10-bit ADC
 
 LiquidCrystal_I2C myDisplay(0x27, 16, 2);
 AccelStepper stepper = AccelStepper(AccelStepper::HALF4WIRE, A, C, B, D);
 
+int t;
+float currSpeed;
+float rpm;
+
 void setup() {
   pinMode(POT_INPUT, INPUT);
 
-  stepper.setMaxSpeed(0);
-  stepper.setAcceleration(500);
+  stepper.setMaxSpeed(1500);
+  stepper.setAcceleration(1000);
+  stepper.moveTo(1000000000);
+  stepper.run();
 
   myDisplay.init();
-  myDisplay.backlight();
+  myDisplay.noBacklight();
+  myDisplay.setCursor(6,0);
+  myDisplay.print("rpm");
 
   if (DEBUG) Serial.begin(115200);
+
+  t = millis();
 }
 
 void loop() {
+  stepper.run();
+  if (millis() - t > 200) {
+    t = millis();
+    checkPot();
+  }
+}
+
+void checkPot() {
   int analog = analogRead(POT_INPUT);
-  if (DEBUG) {Serial.print("analog: "); Serial.print(analog);}
+  currSpeed = analog * POT_STEPPER_SPEED_RATIO;
+  rpm = currSpeed * 60 / REVOLUTION_STEPS; // sps -> spm -> rpm
 
-  float currSpeed = analog * POT_STEPPER_SPEED_RATIO;
-  if (DEBUG) {Serial.print("\tcurrSpeed: "); Serial.print(currSpeed);}
-
-  float rpm = currSpeed * 60 / REVOLUTION_STEPS; // sps -> spm -> rpm
-  if (DEBUG) {Serial.print("\trpm: "); Serial.print(rpm);}
-
-  writeLcd(rpm);
-
-  if (DEBUG) Serial.println();
-  delay(200);
+  stepper.setMaxSpeed(currSpeed);
+  stepper.run();
 }
 
-void writeLcd(float rpm) {
-  myDisplay.setCursor(4,0);
-  myDisplay.print(" "); // clear
+void flashLcd() {
+  //myDisplay.setCursor(4,0);
+  //myDisplay.print(" "); // clear
   myDisplay.setCursor(0,0);
+  stepper.run();
   myDisplay.print(rpm);
-  myDisplay.setCursor(6,0);
-  myDisplay.print("rpm");
-}
-
-int getPadding(double x) {
-  if      (x>100) return 0;
-  else if (x>10)  return 1;
-  else            return 2;
+  stepper.run();
 }
 
