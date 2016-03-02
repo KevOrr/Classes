@@ -1,15 +1,14 @@
 #include "HCSR04.h"
 #include "Arduino.h"
 
-//#define CENT_TO_INCH 1.0 / 2.54
-//#define ECHO_TIME_TO_CM 1.0 / 58.0
-
-HCSR04ProxSensor::HCSR04ProxSensor(int trigPin, int echoPin) {
+HCSR04ProxSensor::HCSR04ProxSensor(int echoPin, int trigPin) {
   _trigPin = trigPin; // Pin connected to HCSR04 TRIG
   _echoPin = echoPin; // Pin connected to HCSR04 ECHO
 
   pinMode(trigPin, OUTPUT); // TRIG sends a pulse
   pinMode(echoPin, INPUT);  // ECHO listens for a reply
+
+  readSensor(); readSensor();
 }
 
 float HCSR04ProxSensor::readSensor() {
@@ -21,7 +20,7 @@ float HCSR04ProxSensor::readSensor() {
   digitalWrite(_trigPin, LOW);
 
   
-  return _currentValue = pulseIn(_echoPin, HIGH) / 58.0;
+  return _currentValue = pulseIn(_echoPin, HIGH) / ECHO_TIME_TO_CM;
 
 }
 
@@ -31,7 +30,7 @@ float HCSR04ProxSensor::readSensorCentimeters() {
 }
 
 float HCSR04ProxSensor::readSensorInches() {
-  return readSensor() / 25.4;
+  return readSensor() / CENT_IN_INCH;
 }
 
 float HCSR04ProxSensor::getLastValue() {
