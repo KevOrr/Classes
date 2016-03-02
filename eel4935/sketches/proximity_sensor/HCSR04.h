@@ -5,14 +5,17 @@ class HCSR04ProxSensor {
   public:
     HCSR04ProxSensor(int trigPin, int echoPin);
     float readSensor();
-    //float readSensorInches();
-    //float readSensorCentimeters();
+    float readSensorInches();
+    float readSensorCentimeters();
+
     float getLastValue();
+
 
   private:
     int _trigPin;
     int _echoPin;
-    float _readSensor();
+
+    float _currentValue;
     float _lastValue;
 };
 
