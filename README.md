@@ -5,6 +5,7 @@ Bachelor of Science in Computer Science (BSCS) at the University of South Florid
 
 #### Fall 2015
 * [COP 2510 Programming Concepts](cop2510/)
+  * [Group Lab 2](https://github.com/KevOrr/insolent-hockeypuck)
 
 #### Spring 2016
 * [COP 3514 Program Design](cop3514/)
