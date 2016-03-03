@@ -5,3 +5,7 @@
 [submodule "eel4935/Planetarium-Android"]
     path = eel4935/Planetarium-Android
     url = https://github.com/KevOrr/Planetarium-Android.git
+
+[submodule "grouplab2"]
+    path = cop2510/src/grouplab2
+    url = https://github.com/KevOrr/insolent-hockeypuck.git
