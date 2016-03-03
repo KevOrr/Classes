@@ -13,23 +13,23 @@
 #define D 9
 #define POT_INPUT A0
 
-#define REVOLUTION_STEPS 4096
+#define REVOLUTION_STEPS 4096 // 4 coils * 8 phases * 64 reduction * 2 half-stepping
 #define MAXSPEED 900.0 // ~13 rpm
 #define POT_STEPPER_SPEED_RATIO MAXSPEED / 1024.0 // 10-bit ADC
 
-LiquidCrystal_I2C myDisplay(0x27, 16, 2);
-AccelStepper stepper = AccelStepper(AccelStepper::HALF4WIRE, A, C, B, D);
+LiquidCrystal_I2C myDisplay(0x27, 16, 2); // I2C 1602 LCD
+AccelStepper stepper = AccelStepper(AccelStepper::HALF4WIRE, A, C, B, D); // 28BYJ-48
 
-int iter;
+long int t;
 float currSpeed;
 float rpm;
 
 void setup() {
   pinMode(POT_INPUT, INPUT);
 
-  stepper.setMaxSpeed(1500);
+  stepper.setMaxSpeed(MAXSPEED);
   stepper.setAcceleration(1000);
-  stepper.moveTo(1000000000);
+  stepper.moveTo(1000000000); // Essentially infinity, takes about 13 days to get there at 900 pps
   stepper.run();
 
   myDisplay.init();
@@ -37,35 +37,34 @@ void setup() {
   myDisplay.setCursor(6,0);
   myDisplay.print("rpm");
 
-  iter = 0;
+  t = millis();
 }
 
 void loop() {
   stepper.run();
-  if (++iter == 25000) {
-    iter = 0;
+  if (millis() - t >= 500) {
+    t = millis();
     checkPot();
-    stepper.run();
-    flashLcd();
+    writeLcd();
   }
 }
 
 void checkPot() {
   int analog = analogRead(POT_INPUT);
   currSpeed = analog * POT_STEPPER_SPEED_RATIO;
-  rpm = currSpeed * 60 / REVOLUTION_STEPS; // sps -> spm -> rpm
+  rpm = currSpeed * 60 / REVOLUTION_STEPS; // pps -> ppm -> rpm
 
   stepper.setMaxSpeed(currSpeed);
   stepper.run();
 }
 
-void flashLcd() {
+void writeLcd() {
   // Convert rpm -> str
   char *str = new char[7];
-  dtostrf(rpm, 4, 2, str);
+  dtostrf(rpm, 5, 2, str); // width 5, precision 2
   stepper.run();
 
-  // print rpm
+  // print rpm one char at a time, each time call stepper.run()
   myDisplay.setCursor(0,0);
   stepper.run();
   for (int i=0; i<7; i++) {
