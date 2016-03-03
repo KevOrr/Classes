@@ -9,3 +9,5 @@ Bachelor of Science in Computer Science (BSCS) at the University of South Florid
 #### Spring 2016
 * [COP 3514 Program Design](cop3514/)
 * [EEL 4935/IDH 4930-008 MAKE: Hands-On Engineering Design](eel4935/)
+  * [Planetarium-Arduino](https://github.com/KevOrr/Planetarium-Arduino)
+  * [Planetarium-Android](https://github.com/KevOrr/Planetarium-Android)
