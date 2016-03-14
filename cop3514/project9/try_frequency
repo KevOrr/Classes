@@ -1,0 +1,43 @@
+#iAuthor: Jing Wang, for Program Design
+# try_frequency is a Unix shell script that will be used to test project 2, problem #2.
+# To use the script, copy it into the same directory as your scource file
+# Set execute permission for the file by issuing the command:
+# chmod +x try_frequency
+# Compile your program, producing a.out as the executable
+# To run the script, type 
+# ./try_frequency
+# The user input from the script will not be shown on the screen.
+# Compare the results from your program with the expected results on the test cases.
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+I came, I saw, I conquered!
+EndOfInput
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Enter the sentnece: I came, I saw, I conquered!'
+echo 'Output:'
+echo 'I	3'
+echo 'came	1'
+echo 'saw	1'
+echo 'conquered	1'
+#
+echo '===================================================='
+#
+./a.out <<-EndOfInput
+the more you read, the more things you will know.
+EndOfInput
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'the more you read, the more things you will know.' 
+echo 'Output:'
+echo 'the	2'
+echo 'more	2'
+echo 'you	2'
+echo 'read	1'
+echo 'things	1'
+echo 'will	1'
+echo 'know	1' 
+#
+echo '===================================================='
+
