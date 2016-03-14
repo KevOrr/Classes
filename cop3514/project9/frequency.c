@@ -6,31 +6,32 @@
 #include <stdio.h>
 #include <string.h>
 
-#define DELIMITERS " ,.!"
+#define DELIM " ,.!"
 #define MAX_INPUT 1000
+#define MAX_WORDS 1000
+#define MAX_WORD_LEN 50
 
 int read_line(char *str, int n);
 
 int main(void) {
     char str[MAX_INPUT + 1] = {0};
-    char words[MAX_INPUT][51] = {{0}};
-    int word_counts[MAX_INPUT] = {0};
+    char words[MAX_WORDS][MAX_WORD_LEN + 1] = {{0}};
+    int word_counts[MAX_WORDS] = {0};
     int unique_words = 0;
 
     // Get input string
     fputs("Enter the sentence: ", stdout);
-    read_line(str, MAX_INPUT+1);
+    read_line(str, MAX_INPUT);
 
     // Get word counts
-    char *next_token;
-    next_token = strtok(str, DELIMITERS);
-    while (next_token != NULL) {
+    char *strp = str;
+    for (strp = strtok(strp, DELIM); strp != NULL; strp = strtok(NULL, DELIM)) {
 
         // Try to find word in words
         int words_index = -1;
         int i;
         for (i=0; i<unique_words; i++) {
-            if (!strcmp(words[i], next_token)) {
+            if (!strcmp(words[i], strp)) {
                 words_index = i;
                 break;
             }
@@ -39,10 +40,9 @@ int main(void) {
         if (words_index == -1) {
             // make new entry in words
             words_index = unique_words++;
-            strcpy(words[words_index], next_token);
+            strcpy(words[words_index], strp);
         }
         word_counts[words_index]++;
-        next_token = strtok(NULL, DELIMITERS);
     }
 
     // Output results
