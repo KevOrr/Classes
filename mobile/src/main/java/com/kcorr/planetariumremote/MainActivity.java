@@ -8,8 +8,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.DatePicker;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ImageButton rewind;
+    private ImageButton forward;
+    private DatePicker datePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +30,31 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+
+        this.rewind = (ImageButton) findViewById(R.id.rewind);
+        this.forward = (ImageButton) findViewById(R.id.forward);
+        this.datePicker = (DatePicker) findViewById(R.id.datePicker);
+
+        addClickListeners();
+    }
+
+    protected void addClickListeners() {
+
+        this.rewind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePicker.updateDate(datePicker.getYear() - 100,
+                        datePicker.getMonth(), datePicker.getDayOfMonth());
+            }
+        });
+
+        this.forward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePicker.updateDate(datePicker.getYear() + 100,
+                        datePicker.getMonth(), datePicker.getDayOfMonth());
             }
         });
     }
