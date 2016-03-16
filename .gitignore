@@ -1,4 +1,5 @@
-planets.ods
+/planets.ods
+/material-design-icons*
 
 *.iml
 .gradle

@@ -9,6 +9,54 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.kcorr.planetariumremote.MainActivity" tools:showIn="@layout/activity_main">
 
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/datePicker"
+        android:endYear="5000"
+        android:startYear="0"
+        android:spinnersShown="true"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:backgroundTintMode="src_atop"
+        android:foregroundTint="@color/colorPrimary"
+        android:foregroundTintMode="src_in" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/datePicker"
+        android:layout_centerHorizontal="true">
+
+        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton"
+            android:src="@drawable/ic_keyboard_arrow_left_24dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/textView"
+            android:layout_toStartOf="@+id/textView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Skip 100 Years"
+            android:id="@+id/textView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="13dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton2"
+            android:src="@drawable/ic_keyboard_arrow_right_24dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView"
+            android:layout_toEndOf="@+id/textView" />
+
+    </RelativeLayout>
 </RelativeLayout>
