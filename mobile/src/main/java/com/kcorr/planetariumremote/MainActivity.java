@@ -2,21 +2,20 @@ package com.kcorr.planetariumremote;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 
 import com.mhuss.AstroLib.AstroDate;
+import com.mhuss.AstroLib.NoInitException;
+import com.mhuss.AstroLib.ObsInfo;
 import com.mhuss.AstroLib.PlanetData;
 import com.mhuss.AstroLib.Planets;
-import com.mhuss.AstroLib.ObsInfo;
-
-import java.lang.Override;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private DatePicker datePicker;
     private FloatingActionButton sendFab;
 
-    final int[] PLANETS = {Planets.MERCURY, Planets.VENUS, Planets.EARTH};
+    private final int[] PLANETS = {Planets.MERCURY, Planets.VENUS, Planets.EARTH};
+    private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,24 +34,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        this.rewind = (ImageButton) findViewById(R.id.rewind);
-        this.forward = (ImageButton) findViewById(R.id.forward);
+        this.rewindButton = (ImageButton) findViewById(R.id.rewind);
+        this.forwardButton = (ImageButton) findViewById(R.id.forward);
         this.datePicker = (DatePicker) findViewById(R.id.datePicker);
         this.sendFab = (FloatingActionButton) findViewById(R.id.send);
 
         addClickListeners();
     }
 
-    protected void addClickListeners() {
+    private void addClickListeners() {
 
         this.rewindButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,14 +63,36 @@ public class MainActivity extends AppCompatActivity {
         this.sendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double positions[][] = getHelioPositions(datePicker.getDayOfMonth(),
-                        datePicker.getMonth(), datePicker.getYear());
-                // TODO send bluetooth
+                calcSendPositions();
             }
         });
     }
 
-    public static double[][] getHelioPositions(int day, int month, int year) {
+    private void calcSendPositions() {
+        double positions[][] = getHelioPositions(datePicker.getDayOfMonth(),
+                datePicker.getMonth(), datePicker.getYear());
+        if (BuildConfig.DEBUG) {
+            String output = "Got these positions from AstroLib: [";
+            for (int i=0; i<positions.length - 1; i++) {
+                output += "[" + (int) positions[i][0] + ", " + positions[i][1] + ", "
+                        + positions[i][2] + "], ";
+            }
+            int i = positions.length - 1;
+            output += "[" + (int) positions[i][0] + ", " + positions[i][1] + ", "
+                    + positions[i][2] + "]]";
+            Log.d(TAG, output);
+        }
+
+        for (double planet[] : positions) {
+            String payload = "" + (int) planet[0] + " " + planet[1] + " " + planet[2];
+            if (BuildConfig.DEBUG)
+                Log.d(TAG, "Sending this payload: \"" + payload + "\"");
+            // TODO send bluetooth
+        }
+    }
+
+
+    private double[][] getHelioPositions(int day, int month, int year) {
         double result[][] = new double[this.PLANETS.length][3];
 
         double jd = new AstroDate(day, month, year).jd();
@@ -89,9 +102,13 @@ public class MainActivity extends AppCompatActivity {
         for (int i=0; i<this.PLANETS.length; i++) {
             data.calc(this.PLANETS[i], jd, info);
 
-            result[i][0] = this.PLANETS[i];
-            result[i][1] = data.getPolarLon();
-            result[i][2] = data.getPolarLat();
+            try {
+                result[i][0] = this.PLANETS[i];
+                result[i][1] = data.getPolarLon();
+                result[i][2] = data.getPolarLat();
+            } catch (NoInitException e) {
+                Log.e(TAG, "PlanetData not initiated", e);
+            }
         }
 
         return result;
