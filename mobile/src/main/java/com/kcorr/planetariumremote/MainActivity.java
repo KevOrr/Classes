@@ -11,11 +11,21 @@ import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 
+import com.mhuss.AstroLib.AstroDate;
+import com.mhuss.AstroLib.PlanetData;
+import com.mhuss.AstroLib.Planets;
+import com.mhuss.AstroLib.ObsInfo;
+
+import java.lang.Override;
+
 public class MainActivity extends AppCompatActivity {
 
-    private ImageButton rewind;
-    private ImageButton forward;
+    private ImageButton rewindButton;
+    private ImageButton forwardButton;
     private DatePicker datePicker;
+    private FloatingActionButton sendFab;
+
+    final int[] PLANETS = {Planets.MERCURY, Planets.VENUS, Planets.EARTH};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +46,14 @@ public class MainActivity extends AppCompatActivity {
         this.rewind = (ImageButton) findViewById(R.id.rewind);
         this.forward = (ImageButton) findViewById(R.id.forward);
         this.datePicker = (DatePicker) findViewById(R.id.datePicker);
+        this.sendFab = (FloatingActionButton) findViewById(R.id.send);
 
         addClickListeners();
     }
 
     protected void addClickListeners() {
 
-        this.rewind.setOnClickListener(new View.OnClickListener() {
+        this.rewindButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 datePicker.updateDate(datePicker.getYear() - 100,
@@ -50,13 +61,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        this.forward.setOnClickListener(new View.OnClickListener() {
+        this.forwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 datePicker.updateDate(datePicker.getYear() + 100,
                         datePicker.getMonth(), datePicker.getDayOfMonth());
             }
         });
+
+        this.sendFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double positions[][] = getHelioPositions(datePicker.getDayOfMonth(),
+                        datePicker.getMonth(), datePicker.getYear());
+                // TODO send bluetooth
+            }
+        });
+    }
+
+    public static double[][] getHelioPositions(int day, int month, int year) {
+        double result[][] = new double[this.PLANETS.length][3];
+
+        double jd = new AstroDate(day, month, year).jd();
+        ObsInfo info = new ObsInfo();
+        PlanetData data = new PlanetData();
+
+        for (int i=0; i<this.PLANETS.length; i++) {
+            data.calc(this.PLANETS[i], jd, info);
+
+            result[i][0] = this.PLANETS[i];
+            result[i][1] = data.getPolarLon();
+            result[i][2] = data.getPolarLat();
+        }
+
+        return result;
     }
 
     @Override
