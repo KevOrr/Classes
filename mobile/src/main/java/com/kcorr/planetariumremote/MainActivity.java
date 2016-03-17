@@ -2,6 +2,7 @@ package com.kcorr.planetariumremote;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothSocket;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private DatePicker datePicker;
     private FloatingActionButton sendFab;
 
-    private BluetoothAdapter btAdapter = (BluetoothAdapter) getSystemService(BLUETOOTH_SERVICE);
-    private BluetoothDevice btDevice = btAdapter.getRemoteDevice(BT_REMOTE_MAC);
+    private BluetoothAdapter btAdapter;
+    private BluetoothDevice btDevice;
     private BluetoothSocket btSocket;
 
     @Override
@@ -62,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             public void run() {
                 try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                        btAdapter = ((BluetoothManager) getSystemService(BLUETOOTH_SERVICE)).getAdapter();
+                    else
+                        btAdapter = BluetoothAdapter.getDefaultAdapter();
+                    btDevice = btAdapter.getRemoteDevice(BT_REMOTE_MAC);
                     // TODO device discovery instead of hardcoded MAC address
                     btSocket = btDevice.createRfcommSocketToServiceRecord(BT_UUID);
                     btSocket.connect();
@@ -143,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Sending this payload: \"" + payload + "\"");
 
             try {
-                if (Build.VERSION.SDK_INT >= 19)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                     outStream.write(payload.getBytes(StandardCharsets.US_ASCII));
                 else
                     outStream.write(payload.getBytes(Charset.forName("US-ASCII")));
