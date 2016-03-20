@@ -67,6 +67,42 @@ public class MainActivity extends AppCompatActivity {
         addClickListeners();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_bt_pair) {
+            Intent intent = new Intent(this, DeviceDiscoveryActivity.class);
+            startActivityForResult(intent, CHOOSE_BLUETOOTH_DEVICE.hashCode());
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == CHOOSE_BLUETOOTH_DEVICE.hashCode()) {
+            Intent intent = getIntent();
+            this.bt_remote_mac = intent.getStringExtra(DeviceDiscoveryActivity.RESULT_MAC_ADDR);
+            bt_connect();
+        }
+    }
+
     private void addClickListeners() {
 
         this.rewindButton.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +127,66 @@ public class MainActivity extends AppCompatActivity {
                 sendPositions();
             }
         });
+    }
+
+    private void bt_connect() {
+        if (bt_remote_mac == null) {
+            Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_not_connected,
+                    Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        // Run in separate thread so btDevice and btSocket don't block UI
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                        btAdapter = ((BluetoothManager) getSystemService(BLUETOOTH_SERVICE)).getAdapter();
+                    else
+                        btAdapter = BluetoothAdapter.getDefaultAdapter();
+                    btDevice = btAdapter.getRemoteDevice(bt_remote_mac);
+                    btSocket = btDevice.createRfcommSocketToServiceRecord(BT_UUID);
+                    btSocket.connect();
+
+                    // Alert user
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connected,
+                                    Snackbar.LENGTH_LONG).show();
+                        }
+                    });
+
+                } catch (IOException e) {
+                    Log.e(TAG, "IOException thrown while attempting to connect to device", e);
+                    Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connect_failed,
+                            Snackbar.LENGTH_LONG);
+                }
+            }
+        }).start();
+    }
+
+    private double[][] getHelioPositions(int day, int month, int year) {
+        // {{planetId, lon, lat}, {...}, ...}
+        double result[][] = new double[this.PLANETS.length][3];
+
+        double jd = new AstroDate(day, month, year).jd();
+        ObsInfo info = new ObsInfo();
+        PlanetData data = new PlanetData();
+
+        for (int i=0; i<this.PLANETS.length; i++) {
+            data.calc(this.PLANETS[i], jd, info);
+
+            try {
+                result[i][0] = this.PLANETS[i];
+                result[i][1] = data.getPolarLon();
+                result[i][2] = data.getPolarLat();
+            } catch (NoInitException e) {
+                Log.e(TAG, "PlanetData not initiated", e);
+            }
+        }
+
+        return result;
     }
 
     private void sendPositions() {
@@ -146,101 +242,5 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-    }
-
-    private double[][] getHelioPositions(int day, int month, int year) {
-        // {{planetId, lon, lat}, {...}, ...}
-        double result[][] = new double[this.PLANETS.length][3];
-
-        double jd = new AstroDate(day, month, year).jd();
-        ObsInfo info = new ObsInfo();
-        PlanetData data = new PlanetData();
-
-        for (int i=0; i<this.PLANETS.length; i++) {
-            data.calc(this.PLANETS[i], jd, info);
-
-            try {
-                result[i][0] = this.PLANETS[i];
-                result[i][1] = data.getPolarLon();
-                result[i][2] = data.getPolarLat();
-            } catch (NoInitException e) {
-                Log.e(TAG, "PlanetData not initiated", e);
-            }
-        }
-
-        return result;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_bt_pair) {
-            Intent intent = new Intent(this, DeviceDiscoveryActivity.class);
-            startActivityForResult(intent, CHOOSE_BLUETOOTH_DEVICE.hashCode());
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK && requestCode == CHOOSE_BLUETOOTH_DEVICE.hashCode()) {
-            Intent intent = getIntent();
-            this.bt_remote_mac = intent.getStringExtra(DeviceDiscoveryActivity.RESULT_MAC_ADDR);
-            bt_connect();
-        }
-    }
-
-    private void bt_connect() {
-        if (bt_remote_mac == null) {
-            Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_not_connected,
-                    Snackbar.LENGTH_LONG).show();
-            return;
-        }
-
-        // Run in separate thread so btDevice and btSocket don't block UI
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                        btAdapter = ((BluetoothManager) getSystemService(BLUETOOTH_SERVICE)).getAdapter();
-                    else
-                        btAdapter = BluetoothAdapter.getDefaultAdapter();
-                    btDevice = btAdapter.getRemoteDevice(bt_remote_mac);
-                    btSocket = btDevice.createRfcommSocketToServiceRecord(BT_UUID);
-                    btSocket.connect();
-
-                    // Alert user
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connected,
-                                    Snackbar.LENGTH_LONG).show();
-                        }
-                    });
-
-                } catch (IOException e) {
-                    Log.e(TAG, "IOException thrown while attempting to connect to device", e);
-                    Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connect_failed,
-                            Snackbar.LENGTH_LONG);
-                }
-            }
-        }).start();
     }
 }
