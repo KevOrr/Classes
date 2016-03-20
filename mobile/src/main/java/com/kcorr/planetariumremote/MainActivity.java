@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private final int[] PLANETS = {Planets.MERCURY, Planets.VENUS, Planets.EARTH};
     private final String TAG = "MainActivity";
     private final UUID BT_UUID = UUID.fromString("0000110E-0000-1000-8000-00805F9B34FB");
-    private final String CHOOSE_BLUETOOTH_DEVICE = "com.kcorr.planetariumremote.CHOOSE_BLUETOOTH_DEVICE";
+
+    //Actions
+    private final int ACTION_CHOOSE_BLUETOOTH_DEVICE = 1;
 
     // View components
     private ImageButton rewindButton;
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_bt_pair) {
             Intent intent = new Intent(this, DeviceDiscoveryActivity.class);
-            startActivityForResult(intent, CHOOSE_BLUETOOTH_DEVICE.hashCode());
+            startActivityForResult(intent, ACTION_CHOOSE_BLUETOOTH_DEVICE);
         }
 
         return super.onOptionsItemSelected(item);
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK && requestCode == CHOOSE_BLUETOOTH_DEVICE.hashCode()) {
+        if (resultCode == RESULT_OK && requestCode == ACTION_CHOOSE_BLUETOOTH_DEVICE) {
             Intent intent = getIntent();
             this.bt_remote_mac = intent.getStringExtra(DeviceDiscoveryActivity.RESULT_MAC_ADDR);
             bt_connect();
