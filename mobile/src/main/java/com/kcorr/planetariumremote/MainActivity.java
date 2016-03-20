@@ -132,6 +132,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bt_connect() {
+
+        // Should be unnecessary...
         if (bt_remote_mac == null) {
             Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_not_connected,
                     Snackbar.LENGTH_LONG).show();
@@ -192,6 +194,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendPositions() {
+
+        if (this.btSocket == null) {
+            Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_not_connected,
+                    Snackbar.LENGTH_LONG).show();
+            return;
+        }
 
         // Get positions from AstroLib
         double positions[][] = getHelioPositions(datePicker.getDayOfMonth(),
