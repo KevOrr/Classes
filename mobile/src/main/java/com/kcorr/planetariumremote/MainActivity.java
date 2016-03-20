@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -31,19 +32,23 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Constants
     private final int[] PLANETS = {Planets.MERCURY, Planets.VENUS, Planets.EARTH};
     private final String TAG = "MainActivity";
     private final UUID BT_UUID = UUID.fromString("0000110E-0000-1000-8000-00805F9B34FB");
-    private final String BT_REMOTE_MAC = ""; // TODO device discovery
+    private final String CHOOSE_BLUETOOTH_DEVICE = "com.kcorr.planetariumremote.CHOOSE_BLUETOOTH_DEVICE";
 
+    // View components
     private ImageButton rewindButton;
     private ImageButton forwardButton;
     private DatePicker datePicker;
     private FloatingActionButton sendFab;
 
+    // Bluetooth stuff
     private BluetoothAdapter btAdapter;
     private BluetoothDevice btDevice;
     private BluetoothSocket btSocket;
+    private String bt_remote_mac = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,39 +57,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Set view components
         this.rewindButton = (ImageButton) findViewById(R.id.rewind);
         this.forwardButton = (ImageButton) findViewById(R.id.forward);
         this.datePicker = (DatePicker) findViewById(R.id.datePicker);
         this.sendFab = (FloatingActionButton) findViewById(R.id.send);
 
+        // TODO consider merging addClickListeners into onCreate
         addClickListeners();
-
-        // Connect to device
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                        btAdapter = ((BluetoothManager) getSystemService(BLUETOOTH_SERVICE)).getAdapter();
-                    else
-                        btAdapter = BluetoothAdapter.getDefaultAdapter();
-                    btDevice = btAdapter.getRemoteDevice(BT_REMOTE_MAC);
-                    // TODO device discovery instead of hardcoded MAC address
-                    btSocket = btDevice.createRfcommSocketToServiceRecord(BT_UUID);
-                    btSocket.connect();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connected,
-                                    Snackbar.LENGTH_LONG).show();
-                        }
-                    });
-                } catch (IOException e) {
-                    Log.e(TAG, "IOException thrown while attempting to connect to device", e);
-                    Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connect_failed,
-                            Snackbar.LENGTH_LONG);
-                }
-            }
-        }).start();
     }
 
     private void addClickListeners() {
@@ -108,16 +88,17 @@ public class MainActivity extends AppCompatActivity {
         this.sendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calcSendPositions();
+                sendPositions();
             }
         });
     }
 
-    private void calcSendPositions() {
+    private void sendPositions() {
 
         // Get positions from AstroLib
         double positions[][] = getHelioPositions(datePicker.getDayOfMonth(),
                 datePicker.getMonth(), datePicker.getYear());
+
         if (BuildConfig.DEBUG) {
             String output = "Got these positions from AstroLib: [";
             for (int i=0; i<positions.length - 1; i++) {
@@ -143,16 +124,21 @@ public class MainActivity extends AppCompatActivity {
 
         // Send a line for each planet
         for (double planet[] : positions) {
+
             // Build payload
             String payload = "" + (int) planet[0] + " " + planet[1] + " " + planet[2] + "\n";
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Sending this payload: \"" + payload + "\"");
 
             try {
+                // See http://stackoverflow.com/q/32102166/1529586
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                     outStream.write(payload.getBytes(StandardCharsets.US_ASCII));
                 else
                     outStream.write(payload.getBytes(Charset.forName("US-ASCII")));
+                Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_send_success,
+                        Snackbar.LENGTH_LONG);
+
             } catch (IOException e) {
                 Log.e(TAG, "IOException thrown while attempting to send to OutputStream", e);
                 Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_send_failed,
@@ -162,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private double[][] getHelioPositions(int day, int month, int year) {
+        // {{planetId, lon, lat}, {...}, ...}
         double result[][] = new double[this.PLANETS.length][3];
 
         double jd = new AstroDate(day, month, year).jd();
@@ -202,8 +188,59 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_bt_pair) {
+            Intent intent = new Intent(this, DeviceDiscoveryActivity.class);
+            startActivityForResult(intent, CHOOSE_BLUETOOTH_DEVICE.hashCode());
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == CHOOSE_BLUETOOTH_DEVICE.hashCode()) {
+            Intent intent = getIntent();
+            this.bt_remote_mac = intent.getStringExtra(DeviceDiscoveryActivity.RESULT_MAC_ADDR);
+            bt_connect();
+        }
+    }
+
+    private void bt_connect() {
+        if (bt_remote_mac == null) {
+            Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_not_connected,
+                    Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        // Run in separate thread so btDevice and btSocket don't block UI
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                        btAdapter = ((BluetoothManager) getSystemService(BLUETOOTH_SERVICE)).getAdapter();
+                    else
+                        btAdapter = BluetoothAdapter.getDefaultAdapter();
+                    btDevice = btAdapter.getRemoteDevice(bt_remote_mac);
+                    btSocket = btDevice.createRfcommSocketToServiceRecord(BT_UUID);
+                    btSocket.connect();
+
+                    // Alert user
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connected,
+                                    Snackbar.LENGTH_LONG).show();
+                        }
+                    });
+
+                } catch (IOException e) {
+                    Log.e(TAG, "IOException thrown while attempting to connect to device", e);
+                    Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connect_failed,
+                            Snackbar.LENGTH_LONG);
+                }
+            }
+        }).start();
     }
 }

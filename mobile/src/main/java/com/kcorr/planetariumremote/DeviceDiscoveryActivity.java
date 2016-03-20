@@ -7,7 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+// TODO implement
 public class DeviceDiscoveryActivity extends AppCompatActivity {
+
+    public static final String RESULT_MAC_ADDR
+            = "com.kcorr.planetariumremote.DeviceDiscoveryActivity.RESULT_MAC_ADDR";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

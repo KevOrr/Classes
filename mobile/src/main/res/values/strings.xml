@@ -7,7 +7,7 @@
     <string name="msg_connected">Connected to planetarium</string>
     <string name="msg_connect_failed">Failed to connect to planetarium</string>
     <string name="msg_send_failed">Failed to send data to Planetarium</string>
-    <string name="title_activity_device_discovery">DeviceDiscoveryActivity</string>
+    <string name="title_activity_device_discovery">Choose Device</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -97,4 +97,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="msg_not_connected">Make sure you connect first!</string>
+    <string name="msg_send_success">Sent date successfully!</string>
 </resources>
