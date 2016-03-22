@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter btAdapter;
     private BluetoothDevice btDevice;
     private BluetoothSocket btSocket;
-    private String bt_remote_mac = "";
+    private String bt_remote_mac = "98:D3:31:FD:1B:F2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +101,31 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == ACTION_CHOOSE_BLUETOOTH_DEVICE) {
             Intent intent = getIntent();
             this.bt_remote_mac = intent.getStringExtra(DeviceDiscoveryActivity.RESULT_MAC_ADDR);
-            bt_connect();
+            if (BuildConfig.DEBUG)
+                Log.d(TAG, "Got MAC ADDR: " + this.bt_remote_mac);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        btConnect();
+
+                        // Alert user
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.d(TAG, "Connected to planetarium");
+                                Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connected,
+                                        Snackbar.LENGTH_LONG).show();
+                            }
+                        });
+
+                    } catch (IOException e) {
+                        Log.e(TAG, "IOException thrown while attempting to connect to device", e);
+                        Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connect_failed,
+                                Snackbar.LENGTH_LONG);
+                    }
+                }
+            }).start();
         }
     }
 
@@ -126,48 +150,49 @@ public class MainActivity extends AppCompatActivity {
         this.sendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendPositions();
+                if (btSocket == null) {
+                    if (bt_remote_mac == null) {
+                        Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_not_connected,
+                                Snackbar.LENGTH_LONG).show();
+                        return;
+                    }
+                } else {
+                    Log.d(TAG, "btSocket was null, called btConnect()");
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                btConnect();
+                            } catch (IOException e) {
+                                Log.e(TAG, "btConnect raised IOException");
+                            }
+                        }
+                    }).start();
+                    Log.d(TAG, "btAdapter = " + btAdapter);
+                    Log.d(TAG, "btDevice = " + btDevice);
+                    Log.d(TAG, "btSocket = " + btSocket);
+                }
             }
         });
     }
 
-    private void bt_connect() {
+    private void btConnect() throws IOException {
 
         // Should be unnecessary...
-        if (bt_remote_mac == null) {
+        if (bt_remote_mac == null || bt_remote_mac.equals("")) {
             Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_not_connected,
                     Snackbar.LENGTH_LONG).show();
             return;
         }
 
         // Run in separate thread so btDevice and btSocket don't block UI
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                        btAdapter = ((BluetoothManager) getSystemService(BLUETOOTH_SERVICE)).getAdapter();
-                    else
-                        btAdapter = BluetoothAdapter.getDefaultAdapter();
-                    btDevice = btAdapter.getRemoteDevice(bt_remote_mac);
-                    btSocket = btDevice.createRfcommSocketToServiceRecord(BT_UUID);
-                    btSocket.connect();
-
-                    // Alert user
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connected,
-                                    Snackbar.LENGTH_LONG).show();
-                        }
-                    });
-
-                } catch (IOException e) {
-                    Log.e(TAG, "IOException thrown while attempting to connect to device", e);
-                    Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connect_failed,
-                            Snackbar.LENGTH_LONG);
-                }
-            }
-        }).start();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+            btAdapter = ((BluetoothManager) getSystemService(BLUETOOTH_SERVICE)).getAdapter();
+        else
+            btAdapter = BluetoothAdapter.getDefaultAdapter();
+        btDevice = btAdapter.getRemoteDevice(bt_remote_mac);
+        btSocket = btDevice.createRfcommSocketToServiceRecord(BT_UUID);
+        btSocket.connect();
     }
 
     private double[][] getHelioPositions(int day, int month, int year) {
@@ -195,11 +220,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendPositions() {
 
-        if (this.btSocket == null) {
-            Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_not_connected,
-                    Snackbar.LENGTH_LONG).show();
-            return;
-        }
 
         // Get positions from AstroLib
         double positions[][] = getHelioPositions(datePicker.getDayOfMonth(),

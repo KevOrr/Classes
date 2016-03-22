@@ -1,5 +1,6 @@
 package com.kcorr.planetariumremote;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -7,11 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-// TODO implement
+import java.util.Arrays;
+
+
 public class DeviceDiscoveryActivity extends AppCompatActivity {
 
     public static final String RESULT_MAC_ADDR
             = "com.kcorr.planetariumremote.DeviceDiscoveryActivity.RESULT_MAC_ADDR";
+    private static final String ADDR = "98:d3:31:fd:1b:f2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,5 +33,10 @@ public class DeviceDiscoveryActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = new Intent();
+        intent.putExtra(RESULT_MAC_ADDR, ADDR);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
