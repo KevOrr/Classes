@@ -1,0 +1,37 @@
+#test script for project 8.
+#Author: Jing Wang, for Program Design
+#To use the script, copy it into the same directory as your scource file
+# Set execute permission for the file by issuing the command:
+# chmod +x try_phone_numbers
+# Compile your program, producing a.out as the executable
+# To run the script, type
+# ./try_phone_numbers
+# The user input will not be shown on the screen
+./a.out <<-EndOfInput
+phone_list.txt
+EndOfInput
+cat phone_list.txt.cvt
+#
+echo '----------------------------------------------------'
+echo 'Expected:'
+echo 'Enter file name: phone_list.txt'
+echo 'Output file name: phone_list.txt.cvt'
+echo '8253688'
+echo '4247288'
+echo '8432677'
+echo '2337226'
+echo '7382273'
+echo '2279274'
+echo '6284457'
+echo '2224245'
+echo '4766637'
+echo '2532637'
+echo '3292273'
+echo '2477678'
+echo '6862377'
+echo '7673596'
+echo '5388377'
+echo '6873867'
+echo '7764726'
+echo '7836574'
+echo '5963729'
