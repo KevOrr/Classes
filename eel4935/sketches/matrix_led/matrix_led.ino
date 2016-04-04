@@ -55,7 +55,7 @@ void bounce() {
   else if (y >= 7.99 || y == 0)
     yDir *= -1;
 
-  float azimuth = ((float)rand() / (float)(RAND_MAX)) * PI / 2;
+  float azimuth = PI / 12 + ((float)rand() / (float)(RAND_MAX)) * PI / 3;
   xSpeed = xDir * cos(azimuth);
   ySpeed = yDir * sin(azimuth);
 }
@@ -66,3 +66,4 @@ void blinkLed() {
     digitalWrite(cathodes[ledY], !parity);
   }
 }
+
