@@ -39,10 +39,11 @@ void loop() {
 
     if ((c == '\n') || (i == sizeof(buf) - 1)) {
       digitalWrite(INDICATOR, LOW); // EOL, not receiving anymore
-      buf[i] = '\0';
-      i = 0;
+      buf[i] = '\0'; // Terminate with NUL
+      i = 0; // Begin at start of buf next time
 
-      target = REV_STEPS * atof(buf) / 360; // convert degrees -> steps
+      // convert degrees -> steps, then move
+      target = GEAR_RATIO * REV_STEPS * atof(buf) / 360;
       moveStepper();
     }
   }
