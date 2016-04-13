@@ -104,7 +104,7 @@ void moveSteppers(int targets[]) {
 
     if (DEBUG) {
       char str[101];
-      sprintf(str, "Stepper: %d: @%d\t%+d\t->%d\n", i, pos, step_disp[i], targets[i]);
+      sprintf(str, "Stepper %1d: @%-4d %+-5d -> %-4d\r\n", i, pos, step_disp[i], targets[i]);
       Serial.print(str);
     }
   }
