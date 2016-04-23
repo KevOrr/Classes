@@ -7,14 +7,14 @@
 #define GEAR_RATIO      2
 #define STEPS_PER_STEPPER_REV 4096
 #define STEPS_PER_REV   STEPS_PER_STEPPER_REV * GEAR_RATIO
-#define MAXSPEED        DEBUG ? 1000 : 800    // pulse/sec
+#define MAXSPEED        600     // pulse/sec
 #define MAXACCEL        1000    // pulse/sec^2
 #define N               3       // number of planets
 
 AccelStepper *steppers[3];
 AccelStepper mercury = AccelStepper(AccelStepper::HALF4WIRE, A2, A4, A3, A5); // 28BYJ-48
-AccelStepper venus = AccelStepper(AccelStepper::HALF4WIRE, 2, 4, 3, 5); // 28BYJ-48
-AccelStepper earth = AccelStepper(AccelStepper::HALF4WIRE, 6, 8, 7, 9); // 28BYJ-48
+AccelStepper venus = AccelStepper(AccelStepper::HALF4WIRE, 9, 11, 10, 12); // 28BYJ-48
+AccelStepper earth = AccelStepper(AccelStepper::HALF4WIRE, 5, 7, 6, 8); // 28BYJ-48
 
 char buf[101] = {0}; // Temporary input buffer
 uint8_t i = 0; // input buffer char index
@@ -34,9 +34,9 @@ void setup() {
   }
 
   // Do a test spin on startup
-  if (DEBUG) Serial.println(F("Moving stepper 0 one revolution"));
+  /*if (DEBUG) Serial.println(F("Moving stepper 0 one revolution"));
   steppers[0]->runToNewPosition(STEPS_PER_REV);
-  steppers[0]->setCurrentPosition(0);
+  steppers[0]->setCurrentPosition(0);*/
 
   // stepper.run must be called very often, but at least once per step cycle
   Timer1.initialize(100);
