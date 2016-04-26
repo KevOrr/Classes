@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     // Constants
     private final int[] PLANETS = {Planets.MERCURY, Planets.VENUS, Planets.EARTH};
     private final String TAG = "MainActivity";
-    private final UUID BT_SPP_UUID = UUID.fromString("0000110E-0000-1000-8000-00805F9B34FB");
+    private final UUID BT_SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private final boolean DEBUG = BuildConfig.DEBUG;
 
     //Actions
     private final int ACTION_CHOOSE_BLUETOOTH_DEVICE = 1;
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
+                        if (DEBUG) Log.d(TAG, "Connecting to " + bt_remote_mac);
                         btConnect();
 
                         // Alert user
@@ -194,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                 if (btSocket == null)
                     Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_not_connected,
                             Snackbar.LENGTH_LONG).show();
-                else {
+                else {/*
                     Log.d(TAG, "btSocket was null, called btConnect()");
                     new Thread(new Runnable() {
                         @Override
@@ -205,10 +207,9 @@ public class MainActivity extends AppCompatActivity {
                                 Log.e(TAG, "btConnect raised IOException");
                             }
                         }
-                    }).start();
-                    Log.d(TAG, "btAdapter = " + btAdapter);
-                    Log.d(TAG, "btDevice = " + btDevice);
-                    Log.d(TAG, "btSocket = " + btSocket);
+                    }).start();*/
+
+                    sendPositions();
                 }
             }
         });
@@ -230,9 +231,12 @@ public class MainActivity extends AppCompatActivity {
             btAdapter = BluetoothAdapter.getDefaultAdapter();*/
 
         Set<BluetoothDevice> pairedDevices = this.btAdapter.getBondedDevices();
-        for (BluetoothDevice device : pairedDevices)
-            if (device.getName().toLowerCase().equals("planetarium"))
+        for (BluetoothDevice device : pairedDevices) {
+            if (device.getName().toLowerCase().equals("planetarium")) {
                 this.bt_remote_mac = device.getAddress();
+                Log.d(TAG, "Found planetarium in paired devices");
+            }
+        }
 
         if (this.btDevice == null)
             btDevice = btAdapter.getRemoteDevice(bt_remote_mac);
@@ -240,6 +244,10 @@ public class MainActivity extends AppCompatActivity {
             btSocket = btDevice.createRfcommSocketToServiceRecord(BT_SPP_UUID);
         if (!this.btSocket.isConnected())
             btSocket.connect();
+    }
+
+    private double radToDeg(double angle) {
+        return angle * 180.0 / Math.PI;
     }
 
     private double[][] getHelioPositions(int day, int month, int year) {
@@ -255,8 +263,13 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 result[i][0] = this.PLANETS[i];
-                result[i][1] = data.getPolarLon();
-                result[i][2] = data.getPolarLat();
+                result[i][1] = radToDeg(data.getPolarLon());
+                result[i][2] = radToDeg(data.getPolarLat());
+
+                if (i == Planets.EARTH) {
+                    result[i][1] -= 180.0;
+                    result[i][2] *= -1;
+                }
             } catch (NoInitException e) {
                 Log.e(TAG, "PlanetData not initiated", e);
             }
@@ -288,9 +301,10 @@ public class MainActivity extends AppCompatActivity {
         String payload = "";
         for (double planet[] : positions)
             payload += "" + planet[1] + " " ; // All we care about for now is the longitude
+        payload = payload.substring(0, payload.length() - 1) + "\n"; // Remove terminal space, add newline
 
         if (BuildConfig.DEBUG)
-            Log.d(TAG, "Sending this payload: \"" + payload + "\"");
+            Log.d(TAG, "Sending this payload: \"" + payload.replace("\n", "\\n") + "\"");
 
         // Open an OutputStream
         OutputStream outStream;
