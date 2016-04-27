@@ -33,11 +33,6 @@ void setup() {
     steppers[i]->setAcceleration(MAXACCEL);
   }
 
-  // Do a test spin on startup
-  /*if (DEBUG) Serial.println(F("Moving stepper 0 one revolution"));
-  steppers[0]->runToNewPosition(STEPS_PER_REV);
-  steppers[0]->setCurrentPosition(0);*/
-
   // stepper.run must be called very often, but at least once per step cycle
   Timer1.initialize(100);
   Timer1.attachInterrupt(runSteppers);
@@ -65,15 +60,15 @@ void loop() {
       int targets[N];
       for (int i=0; tok && i<3; i++) {
         targets[i] = STEPS_PER_REV * atof(tok) / 360;
-        moveStepper(i, targets[i]);
         tok = strtok(NULL, " ");
       }
 
-      //moveSteppers(targets);
+      moveSteppers(targets);
     }
   }
 }
 
+// http://mathb.in/56432
 void moveSteppers(int targets[]) {
   int step_disp[N] = {0}; // steps for each stepper to travel
   int maxDistance = 0; // longest movement for all of the steppers
@@ -95,10 +90,11 @@ void moveSteppers(int targets[]) {
   for (int i=0; i<N; i++) {
     int pos = steppers[i]->currentPosition();
     pos %= STEPS_PER_REV;
+    float velocity = MAXSPEED * (float) abs(step_disp[i]) / (float) maxDistance;
 
     AccelStepper *stepper = steppers[i];
-    stepper-> setMaxSpeed(MAXSPEED * abs(step_disp[i]) / maxDistance);
-    stepper-> setAcceleration(MAXACCEL * abs(step_disp[i]) / maxDistance); // TODO Not 100% correct
+    stepper-> setMaxSpeed(velocity);
+    stepper-> setAcceleration(MAXACCEL * velocity / (float) MAXSPEED);
     stepper-> setCurrentPosition(pos);
     stepper-> move(step_disp[i]);
 
@@ -110,39 +106,9 @@ void moveSteppers(int targets[]) {
   }
 }
 
-void moveStepper(int stepper, int target) {
-  // Position should always be between 0 and 360
-  int pos = steppers[stepper]->currentPosition();
-  pos %= STEPS_PER_REV;
-  steppers[stepper]->setCurrentPosition(pos);
-
-  // Same goes for target
-  target %= STEPS_PER_REV;
-
-  // Determine shortest distance (CW or CCW) from current position to target
-  int step_disp = target - pos;
-  if (abs(STEPS_PER_REV - step_disp) < abs(step_disp))
-    step_disp = step_disp - STEPS_PER_REV;
-
-  if (DEBUG) {
-    char str[101];
-    sprintf(str, "Stepper %1d: @%-4d %+-5d -> %-4d\r\n", stepper, pos, step_disp, target);
-    Serial.print(str);
-  }
-
-  // Now set the distance
-  steppers[stepper]->move(step_disp);
-}
-
 // Check each stepper if a step is needed. If so, move by one step
 void runSteppers() {
   for (int i=0; i<N; i++)
     steppers[i] -> run();
 }
-
-// http://stackoverflow.com/a/12089637/1529586
-/*inline int mod(int a, int b) {
-  const int result = a % b;
-  return result >= 0 ? result : result + b;
-}*/
 
