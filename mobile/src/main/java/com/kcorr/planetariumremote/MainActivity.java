@@ -2,7 +2,6 @@ package com.kcorr.planetariumremote;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Build;
@@ -28,7 +27,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Set;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,11 +35,10 @@ public class MainActivity extends AppCompatActivity {
     private final int[] PLANETS = {Planets.MERCURY, Planets.VENUS, Planets.EARTH};
     private final String TAG = "MainActivity";
     private final UUID BT_SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private final boolean DEBUG = BuildConfig.DEBUG;
 
     //Actions
-    private final int ACTION_CHOOSE_BLUETOOTH_DEVICE = 1;
-    private final int REQUEST_ENABLE_BT = 2;
+    private final int REQUEST_ENABLE_BT = 1;
+    private final int ACTION_CHOOSE_BLUETOOTH_DEVICE = 2;
 
     // View components
     private ImageButton rewindButton;
@@ -53,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter btAdapter;
     private BluetoothDevice btDevice;
     private BluetoothSocket btSocket;
-    private String bt_remote_mac = "98:D3:31:FD:1B:F2";
+    //private String bt_remote_mac = "98:D3:31:FD:1B:F2";
+    private String bt_remote_mac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +71,9 @@ public class MainActivity extends AppCompatActivity {
         if (this.btAdapter == null) {
             Snackbar.make(findViewById(R.id.main_activity_top), "Bluetooth is not available",
                     Snackbar.LENGTH_LONG).show();
-            finish();
-            return;
         }
-        if (!this.btAdapter.isEnabled())
-        {
+
+        if (!this.btAdapter.isEnabled()) {
             // enable bluetooth
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
@@ -106,31 +102,8 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_bt_pair) {
-            /*Intent intent = new Intent(this, DeviceDiscoveryActivity.class);
-            startActivityForResult(intent, ACTION_CHOOSE_BLUETOOTH_DEVICE);*/
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        btConnect();
-
-                        // Alert user
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d(TAG, "Connected to planetarium");
-                                Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connected,
-                                        Snackbar.LENGTH_LONG).show();
-                            }
-                        });
-
-                    } catch (IOException e) {
-                        Log.e(TAG, "IOException thrown while attempting to connect to device", e);
-                        Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connect_failed,
-                                Snackbar.LENGTH_LONG);
-                    }
-                }
-            }).start();
+            Intent intent = new Intent(this, DeviceDiscoveryActivity.class);
+            startActivityForResult(intent, ACTION_CHOOSE_BLUETOOTH_DEVICE);
         }
 
         return super.onOptionsItemSelected(item);
@@ -141,32 +114,35 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == ACTION_CHOOSE_BLUETOOTH_DEVICE) {
-            Intent intent = getIntent();
-            this.bt_remote_mac = intent.getStringExtra(DeviceDiscoveryActivity.RESULT_MAC_ADDR);
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Got MAC ADDR: " + this.bt_remote_mac);
+            this.bt_remote_mac = data.getStringExtra(DeviceDiscoveryActivity.RESULT_MAC_ADDR);
+            if (BuildConfig.DEBUG) Log.d(TAG, "Got MAC ADDR: " + this.bt_remote_mac);
+            if (this.bt_remote_mac == null) return;
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        if (DEBUG) Log.d(TAG, "Connecting to " + bt_remote_mac);
                         btConnect();
-
-                        // Alert user
+                    } catch (IOException e) {
+                        Log.e(TAG, "IOException thrown while attempting to connect to device", e);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Log.d(TAG, "Connected to planetarium");
-                                Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connected,
+                                Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connect_failed,
                                         Snackbar.LENGTH_LONG).show();
                             }
                         });
-
-                    } catch (IOException e) {
-                        Log.e(TAG, "IOException thrown while attempting to connect to device", e);
-                        Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connect_failed,
-                                Snackbar.LENGTH_LONG);
+                        return;
                     }
+
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Connected to planetarium");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_connected,
+                                    Snackbar.LENGTH_LONG).show();
+                        }
+                    });
                 }
             }).start();
         }
@@ -193,22 +169,10 @@ public class MainActivity extends AppCompatActivity {
         this.sendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btSocket == null)
+                if (btSocket == null || !btSocket.isConnected())
                     Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_not_connected,
                             Snackbar.LENGTH_LONG).show();
-                else {/*
-                    Log.d(TAG, "btSocket was null, called btConnect()");
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                btConnect();
-                            } catch (IOException e) {
-                                Log.e(TAG, "btConnect raised IOException");
-                            }
-                        }
-                    }).start();*/
-
+                else {
                     sendPositions();
                 }
             }
@@ -216,34 +180,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void btConnect() throws IOException {
-
-        // Should be unnecessary...
-        /*if (bt_remote_mac == null || bt_remote_mac.equals("")) {
-            Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_not_connected,
-                    Snackbar.LENGTH_LONG).show();
-            return;
-        }*/
-
-        // Run in separate thread so btDevice and btSocket don't block UI
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-            btAdapter = ((BluetoothManager) getSystemService(BLUETOOTH_SERVICE)).getAdapter();
-        else
-            btAdapter = BluetoothAdapter.getDefaultAdapter();*/
-
-        Set<BluetoothDevice> pairedDevices = this.btAdapter.getBondedDevices();
-        for (BluetoothDevice device : pairedDevices) {
-            if (device.getName().toLowerCase().equals("planetarium")) {
-                this.bt_remote_mac = device.getAddress();
-                Log.d(TAG, "Found planetarium in paired devices");
+        if (this.btSocket != null && this.btDevice != null &&
+                !this.btDevice.getAddress().equals(bt_remote_mac)) {
+            // New mac address, disconnect previous connection
+            try {
+                this.btSocket.close();
+                this.btSocket = null;
+            } catch (IOException e) {
+                Log.e(TAG, "IOException thrown while trying to close btSocket", e);
             }
         }
 
-        if (this.btDevice == null)
-            btDevice = btAdapter.getRemoteDevice(bt_remote_mac);
+        btDevice = btAdapter.getRemoteDevice(bt_remote_mac);
+
         if (this.btSocket == null)
             btSocket = btDevice.createRfcommSocketToServiceRecord(BT_SPP_UUID);
-        if (!this.btSocket.isConnected())
-            btSocket.connect();
+
+        btSocket.connect();
     }
 
     private double radToDeg(double angle) {
@@ -279,8 +232,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendPositions() {
-
-
         // Get positions from AstroLib
         double positions[][] = getHelioPositions(datePicker.getDayOfMonth(),
                 datePicker.getMonth(), datePicker.getYear());
@@ -317,12 +268,15 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // Send payload
         try {
             // See http://stackoverflow.com/q/32102166/1529586
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                 outStream.write(payload.getBytes(StandardCharsets.US_ASCII));
             else
                 outStream.write(payload.getBytes(Charset.forName("US-ASCII")));
+
+            if (BuildConfig.DEBUG) Log.d(TAG, "Successfully sent payload");
             Snackbar.make(findViewById(R.id.main_activity_top), R.string.msg_send_success,
                     Snackbar.LENGTH_LONG);
 
