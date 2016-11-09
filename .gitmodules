@@ -1,9 +1,9 @@
 [submodule "eel4935/Planetarium-Arduino"]
-    path = eel4935/Planetarium-Arduino
+	path = make_course/Planetarium-Arduino
     url = https://github.com/KevOrr/Planetarium-Arduino.git
 
 [submodule "eel4935/Planetarium-Android"]
-    path = eel4935/Planetarium-Android
+	path = make_course/Planetarium-Android
     url = https://github.com/KevOrr/Planetarium-Android.git
 
 [submodule "grouplab2"]
