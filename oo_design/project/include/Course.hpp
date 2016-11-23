@@ -1,18 +1,21 @@
-#ifndef _OOD_PROJECT_UNIVERSITY_H_
-#define _OOD_PROJECT_UNIVERSITY_H_
+#ifndef _OOD_PROJECT_COURSE_H_
+#define _OOD_PROJECT_COURSE_H_
 
-enum class CourseLevel { UNDERGRADUATE, GRADUATE };
+#include "util.hpp"
 
 class Course {
+friend class University;
+
 private:
     unsigned int id;
-    CourseLevel level;
+    StudyLevel level;
 
 public:
-    Course(unsigned int id, CourseLevel level);
-    Course(Course);
-    unsigned int getID();
-    CourseLevel getLevel();
-}
+    Course(StudyLevel level);
+
+    unsigned int get_id() const;
+    StudyLevel get_level() const;
+};
 
 #endif
+

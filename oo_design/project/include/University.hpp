@@ -3,6 +3,7 @@
 
 #include <set>
 #include <utility>
+#include <vector>
 
 #include "Course.hpp"
 #include "CourseSection.hpp"
@@ -14,23 +15,22 @@ private:
     std::set<std::pair<unsigned int, unsigned int> > studentsInClasses;
     std::set<std::pair<unsigned int, unsigned int> > teachersInClasses;
 
-    std::set<unsigned int, Course> courses;
-    std::set<unsigned int, CourseSection> courseSections;
-    std::set<unsigned int, Student> students;
-    std::set<unsigned int, Teacher> teachers;
+    std::vector<Course> _courses;
+    std::vector<CourseSection> _course_sections;
+    std::vector<Student> _students;
+    std::vector<Teacher> _teachers;
 
 public:
     University();
 
-    const Course & getCourse(unsigned int id);
-    const CourseSection & getCourseSection(unsigned int id);
-    const Student & getStudent(unsigned int id);
-    const Teacher & getTeacher(unsigned int id);
-
-
+    const std::vector<Course> & courses;
+    const std::vector<CourseSection> & course_sections;
+    const std::vector<Student> & students;
+    const std::vector<Teacher> teachers;
 
     void enrollStudent(unsigned int student_id, unsigned int section_id);
     void assignTeacher(unsigned int teacher_id, unsigned int section_id);
-}
+};
 
 #endif
+
