@@ -12,13 +12,10 @@ friend class University;
 private:
     StudyLevel student_level;
 
-    bool is_teaching_assistant;
-    unsigned int teach_section_id;
-
-    bool is_research_assistant;
-
 public:
-    Student(std::string name, time_t birthdate, Gender gender);
+    Student(std::string name, time_t birthdate, Gender gender,
+            bool is_teaching_assistant=false, unsigned int teaching_section_id=0u,
+            bool is_research_assistant=false);
 
     StudyLevel get_level();
 
