@@ -8,6 +8,7 @@
 #include "CourseSection.hpp"
 #include "Student.hpp"
 #include "Teacher.hpp"
+#include "Department.hpp"
 
 class University {
 private:

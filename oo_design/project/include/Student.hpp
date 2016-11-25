@@ -6,6 +6,8 @@
 #include "Person.hpp"
 #include "Course.hpp"
 
+class University;
+
 class Student : public Person {
 friend class University;
 

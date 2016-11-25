@@ -3,18 +3,20 @@
 
 #include <map>
 
+class University;
+
 class CourseSection {
+    friend class University;
+
 private:
     unsigned int id;
-    unsigned int course_id;
     std::map<unsigned int, float> grades;
 
 public:
-    CourseSection(unsigned int course_id);
+    CourseSection();
 
-    unsigned int get_course() const;
+    unsigned int get_id() const;
     unsigned int get_grade(unsigned int student_id) const;
 };
 
 #endif
-
