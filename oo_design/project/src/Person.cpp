@@ -23,4 +23,3 @@ time_t Person::get_birthdate() const {
 Gender Person::get_gender() const {
     return gender;
 }
-

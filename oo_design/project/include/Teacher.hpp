@@ -3,8 +3,14 @@
 
 #include "Person.hpp"
 
+enum class TeachingRole {LECTURER, ADJUNCT, PROFESSOR};
+
 class Teacher : public Person {
 using Person::Person;
+
+private:
+    TeachingRole role;
+    
 };
 
 #endif

@@ -4,7 +4,7 @@
 #include <string>
 #include <ctime>
 
-#include "util.hpp"
+enum class Gender { MALE, FEMALE, OTHER };
 
 // Abstract class
 class Person {
@@ -14,6 +14,7 @@ protected:
     time_t birthdate;
     Gender gender;
 
+    // declaring constructor as protected makes this class abstract
     Person(std::string name, time_t birthdate, Gender gender);
 
 public:
