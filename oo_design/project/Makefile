@@ -16,12 +16,13 @@ HEADERS := $(patsubst $(SRCDIR)/%, $(INCDIR)/%, $(SOURCES:.$(SRCEXT)=.$(INCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%, $(BUILDDIR)/%, $(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 TARGET := bin/university
 
-
 # Linking
 $(TARGET): $(OBJECTS)
 	@mkdir -p -- $(shell dirname -- $@)
-	@echo " Linking..."
-	$(CXX) -o $@ $^
+	$(CXX) -o $(TARGET) $^
+
+# Compile all sources but don't link
+compile: $(OBJECTS)
 
 # Compilation
 $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT) $(INCDIR)/%.$(INCEXT)
@@ -29,6 +30,7 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT) $(INCDIR)/%.$(INCEXT)
 	$(CXX) $(CXXFLAGS) $(INC) -c -o $@ $<
 
 clean:
-	@echo " Cleaning...";
 	@rm -r $(BUILDDIR) $(TARGET) 2>/dev/null || true
+
+.PHONY: compile clean
 
