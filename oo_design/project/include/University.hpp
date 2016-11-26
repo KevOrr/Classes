@@ -4,6 +4,7 @@
 #include <set>
 #include <utility>
 #include <vector>
+#include <ostream>
 
 #include "CourseSection.hpp"
 #include "Student.hpp"
@@ -11,7 +12,11 @@
 #include "Department.hpp"
 
 class University {
+    friend std::ostream& operator<<(std::ostream&, const University&);
+
 private:
+    std::string name;
+
     // student/class and teacher/class relationships
     std::set<std::pair<unsigned int, unsigned int> > students_in_classes;
     std::set<std::pair<unsigned int, unsigned int> > teachers_in_classes;
@@ -32,7 +37,7 @@ public:
     std::vector<Department>::const_iterator departments_cbegin() const;
     std::vector<Department>::const_iterator departments_cend() const;
 
-    University();
+    University(const std::string&);
 
     // Modify relationships
     bool enroll_student(unsigned int student_id, unsigned int section_id);

@@ -1,8 +1,12 @@
 #include <stdexcept>
+#include <ostream>
 
 #include "CourseSection.hpp"
 
-CourseSection::CourseSection() {}
+CourseSection::CourseSection(const std::string& name, StudyLevel level)
+    : name(name),
+      level(level)
+{}
 
 unsigned int CourseSection::get_id() const {
     return id;
@@ -21,4 +25,8 @@ float CourseSection::set_grade(unsigned int student_id, float new_grade) {
     grades[student_id] = new_grade;
     return old_grade;
 }
+std::ostream& operator<<(std::ostream& os, const CourseSection& section) {
+    os << "Name: " << section.name << std::endl << "ID: " << section.id << std::endl;
 
+    return os;
+}

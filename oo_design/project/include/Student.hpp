@@ -5,13 +5,13 @@
 #include <ostream>
 
 #include "Person.hpp"
-#include "Course.hpp"
+#include "CourseSection.hpp"
 
 class University;
 
 class Student : public Person {
 friend class University;
-friend std::ostream& operator<<(std::ostream&, Student);
+friend std::ostream& operator<<(std::ostream&, const Student&);
 
 private:
     StudyLevel student_level;
@@ -23,6 +23,8 @@ public:
     Student(std::string name, time_t birthdate, Gender gender,
             bool is_teaching_assistant=false, unsigned int teaching_section_id=0u,
             bool is_research_assistant=false);
+
+    std::string get_name() const;
 
     StudyLevel get_level() const;
     StudyLevel set_level(StudyLevel);

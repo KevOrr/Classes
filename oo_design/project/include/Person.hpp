@@ -4,11 +4,14 @@
 #include <string>
 #include <ctime>
 #include <map>
+#include <ostream>
 
 enum class Gender { MALE, FEMALE, OTHER };
 
 // Abstract class
 class Person {
+    friend std::ostream& operator<<(std::ostream&, const Person&);
+
 protected:
     unsigned int id;
     std::string name;
@@ -19,6 +22,7 @@ protected:
     Person(std::string name, time_t birthdate, Gender gender);
 
 public:
+
     unsigned int get_id() const;
     std::string get_name() const;
     time_t get_birthdate() const;
@@ -26,4 +30,3 @@ public:
 };
 
 #endif
-

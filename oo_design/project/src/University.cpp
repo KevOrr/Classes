@@ -1,4 +1,5 @@
 #include <utility>
+#include <ostream>
 
 #include "University.hpp"
 #include "CourseSection.hpp"
@@ -6,7 +7,7 @@
 #include "Teacher.hpp"
 #include "Department.hpp"
 
-University::University() {}
+University::University(const std::string& name) : name(name) {}
 
 std::vector<CourseSection>::const_iterator University::course_sections_cbegin() const {
     return _course_sections.cbegin();
@@ -50,7 +51,7 @@ bool University::remove_student(unsigned int student_id, unsigned int section_id
     auto position = students_in_classes.find(std::pair<unsigned int, unsigned int>(student_id, section_id));
     if (position == students_in_classes.end())
         return false;
-    
+
     students_in_classes.erase(position);
     return true;
 }
@@ -65,8 +66,18 @@ bool University::remove_teacher(unsigned int teacher_id, unsigned int section_id
     auto position = teachers_in_classes.find(std::pair<unsigned int, unsigned int>(teacher_id, section_id));
     if (position == teachers_in_classes.end())
         return false;
-    
+
     teachers_in_classes.erase(position);
     return true;
 }
 
+std::ostream& operator<<(std::ostream& os, const University& university) {
+    os << "Name: " << university.name << std::endl
+       << "Courses: " << university._course_sections.size() << std::endl
+       << "Students: " << university._students.size() << std::endl
+       << "Teachers: " << university._teachers.size() << std::endl
+       << "Departments: " << university._departments.size() << std::endl;
+
+    return os;
+
+}

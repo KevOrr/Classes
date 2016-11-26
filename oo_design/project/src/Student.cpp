@@ -57,23 +57,22 @@ bool Student::is_research_assistant(bool new_value) {
     return old_value;
 }
 
-std::ostream& operator<<(std::ostream& os, Student student) {
-    std::map<Gender, const char*> genders{{Gender::MALE, "male"}, {Gender::FEMALE, "female"},
-                                          {Gender::OTHER, "other"}};
+std::ostream& operator<<(std::ostream& os, const Student& student) {
+    // Print generic Person stuff
+    os << static_cast<const Person&>(student);
+
+    // Print student level
     std::map<StudyLevel, const char*> levels{{StudyLevel::UNDERGRADUATE, "undergrad"},
-                                             {StudyLevel::GRADUATE, "graduate"}};
-    
-    os << "Name: " << student.name << "\nID: " << student.id << std::endl;
-    os << "Birthdate: " << time_to_string("%F", student.birthdate) << std::endl;
-    os << "Gender: " << genders[student.gender] << std::endl;
+        {StudyLevel::GRADUATE, "graduate"}};
     os << "Level: " << levels[student.student_level] << std::endl;
 
+    // TA info
     os << "Teaching assistant: " << (student._is_teaching_assistant ? "true" : "false") << std::endl;
     if (student._is_teaching_assistant)
         os << "Teaching assistant course section id: " << student._teaching_section_id << std::endl;
 
+    // Research info
     os << "Research assistant: " << (student._is_research_assistant ? "true" : "false") << std::endl;
 
     return os;
 }
-
