@@ -23,13 +23,16 @@ public:
             bool is_research_assistant=false);
 
     StudyLevel get_level() const;
-    void set_level(StudyLevel level);
+    StudyLevel set_level(StudyLevel);
 
     bool is_teaching_assistant() const;
-    bool is_teaching_assistant(bool value);
+    bool is_teaching_assistant(bool);
 
     unsigned int get_teaching_section_id() const;
-    unsigned int set_teaching_section_id(unsigned int id);
+    unsigned int set_teaching_section_id(unsigned int);
+
+    bool is_research_assistant() const;
+    bool is_research_assistant(bool);
 
 };
 
