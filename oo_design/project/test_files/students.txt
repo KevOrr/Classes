@@ -1,0 +1,6 @@
+#Name           ID      Birthdate   Gender  Level   Courses     TA      TA course   Research
+Kevin Orr:      1       1997-06-18  male    u       1,2,3       false   0           false
+Joe Blow:       2       2016-01-01  male    u       2,3,4       false   0           false
+Someone Else:   4       1975-02-12  female  g       5,7         true    2           false
+Ahmad Jelodar:  6       1994-04-01  male    g       5,8         true    1           false
+Bill Gates:     7       1985-11-20  male    g       7,8         false   0           true
