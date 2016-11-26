@@ -1,6 +1,8 @@
 #ifndef _OOD_PROJECT_COURSE_H_
 #define _OOD_PROJECT_COURSE_H_
 
+#include <map>
+
 enum class StudyLevel { UNDERGRADUATE, GRADUATE };
 
 class Course {

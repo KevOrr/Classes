@@ -16,7 +16,8 @@ public:
     CourseSection();
 
     unsigned int get_id() const;
-    unsigned int get_grade(unsigned int student_id) const;
+    float get_grade(unsigned int student_id) const;
+    float set_grade(unsigned int student_id, float new_grade);
 };
 
 #endif

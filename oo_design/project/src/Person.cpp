@@ -4,7 +4,7 @@
 #include "Person.hpp"
 
 Person::Person(std::string name, time_t birthdate, Gender gender)
-    : name(name), birthdate(birthdate), gender(gender)
+    : id(0), name(name), birthdate(birthdate), gender(gender)
     {}
 
 unsigned int Person::get_id() const { return id; }

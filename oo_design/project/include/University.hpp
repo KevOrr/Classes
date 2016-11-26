@@ -13,8 +13,8 @@
 class University {
 private:
     // student/class and teacher/class relationships
-    std::set<std::pair<unsigned int, unsigned int> > studentsInClasses;
-    std::set<std::pair<unsigned int, unsigned int> > teachersInClasses;
+    std::set<std::pair<unsigned int, unsigned int> > students_in_classes;
+    std::set<std::pair<unsigned int, unsigned int> > teachers_in_classes;
 
     std::vector<CourseSection> _course_sections;
     std::vector<Student> _students;
@@ -35,10 +35,10 @@ public:
     University();
 
     // Modify relationships
-    void enrollStudent(unsigned int student_id, unsigned int section_id);
-    void removeStudent(unsigned int student_id, unsigned int section_id);
-    void assignTeacher(unsigned int teacher_id, unsigned int section_id);
-    void removeTeacher(unsigned int teacher_id, unsigned int section_id);
+    bool enroll_student(unsigned int student_id, unsigned int section_id);
+    bool remove_student(unsigned int student_id, unsigned int section_id);
+    bool assign_teacher(unsigned int teacher_id, unsigned int section_id);
+    bool remove_teacher(unsigned int teacher_id, unsigned int section_id);
 
     // Convenience for Department::add_person and Department::remove_person
     void add_to_department(unsigned int person_id, unsigned int department_id);

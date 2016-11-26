@@ -2,6 +2,7 @@
 #define _OOD_PROJECT_STUDENT_H_
 
 #include <ctime>
+#include <ostream>
 
 #include "Person.hpp"
 #include "Course.hpp"
@@ -10,6 +11,7 @@ class University;
 
 class Student : public Person {
 friend class University;
+friend std::ostream& operator<<(std::ostream&, Student);
 
 private:
     StudyLevel student_level;

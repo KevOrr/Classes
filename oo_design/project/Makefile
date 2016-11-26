@@ -11,7 +11,7 @@ CXX := g++
 CXXFLAGS := -std=c++11 -Wall
 INC := -I $(INCDIR)
 
-SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+SOURCES := $(shell find '$(SRCDIR)' -type f -name *.$(SRCEXT))
 HEADERS := $(patsubst $(SRCDIR)/%, $(INCDIR)/%, $(SOURCES:.$(SRCEXT)=.$(INCEXT)))
 OBJECTS := $(patsubst $(SRCDIR)/%, $(BUILDDIR)/%, $(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 TARGET := bin/university
@@ -24,8 +24,13 @@ $(TARGET): $(OBJECTS)
 # Compile all sources but don't link
 compile: $(OBJECTS)
 
-# Compilation
+# Compilation if header exists
 $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT) $(INCDIR)/%.$(INCEXT)
+	@mkdir -p $(BUILDDIR)
+	$(CXX) $(CXXFLAGS) $(INC) -c -o $@ $<
+
+# Compilation if header doesn't exist
+$(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)
 	$(CXX) $(CXXFLAGS) $(INC) -c -o $@ $<
 
