@@ -1,7 +1,7 @@
-#Name               ID      Birthdate   Gender  Role        Courses
-Judy Genshaft:      3       1948-01-01  female  professor   4,6
-José Galvis:        5       2000-01-01  male    adjunct     1
-Ken Christensen:    8       1960-05-27  male    professor   5,7
-Henrick Jeanty:     9       1965-04-13  male    teacher     8
-Yan Zhang:          10      1968-03-18  female  teacher     2
-Charles Hemphill:   11      1966-10-12  male    professor   3
+#Name               ID      Birthdate   Gender  Department  Role        Courses
+Judy Genshaft:      3       1948-01-01  female  3           p           4
+José Galvis:        5       2000-01-01  male    1           a           1
+Ken Christensen:    8       1960-05-27  male    1           p           5,7
+Henrick Jeanty:     9       1965-04-13  male    1           l           8
+Yan Zhang:          10      1968-03-18  female  1           l           2
+Charles Hemphill:   11      1966-10-12  male    2           p           3

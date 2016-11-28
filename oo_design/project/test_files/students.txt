@@ -1,6 +1,6 @@
-#Name           ID      Birthdate   Gender  Level   Courses     TA      TA course   Research
-Kevin Orr:      1       1997-06-18  male    u       1,2,3       false   0           false
-Joe Blow:       2       2016-01-01  male    u       2,3,4       false   0           false
-Someone Else:   4       1975-02-12  female  g       5,7         true    2           false
-Ahmad Jelodar:  6       1994-04-01  male    g       5,8         true    1           false
-Bill Gates:     7       1985-11-20  male    g       7,8         false   0           true
+#Name           ID      Birthdate   Gender  Level   Department  Courses     TA      TA course   Research
+Kevin Orr:      1       1997-06-18  m       u       1           1,2,3       f       0           f
+Joe Blow:       2       2016-01-01  m       u       2           3,4         f       0           f
+Someone Else:   4       1975-02-12  f       g       1           5,7         t       2           f
+Ahmad Jelodar:  6       1994-04-01  m       g       1           5,8         t       1           f
+Bill Gates:     7       1985-11-20  m       g       1           7,8         f       0           t
