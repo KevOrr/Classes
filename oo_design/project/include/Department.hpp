@@ -3,11 +3,13 @@
 
 #include <string>
 #include <set>
+#include <ostream>
 
 class University;
 
 class Department {
     friend class University;
+    friend std::ostream& operator<<(std::ostream&, const Department&);
 
 private:
     unsigned int id;
@@ -19,7 +21,11 @@ private:
 public:
     Department(std::string name);
 
+    unsigned int get_id() const;
     std::string get_name() const;
+
+    bool add_course(unsigned int course_id);
+    bool remove_course(unsigned int course_id);
 
     bool add_student(unsigned int student_id);
     bool remove_student(unsigned int student_id);

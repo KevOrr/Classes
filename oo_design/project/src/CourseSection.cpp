@@ -25,6 +25,7 @@ float CourseSection::set_grade(unsigned int student_id, float new_grade) {
     grades[student_id] = new_grade;
     return old_grade;
 }
+
 std::ostream& operator<<(std::ostream& os, const CourseSection& section) {
     os << "Name: " << section.name << std::endl << "ID: " << section.id << std::endl;
 

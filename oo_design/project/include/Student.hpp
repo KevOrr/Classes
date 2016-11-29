@@ -24,8 +24,6 @@ public:
             bool is_teaching_assistant=false, unsigned int teaching_section_id=0u,
             bool is_research_assistant=false);
 
-    std::string get_name() const;
-
     StudyLevel get_level() const;
     StudyLevel set_level(StudyLevel);
 

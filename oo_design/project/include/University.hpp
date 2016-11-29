@@ -5,6 +5,7 @@
 #include <utility>
 #include <vector>
 #include <ostream>
+#include <fstream>
 
 #include "CourseSection.hpp"
 #include "Student.hpp"
@@ -26,7 +27,23 @@ private:
     std::vector<Teacher> _teachers;
     std::vector<Department> _departments;
 
+    std::string& ltrim(std::string&);
+    bool read_departments(std::ifstream&);
+    bool read_courses(std::ifstream&);
+    bool read_students(std::ifstream&);
+    bool read_teachers(std::ifstream&);
+    bool read_grades(std::ifstream&);
+
 public:
+    University(const std::string&);
+
+    bool read_in(std::ifstream&, std::ifstream&, std::ifstream&, std::ifstream&, std::ifstream&);
+
+    const Student* get_student(unsigned int id) const;
+    const Teacher* get_teacher(unsigned int id) const;
+    const CourseSection* get_course_section(unsigned int id) const;
+    const Department* get_department(unsigned int id) const;
+
     // const iterators for each internal container
     std::vector<CourseSection>::const_iterator course_sections_cbegin() const;
     std::vector<CourseSection>::const_iterator course_sections_cend() const;
@@ -36,8 +53,10 @@ public:
     std::vector<Teacher>::const_iterator teachers_cend() const;
     std::vector<Department>::const_iterator departments_cbegin() const;
     std::vector<Department>::const_iterator departments_cend() const;
-
-    University(const std::string&);
+    std::set<std::pair<unsigned int, unsigned int> >::const_iterator students_in_classes_cbegin() const;
+    std::set<std::pair<unsigned int, unsigned int> >::const_iterator students_in_classes_cend() const;
+    std::set<std::pair<unsigned int, unsigned int> >::const_iterator teachers_in_classes_cbegin() const;
+    std::set<std::pair<unsigned int, unsigned int> >::const_iterator teachers_in_classes_cend() const;
 
     // Modify relationships
     bool enroll_student(unsigned int student_id, unsigned int section_id);

@@ -1,13 +1,34 @@
 #include "Department.hpp"
 
 #include <string>
+#include <ostream>
 
 Department::Department(std::string name)
     : name(name)
 {}
 
+unsigned int Department::get_id() const {
+    return id;
+}
+
 std::string Department::get_name() const {
     return name;
+}
+
+// Returns true if course didn't exist before, false if it did
+bool Department::add_course(unsigned int course_id) {
+    auto result = _course_section_ids.insert(course_id);
+    return result.second;
+}
+
+// Returns true if course was successfully removed, flase if it didn't exist
+bool Department::remove_course(unsigned int course_id) {
+    auto position = _course_section_ids.find(course_id);
+    if (position == _course_section_ids.end())
+        return false;
+
+    _course_section_ids.erase(position);
+    return true;
 }
 
 // Returns true if student didn't exist before, false if it did
@@ -42,3 +63,12 @@ bool Department::remove_teacher(unsigned int teacher_id) {
     return true;
 }
 
+std::ostream& operator<<(std::ostream& os, const Department& department) {
+    os << "Name: " << department.name << std::endl
+       << "ID: " << department.id << std::endl
+       << "Courses: " << department._course_section_ids.size() << std::endl
+       << "Students: " << department._student_ids.size() << std::endl
+       << "Teachers: " << department._teacher_ids.size() << std::endl;
+
+    return os;
+}
