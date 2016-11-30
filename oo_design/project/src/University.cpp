@@ -19,14 +19,6 @@
 
 University::University(const std::string& name) : name(name) {}
 
-std::string& University::ltrim(std::string& str) {
-    // http://stackoverflow.com/a/217605/1529586
-    // left trim line
-    str.erase(str.begin(), std::find_if(str.begin(), str.end(),
-                                      std::not1(std::ptr_fun<int, int>(std::isspace))));
-    return str;
-}
-
 bool University::read_in(std::ifstream& departments_file, std::ifstream& courses_file,
                          std::ifstream& students_file, std::ifstream& teachers_file,
                          std::ifstream& grades_file) {

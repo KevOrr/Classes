@@ -27,7 +27,6 @@ private:
     std::vector<Teacher> _teachers;
     std::vector<Department> _departments;
 
-    std::string& ltrim(std::string&);
     bool read_departments(std::ifstream&);
     bool read_courses(std::ifstream&);
     bool read_students(std::ifstream&);
