@@ -7,13 +7,12 @@ Department::Department(std::string name)
     : name(name)
 {}
 
-unsigned int Department::get_id() const {
-    return id;
-}
-
-std::string Department::get_name() const {
-    return name;
-}
+// Getters
+unsigned int Department::get_id() const { return id; }
+std::string Department::get_name() const { return name; }
+const std::set<unsigned int>& Department::course_section_ids() const { return _course_section_ids; }
+const std::set<unsigned int>& Department::student_ids() const { return _student_ids; }
+const std::set<unsigned int>& Department::teacher_ids() const { return _teacher_ids; }
 
 // Returns true if course didn't exist before, false if it did
 bool Department::add_course(unsigned int course_id) {

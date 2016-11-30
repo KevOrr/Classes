@@ -23,6 +23,9 @@ public:
 
     unsigned int get_id() const;
     std::string get_name() const;
+    const std::set<unsigned int>& course_section_ids() const;
+    const std::set<unsigned int>& student_ids() const;
+    const std::set<unsigned int>& teacher_ids() const;
 
     bool add_course(unsigned int course_id);
     bool remove_course(unsigned int course_id);

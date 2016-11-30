@@ -57,11 +57,6 @@ public:
     bool remove_student(unsigned int student_id, unsigned int section_id);
     bool assign_teacher(unsigned int teacher_id, unsigned int section_id);
     bool remove_teacher(unsigned int teacher_id, unsigned int section_id);
-
-    // Convenience for Department::add_person and Department::remove_person
-    void add_to_department(unsigned int person_id, unsigned int department_id);
-    void remove_from_department(unsigned int person_id, unsigned int department_id);
 };
 
 #endif
-

@@ -168,6 +168,26 @@ int main() {
 
             break;
         }
+
+        // Show students in department
+        case 9:
+        {
+            std::cout << "Enter department ID: ";
+            unsigned int department_id;
+            std::cin >> department_id;
+            const Department* department = university.get_department(department_id);
+            if (!department) {
+                std::cerr << department_id << " is not a valid department";
+                continue;
+            }
+
+            for (auto it=department->student_ids().begin(), end=department->student_ids().end();
+                 it != end; ++it) {
+                const Student* student = university.get_student(*it);
+                if (!student) continue;
+                std::cout << "ID: " << student->get_id() << ", Name" << student->get_name() << std::endl;
+            }
+        }
         }
     }
 }
