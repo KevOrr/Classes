@@ -46,26 +46,17 @@ bool University::read_departments(std::ifstream& file) {
     std::string line;
 
     while (std::getline(file, line)) {
-        std::string name;
-        unsigned int id;
-
-        // Skip initial whitespace
-        ltrim(line);
-
-        // Ignore lines starting with '#'
-        if (line[0] == '#')
-            continue;
+        std::istringstream ssline(line);
+        ssline >> std::ws;
+        if (ssline.peek() == '#') continue;
 
         // Get name
-        auto name_end = line.begin() + line.find(':');
-        name.assign(line.begin(), name_end); // store until ':' in `name`
-        line.erase(line.begin(), name_end+1);
-        ltrim(line);
-
-        std::istringstream rest(line);
+        std::string name;
+        std::getline(ssline, name, ':');
 
         // Get ID
-        rest >> id;
+        unsigned int id;
+        ssline >> id;
 
         // Add department
         Department department(name);
@@ -79,36 +70,29 @@ bool University::read_departments(std::ifstream& file) {
 bool University::read_courses(std::ifstream& file) {
     std::string line;
     while (std::getline(file, line)) {
-        std::string name;
-        unsigned int course_id;
-        StudyLevel level;
-        unsigned int department_id;
-
-        ltrim(line);
-
-        if (line[0] == '#')
-            continue;
+        std::istringstream ssline(line);
+        ssline >> std::ws;
+        if (ssline.peek() == '#') continue;
 
         // Get name
-        auto name_end = line.begin() + line.find(':');
-        name.assign(line.begin(), name_end);
-        line.erase(line.begin(), name_end+1);
-
-        std::istringstream rest(line);
+        std::string name;
+        std::getline(ssline, name, ':');
 
         // Get id
-        rest >> std::ws >> course_id;
+        unsigned int course_id;
+        ssline >> std::ws >> course_id;
 
         // Get level
         char clevel;
-        rest >> std::ws >> clevel;
+        ssline >> std::ws >> clevel;
         clevel = std::tolower(clevel);
         if (clevel != 'u' && clevel != 'g')
             continue;
-        level = clevel == 'u' ? StudyLevel::UNDERGRADUATE : StudyLevel::GRADUATE;
+        StudyLevel level = clevel == 'u' ? StudyLevel::UNDERGRADUATE : StudyLevel::GRADUATE;
 
         // Get department id
-        rest >> std::ws >> department_id;
+        unsigned int department_id;
+        ssline >> std::ws >> department_id;
 
         // Add course
         CourseSection section(name, level);
@@ -128,27 +112,23 @@ bool University::read_courses(std::ifstream& file) {
 bool University::read_students(std::ifstream& file) {
     std::string line;
     while (std::getline(file, line)) {
-        ltrim(line);
-        if (line[0] == '#')
-            continue;
+        std::istringstream ssline(line);
+        ssline >> std::ws;
+        if (ssline.peek() == '#') continue;
 
         // Get name
         std::string name;
-        auto name_end = line.begin() + line.find(':');
-        name.assign(line.begin(), name_end);
-        line.erase(line.begin(), name_end+1);
-
-        std::istringstream rest(line);
+        std::getline(ssline, name, ':');
 
         // Get id
         unsigned int student_id;
-        rest >> std::ws >> student_id;
+        ssline >> std::ws >> student_id;
 
         // Get birthdate
         struct tm birthdate;
-        rest >> std::ws;
+        ssline >> std::ws;
         std::string bd;
-        std::getline(rest, bd, ' ');
+        std::getline(ssline, bd, ' ');
         strptime(bd.c_str(), "%Y-%m-%d", &birthdate);
 
         // Get gender
@@ -157,7 +137,7 @@ bool University::read_students(std::ifstream& file) {
         std::map<char, Gender> genders{
             {'m', Gender::MALE}, {'f', Gender::FEMALE}, {'o', Gender::OTHER}
         };
-        rest >> std::ws >> cgender;
+        ssline >> std::ws >> cgender;
         cgender = std::tolower(cgender);
         if (!genders.count(cgender))
             continue;
@@ -166,7 +146,7 @@ bool University::read_students(std::ifstream& file) {
         // Get level
         StudyLevel level;
         char clevel;
-        rest >> std::ws >> clevel;
+        ssline >> std::ws >> clevel;
         clevel = std::tolower(clevel);
         if (clevel != 'u' && clevel != 'g')
             continue;
@@ -174,35 +154,35 @@ bool University::read_students(std::ifstream& file) {
 
         // Get department
         unsigned int department_id;
-        rest >> std::ws >> department_id;
+        ssline >> std::ws >> department_id;
 
         // Get courses
         std::set<unsigned int> course_ids;
         unsigned int next_course;
-        rest >> std::ws;
-        while (rest >> next_course) {
+        ssline >> std::ws;
+        while (ssline >> next_course) {
             course_ids.insert(next_course);
-            if (rest.peek() == ',')
-                rest.ignore();
-            if (rest.peek() == ' ')
+            if (ssline.peek() == ',')
+                ssline.ignore();
+            if (ssline.peek() == ' ')
                 break;
         }
 
         // Get TA/research info
         bool is_ta;
         char cis_ta;
-        rest >> std::ws >> cis_ta;
+        ssline >> std::ws >> cis_ta;
         cis_ta = tolower(cis_ta);
         if (cis_ta != 't' && cis_ta != 'f')
             continue;
         is_ta = cis_ta == 't';
 
         unsigned int ta_course;
-        rest >> std::ws >> ta_course;
+        ssline >> std::ws >> ta_course;
 
         bool is_research;
         char cis_research;
-        rest >> std::ws >> cis_research;
+        ssline >> std::ws >> cis_research;
         if (cis_research != 't' && cis_research != 'f')
             continue;
         is_research = cis_research == 't';
@@ -229,27 +209,23 @@ bool University::read_students(std::ifstream& file) {
 bool University::read_teachers(std::ifstream& file) {
     std::string line;
     while (std::getline(file, line)) {
-        ltrim(line);
-        if (line[0] == '#')
-            continue;
+        std::istringstream ssline(line);
+        ssline >> std::ws;
+        if (ssline.peek() == '#') continue;
 
         // Get name
         std::string name;
-        auto name_end = line.begin() + line.find(':');
-        name.assign(line.begin(), name_end);
-        line.erase(line.begin(), name_end+1);
-
-        std::istringstream rest(line);
+        std::getline(ssline, name, ':');
 
         // Get id
         unsigned int teacher_id;
-        rest >> std::ws >> teacher_id;
+        ssline >> std::ws >> teacher_id;
 
         // Get birthdate
         struct tm birthdate;
-        rest >> std::ws;
+        ssline >> std::ws;
         std::string bd;
-        std::getline(rest, bd, ' ');
+        std::getline(ssline, bd, ' ');
         strptime(bd.c_str(), "%Y-%m-%d", &birthdate);
 
         // Get gender
@@ -257,7 +233,7 @@ bool University::read_teachers(std::ifstream& file) {
             {'m', Gender::MALE}, {'f', Gender::FEMALE}, {'o', Gender::OTHER}
         };
         char cgender;
-        rest >> std::ws >> cgender;
+        ssline >> std::ws >> cgender;
         cgender = std::tolower(cgender);
         if (!genders.count(cgender))
             continue;
@@ -265,7 +241,7 @@ bool University::read_teachers(std::ifstream& file) {
 
         // Get department
         unsigned int department_id;
-        rest >> std::ws >> department_id;
+        ssline >> std::ws >> department_id;
 
         // Get role
         char crole;
@@ -274,22 +250,21 @@ bool University::read_teachers(std::ifstream& file) {
             {'a', TeachingRole::PROFESSOR},
             {'t', TeachingRole::LECTURER}
         };
-        rest >> std::ws >> crole;
+        ssline >> std::ws >> crole;
         crole = std::tolower(crole);
         if (!roles.count(crole))
             continue;
-        std::cout << crole;
         TeachingRole role = roles[crole];
 
         // Get courses
         std::set<unsigned int> course_ids;
         unsigned int next_course;
-        rest >> std::ws;
-        while (rest >> next_course) {
+        ssline >> std::ws;
+        while (ssline >> next_course) {
             course_ids.insert(next_course);
-            if (rest.peek() == ',')
-                rest.ignore();
-            if (rest.peek() == ' ')
+            if (ssline.peek() == ',')
+                ssline.ignore();
+            if (ssline.peek() == ' ')
                 break;
         }
 
