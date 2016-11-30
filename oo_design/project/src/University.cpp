@@ -197,10 +197,12 @@ bool University::read_students(std::ifstream& file) {
         for (auto it=course_ids.begin(), end=course_ids.end(); it != end; ++it)
             students_in_classes.insert(std::pair<unsigned int, unsigned int>(student_id, *it));
 
-        // Add student to its department
-        for (auto it=_departments.begin(), end=_departments.end(); it != end; ++it)
-            if (it->get_id() == department_id)
-                it->add_student(student_id);
+        Department* department = get_department(department_id);
+        if (!department) {
+            std::cerr << "Student's department " << department_id << " does not exist" << std::endl;
+            continue;
+        }
+        department->add_student(student_id);
     }
 
     return file.eof();
@@ -279,9 +281,12 @@ bool University::read_teachers(std::ifstream& file) {
             teachers_in_classes.insert(std::pair<unsigned int, unsigned int>(teacher_id, *it));
 
         // Add teacher to its department
-        for (auto it=_departments.begin(), end=_departments.end(); it != end; ++it)
-            if (it->get_id() == department_id)
-                it->add_teacher(teacher_id);
+        Department* department = get_department(department_id);
+        if (!department) {
+            std::cerr << "Teacher's department " << department_id << " does not exist" << std::endl;
+            continue;
+        }
+        department->add_teacher(teacher_id);
     }
 
     return file.eof();
@@ -339,46 +344,46 @@ bool University::remove_teacher(unsigned int teacher_id, unsigned int section_id
     return true;
 }
 
-const Student* University::get_student(unsigned int id) const {
-    auto pos = std::find_if(_students.begin(), _students.end(), [id](const Student& it){
+Student* University::get_student(unsigned int id) const {
+    auto pos = std::find_if(_students.begin(), _students.end(), [id](Student it){
             return it.id == id;
         });
 
     if (pos != _students.end())
-        return &*pos;
+        return const_cast<Student*>(&*pos);
     else
         return NULL;
 }
 
-const Teacher* University::get_teacher(unsigned int id) const {
+Teacher* University::get_teacher(unsigned int id) const {
     auto pos = std::find_if(_teachers.begin(), _teachers.end(), [id](const Teacher& it){
             return it.id == id;
         });
 
     if (pos != _teachers.end())
-        return &*pos;
+        return const_cast<Teacher*>(&*pos);
     else
         return NULL;
 }
 
-const CourseSection* University::get_course_section(unsigned int id) const {
+CourseSection* University::get_course_section(unsigned int id) const {
     auto pos = std::find_if(_course_sections.begin(), _course_sections.end(), [id](const CourseSection& it){
             return it.id == id;
         });
 
     if (pos != _course_sections.end())
-        return &*pos;
+        return const_cast<CourseSection*>(&*pos);
     else
         return NULL;
 }
 
-const Department* University::get_department(unsigned int id) const {
+Department* University::get_department(unsigned int id) const {
     auto pos = std::find_if(_departments.begin(), _departments.end(), [id](const Department& it){
             return it.id == id;
         });
 
     if (pos != _departments.end())
-        return &*pos;
+        return const_cast<Department*>(&*pos);
     else
         return NULL;
 }

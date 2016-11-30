@@ -39,10 +39,10 @@ public:
 
     bool read_in(std::ifstream&, std::ifstream&, std::ifstream&, std::ifstream&, std::ifstream&);
 
-    const Student* get_student(unsigned int id) const;
-    const Teacher* get_teacher(unsigned int id) const;
-    const CourseSection* get_course_section(unsigned int id) const;
-    const Department* get_department(unsigned int id) const;
+    Student* get_student(unsigned int id) const;
+    Teacher* get_teacher(unsigned int id) const;
+    CourseSection* get_course_section(unsigned int id) const;
+    Department* get_department(unsigned int id) const;
 
     // const references for each internal container
     const std::vector<CourseSection>& course_sections() const;
