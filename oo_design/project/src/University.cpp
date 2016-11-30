@@ -208,7 +208,7 @@ bool University::read_students(std::ifstream& file) {
         is_research = cis_research == 't';
 
         // Add student
-        Student student(name, timegm(&birthdate), gender, is_ta, ta_course, is_research);
+        Student student(name, birthdate, gender, is_ta, ta_course, is_research);
         student.id = student_id;
         student.set_level(level);
         _students.push_back(student);
@@ -294,7 +294,7 @@ bool University::read_teachers(std::ifstream& file) {
         }
 
         // Add teacher
-        Teacher teacher(name, timegm(&birthdate), gender);
+        Teacher teacher(name, birthdate, gender);
         teacher.id = teacher_id;
         teacher.set_role(role);
         _teachers.push_back(teacher);

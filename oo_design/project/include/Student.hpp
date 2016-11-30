@@ -20,7 +20,7 @@ private:
     bool _is_research_assistant;
 
 public:
-    Student(std::string name, time_t birthdate, Gender gender,
+    Student(std::string name, struct tm birthdate, Gender gender,
             bool is_teaching_assistant=false, unsigned int teaching_section_id=0u,
             bool is_research_assistant=false);
 

@@ -15,17 +15,17 @@ class Person {
 protected:
     unsigned int id;
     std::string name;
-    time_t birthdate;
+    struct tm birthdate;
     Gender gender;
 
     // declaring constructor as protected makes this class abstract
-    Person(std::string name, time_t birthdate, Gender gender);
+    Person(std::string name, struct tm birthdate, Gender gender);
 
 public:
 
     unsigned int get_id() const;
     std::string get_name() const;
-    time_t get_birthdate() const;
+    struct tm get_birthdate() const;
     Gender get_gender() const;
 };
 

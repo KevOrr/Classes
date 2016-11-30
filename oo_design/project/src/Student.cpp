@@ -7,7 +7,7 @@
 
 extern std::string time_to_string(std::string, time_t);
 
-Student::Student(std::string name, time_t birthdate, Gender gender,
+Student::Student(std::string name, struct tm birthdate, Gender gender,
                  bool is_teaching_assistant, unsigned int teaching_section_id,
                  bool is_research_assistant)
     : Person(name, birthdate, gender),
