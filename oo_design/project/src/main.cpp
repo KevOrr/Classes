@@ -220,8 +220,61 @@ int main() {
                  it != end; ++it) {
                 const Student* student = university.get_student(*it);
                 if (!student) continue;
-                std::cout << "ID: " << student->get_id() << ", Name" << student->get_name() << std::endl;
+                std::cout << "ID: " << student->get_id() << ", Name: " << student->get_name()
+                          << std::endl;
             }
+
+            break;
+        }
+
+        // Show teachers in department
+        case 10:
+        {
+            std::cout << "Enter department ID: ";
+            unsigned int department_id;
+            std::cin >> department_id;
+            if (cin_reset())
+                continue;
+            const Department* department = university.get_department(department_id);
+            if (!department) {
+                std::cerr << department_id << " is not a valid department";
+                continue;
+            }
+
+            for (auto it=department->teacher_ids().begin(), end=department->teacher_ids().end();
+                 it != end; ++it) {
+                const Teacher* teacher = university.get_teacher(*it);
+                if (!teacher) continue;
+                std::cout << "ID: " << teacher->get_id() << ", Name: " << teacher->get_name()
+                          << std::endl;
+            }
+
+            break;
+        }
+
+        // Show courses in department
+        case 11:
+        {
+            std::cout << "Enter department ID: ";
+            unsigned int department_id;
+            std::cin >> department_id;
+            if (cin_reset())
+                continue;
+            const Department* department = university.get_department(department_id);
+            if (!department) {
+                std::cerr << department_id << " is not a valid department";
+                continue;
+            }
+
+            for (auto it=department->course_section_ids().begin(),
+                     end=department->course_section_ids().end(); it != end; ++it) {
+                const CourseSection* section = university.get_course_section(*it);
+                if (!section) continue;
+                std::cout << "ID: " << section->get_id() << ", Name: " << section->get_name()
+                          << std::endl;
+            }
+
+            break;
         }
         }
     }
