@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <ios>
+#include <limits>
 
 #include "University.hpp"
 #include "Student.hpp"
@@ -13,7 +14,7 @@ const char * MENU =
     "3)  Show departments\n"
     "4)  Show courses\n"
     "5)  Show students enrolled in class\n"
-    "6)  Show class student is enrolled in\n"
+    "6)  Show classes student is enrolled in\n"
     "7)  Show teachers assigned to class\n"
     "8)  Show classes assigned to teacher\n"
     "9)  Show students in department\n"
@@ -21,6 +22,15 @@ const char * MENU =
     "11) Show courses in department\n"
     "0)  Exit\n"
     "> ";
+
+bool cin_reset() {
+    if (std::cin.fail()) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return true;
+    }
+    return false;
+}
 
 int main() {
     University university("USF");
@@ -39,9 +49,8 @@ int main() {
         std::cout << MENU;
         int choice;
         std::cin >> choice;
-        if (std::cin.fail()) {
-            std::cin.clear();
-            std::cout << "Please enter one of the numbers shown on the menu\n";
+        if (cin_reset()) {
+            std::cerr << "Please enter one of the numbers shown on the menu\n";
             continue;
         }
 
@@ -95,6 +104,12 @@ int main() {
             std::cout << "Enter course ID: ";
             unsigned int course_id;
             std::cin >> course_id;
+            if (cin_reset())
+                continue;
+            if (!university.get_course_section(course_id)) {
+                std::cerr << course_id << " is not a valid course" << std::endl;
+                continue;
+            }
 
             for (auto it=university.students_and_classes().cbegin(),
                      end=university.students_and_classes().cend(); it != end; ++it) {
@@ -115,6 +130,12 @@ int main() {
             std::cout << "Enter student ID: ";
             unsigned int student_id;
             std::cin >> student_id;
+            if (cin_reset())
+                continue;
+            if (!university.get_student(student_id)) {
+                std::cerr << student_id << " is not a valid student" << std::endl;
+                continue;
+            }
 
             for (auto it=university.students_and_classes().cbegin(),
                      end=university.students_and_classes().cend(); it != end; ++it) {
@@ -135,6 +156,12 @@ int main() {
             std::cout << "Enter course ID: ";
             unsigned int course_id;
             std::cin >> course_id;
+            if (cin_reset())
+                continue;
+            if (!university.get_course_section(course_id)) {
+                std::cerr << course_id << " is not a valid course" << std::endl;
+                continue;
+            }
 
             for (auto it=university.teachers_and_classes().cbegin(),
                      end=university.teachers_and_classes().cend(); it != end; ++it) {
@@ -152,13 +179,19 @@ int main() {
         // Show classes teacher is in
         case 8:
         {
-            std::cout << "Enter student ID: ";
-            unsigned int student_id;
-            std::cin >> student_id;
+            std::cout << "Enter teacher ID: ";
+            unsigned int teacher_id;
+            std::cin >> teacher_id;
+            if (cin_reset())
+                continue;
+            if (!university.get_teacher(teacher_id)) {
+                std::cerr << teacher_id << " is not a valid teacher" << std::endl;
+                continue;
+            }
 
-            for (auto it=university.students_and_classes().cbegin(),
-                     end=university.students_and_classes().cend(); it != end; ++it) {
-                if (it->first == student_id) {
+            for (auto it=university.teachers_and_classes().cbegin(),
+                     end=university.teachers_and_classes().cend(); it != end; ++it) {
+                if (it->first == teacher_id) {
                     const CourseSection* section = university.get_course_section(it->second);
                     if (!section) continue;
                     std::cout << "ID: " << section->get_id() << ", Name: " << section->get_name()
@@ -175,6 +208,8 @@ int main() {
             std::cout << "Enter department ID: ";
             unsigned int department_id;
             std::cin >> department_id;
+            if (cin_reset())
+                continue;
             const Department* department = university.get_department(department_id);
             if (!department) {
                 std::cerr << department_id << " is not a valid department";

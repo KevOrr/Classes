@@ -248,7 +248,7 @@ bool University::read_teachers(std::ifstream& file) {
         std::map<char, TeachingRole> roles{
             {'p', TeachingRole::PROFESSOR},
             {'a', TeachingRole::PROFESSOR},
-            {'t', TeachingRole::LECTURER}
+            {'l', TeachingRole::LECTURER}
         };
         ssline >> std::ws >> crole;
         crole = std::tolower(crole);
