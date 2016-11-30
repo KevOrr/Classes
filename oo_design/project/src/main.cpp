@@ -51,49 +51,123 @@ int main() {
 
         // Show students
         case 1:
+        {
             std::cout << "STUDENTS" << std::endl;
-            for (auto it=university.students_cbegin(), end=university.students_cend(); it != end; ++it)
+            for (auto it=university.students().cbegin(), end=university.students().cend();
+                 it != end; ++it)
                 std::cout << *it << std::endl;
             break;
+        }
 
         // Show teachers
         case 2:
+        {
             std::cout << "TEACHERS" << std::endl;
-            for (auto it=university.teachers_cbegin(), end=university.teachers_cend(); it != end; ++it)
+            for (auto it=university.teachers().cbegin(), end=university.teachers().cend();
+                 it != end; ++it)
                 std::cout << *it << std::endl;
             break;
+        }
 
         // Show departments
         case 3:
+        {
             std::cout << "DEPARTMENTS" << std::endl;
-            for (auto it=university.departments_cbegin(), end=university.departments_cend();
+            for (auto it=university.departments().cbegin(), end=university.departments().cend();
                  it != end; ++it)
                 std::cout << *it << std::endl;
             break;
+        }
 
         // Show courses
         case 4:
+        {
             std::cout << "COURSES" << std::endl;
-            for (auto it=university.course_sections_cbegin(), end=university.course_sections_cend();
+            for (auto it=university.course_sections().cbegin(), end=university.course_sections().cend();
                  it != end; ++it)
                 std::cout << *it << std::endl;
             break;
+        }
 
         // Show students in class
         case 5:
+        {
             std::cout << "Enter course ID: ";
             unsigned int course_id;
             std::cin >> course_id;
 
-            for (auto it=university.students_in_classes_cbegin(),
-                     end=university.students_in_classes_cend(); it != end; ++it) {
+            for (auto it=university.students_and_classes().cbegin(),
+                     end=university.students_and_classes().cend(); it != end; ++it) {
                 if (it->second == course_id) {
                     const Student* student = university.get_student(it->first);
                     if (!student) continue;
-                    std::cout << "ID: " << student->get_id() << ", Name: " << student->get_name();
+                    std::cout << "ID: " << student->get_id() << ", Name: " << student->get_name()
+                              << std::endl;
                 }
             }
+
             break;
+        }
+
+        // Show classes student is in
+        case 6:
+        {
+            std::cout << "Enter student ID: ";
+            unsigned int student_id;
+            std::cin >> student_id;
+
+            for (auto it=university.students_and_classes().cbegin(),
+                     end=university.students_and_classes().cend(); it != end; ++it) {
+                if (it->first == student_id) {
+                    const CourseSection* section = university.get_course_section(it->second);
+                    if (!section) continue;
+                    std::cout << "ID: " << section->get_id() << ", Name: " << section->get_name()
+                              << std::endl;
+                }
+            }
+
+            break;
+        }
+
+        // Show teachers in class
+        case 7:
+        {
+            std::cout << "Enter course ID: ";
+            unsigned int course_id;
+            std::cin >> course_id;
+
+            for (auto it=university.teachers_and_classes().cbegin(),
+                     end=university.teachers_and_classes().cend(); it != end; ++it) {
+                if (it->second == course_id) {
+                    const Teacher* teacher = university.get_teacher(it->first);
+                    if (!teacher) continue;
+                    std::cout << "ID: " << teacher->get_id() << ", Name: " << teacher->get_name()
+                              << std::endl;
+                }
+            }
+
+            break;
+        }
+
+        // Show classes teacher is in
+        case 8:
+        {
+            std::cout << "Enter student ID: ";
+            unsigned int student_id;
+            std::cin >> student_id;
+
+            for (auto it=university.students_and_classes().cbegin(),
+                     end=university.students_and_classes().cend(); it != end; ++it) {
+                if (it->first == student_id) {
+                    const CourseSection* section = university.get_course_section(it->second);
+                    if (!section) continue;
+                    std::cout << "ID: " << section->get_id() << ", Name: " << section->get_name()
+                              << std::endl;
+                }
+            }
+
+            break;
+        }
         }
     }
 }

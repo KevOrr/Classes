@@ -8,9 +8,9 @@ CourseSection::CourseSection(const std::string& name, StudyLevel level)
       level(level)
 {}
 
-unsigned int CourseSection::get_id() const {
-    return id;
-}
+unsigned int CourseSection::get_id() const { return id; }
+
+std::string CourseSection::get_name() const { return name; }
 
 // std::vector::at throws std::out_of_range if key is not found
 float CourseSection::get_grade(unsigned int student_id) const {

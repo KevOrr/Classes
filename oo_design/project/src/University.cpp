@@ -334,38 +334,6 @@ bool University::read_grades(std::ifstream& file) {
     return file.eof();
 }
 
-std::vector<CourseSection>::const_iterator University::course_sections_cbegin() const {
-    return _course_sections.cbegin();
-}
-
-std::vector<CourseSection>::const_iterator University::course_sections_cend() const {
-    return _course_sections.cend();
-}
-
-std::vector<Student>::const_iterator University::students_cbegin() const {
-    return _students.cbegin();
-}
-
-std::vector<Student>::const_iterator University::students_cend() const {
-    return _students.cend();
-}
-
-std::vector<Teacher>::const_iterator University::teachers_cbegin() const {
-    return _teachers.cbegin();
-}
-
-std::vector<Teacher>::const_iterator University::teachers_cend() const {
-    return _teachers.cend();
-}
-
-std::vector<Department>::const_iterator University::departments_cbegin() const {
-    return _departments.cbegin();
-}
-
-std::vector<Department>::const_iterator University::departments_cend() const {
-    return _departments.cend();
-}
-
 // return true if student successfully added, false if already enrolled
 bool University::enroll_student(unsigned int student_id, unsigned int section_id) {
     return students_in_classes.insert(std::pair<unsigned int, unsigned int>(student_id, section_id)).second;
@@ -440,24 +408,17 @@ const Department* University::get_department(unsigned int id) const {
         return NULL;
 }
 
-std::set<std::pair<unsigned int, unsigned int> >::const_iterator
-University::students_in_classes_cbegin() const {
-    return students_in_classes.cbegin();
+const std::vector<CourseSection>& University::course_sections() const { return _course_sections; }
+const std::vector<Student>& University::students() const { return _students; }
+const std::vector<Teacher>& University::teachers() const { return _teachers; }
+const std::vector<Department>& University::departments() const { return _departments; }
+
+const std::set<std::pair<unsigned int, unsigned int> >& University::students_and_classes() const {
+    return students_in_classes;
 }
 
-std::set<std::pair<unsigned int, unsigned int> >::const_iterator
-University::students_in_classes_cend() const {
-    return students_in_classes.cend();
-}
-
-std::set<std::pair<unsigned int, unsigned int> >::const_iterator
-University::teachers_in_classes_cbegin() const {
-    return teachers_in_classes.cbegin();
-}
-
-std::set<std::pair<unsigned int, unsigned int> >::const_iterator
-University::teachers_in_classes_cend() const {
-    return teachers_in_classes.cend();
+const std::set<std::pair<unsigned int, unsigned int> >& University::teachers_and_classes() const {
+    return teachers_in_classes;
 }
 
 std::ostream& operator<<(std::ostream& os, const University& university) {

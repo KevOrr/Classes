@@ -3,6 +3,7 @@
 
 #include <map>
 #include <ostream>
+#include <string>
 
 class University;
 
@@ -22,6 +23,7 @@ public:
     CourseSection(const std::string& name, StudyLevel level);
 
     unsigned int get_id() const;
+    std::string get_name() const;
     float get_grade(unsigned int student_id) const;
     float set_grade(unsigned int student_id, float new_grade);
 };
