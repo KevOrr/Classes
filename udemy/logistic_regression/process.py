@@ -20,7 +20,6 @@ def get_data(f):
     onehot_times[np.arange(n), X[:,4].astype(int)] = 1
     X = np.concatenate((X[:, :-1], onehot_times), axis=1)
 
-    return X, Y
-
-def get_binary_data(X, Y):
+    # Logistic regression can only make a binary classification, so there can
+    # only be two groups
     return X[Y <= 1], Y[Y <= 1]
