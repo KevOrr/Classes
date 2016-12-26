@@ -4,8 +4,7 @@ import numpy as np
 import pandas as pd
 
 def get_data(f):
-    df = pd.read_csv(f)
-    data = df.as_matrix()
+    data = pd.read_csv(f).as_matrix()
 
     X = data[:, :-1]
     Y = data[:, -1]
@@ -21,5 +20,5 @@ def get_data(f):
     X = np.concatenate((X[:, :-1], onehot_times), axis=1)
 
     # Logistic regression can only make a binary classification, so there can
-    # only be two groups
-    return X[Y <= 1], Y[Y <= 1]
+    # only be two groups to classify
+    return X[(Y == 0) | (Y == 1)], Y[(Y == 0) | (Y == 1)]
