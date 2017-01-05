@@ -1,36 +1,33 @@
 #!/usr/bin/env python3
 
+# Section 3.13
+# Calculate cross-entropy error for random weights, and for closed-form solution to bayes classifier
+
 import numpy as np
-from logistic_predict import sigmoid
+from util import sigmoid, cross_entropy
 
+N = 100
+D = 2
 
-def cross_entropy(T, Y):
-    # -sum(t_i*ln(y_i) + (1-t_i)ln(1-y_i)) = -sum(t_i*ln(y_i)) - sum((1-t_i)ln(1-y_i))
-    return -np.dot(T, np.log(Y)) - np.dot(1-T, np.log(1-Y))
+means = np.array(((-2,-2), (2,2)))
+covar = np.eye(2)
 
-if __name__ == '__main__':
-    N = 100
-    D = 2
+# Artifically create 2 classes, center first 50 points at (-2,-2), last 50 at (2,2)
+X = np.random.randn(N, D)
+X[:N//2, :] = X[:N//2, :] + means[0] * np.ones((N//2,D))
+X[N//2:, :] = X[N//2:, :] + means[1] * np.ones((N//2,D))
+Xb = np.concatenate((np.ones((N, 1)), X), axis=1)
 
-    means = np.array(((-2,-2), (2,2)))
-    covar = np.eye(2)
+# Class labels, first 50 are 0, last 50 are 1
+T = np.concatenate((np.zeros((N//2,)), np.ones((N//2,))))
 
-    # Artifically create 2 classes, center first 50 points at (-2,-2), last 50 at (2,2)
-    X = np.random.randn(N, D)
-    X[:N//2, :] = X[:N//2, :] + means[0] * np.ones((N//2,D))
-    X[N//2:, :] = X[N//2:, :] + means[1] * np.ones((N//2,D))
-    Xb = np.concatenate((np.ones((N, 1)), X), axis=1)
+# Random weights
+w = np.random.randn(D+1)
+Y = sigmoid(Xb @ w)
+print('Random weights:', cross_entropy(T, Y))
 
-    # Class labels, first 50 are 0, last 50 are 1
-    T = np.concatenate((np.zeros((N//2,)), np.ones((N//2,))))
-
-    # Random weights
-    w = np.random.randn(D+1)
-    Y = sigmoid(Xb @ w)
-    print('Random weights:', cross_entropy(T, Y))
-
-    # Closed form Bayes solution
-    w = ((means[1, None] - means[0, None]) @ np.linalg.inv(covar)).T
-    w = np.concatenate(((0,), w.reshape(D))) # Add weight for bias
-    Y = sigmoid(Xb @ w)
-    print('Closed form solution:', cross_entropy(T, Y))
+# Closed form Bayes solution
+w = ((means[1, None] - means[0, None]) @ np.linalg.inv(covar)).T
+w = np.concatenate(((0,), w.reshape(D))) # Add weight for bias
+Y = sigmoid(Xb @ w)
+print('Closed form solution:', cross_entropy(T, Y))
