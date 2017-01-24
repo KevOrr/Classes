@@ -1,0 +1,82 @@
+
+BEGIN01    1993  John   Proba1    32  50  2  0   HOU
+JONESKC01  1992  KC     Jones     48  34  3  4   WAC
+MOTTADI01  1991  Dick   Motta     48  34  4  5   WAS
+YOUNGDR01  1993  Draff  Young      0   3  3  0   KCK
+UNSELWE01  1994  Wes    Unseld    39  43  8  0   WA1
+UNSELWE01  1993  Wes    Unseld    30  25  7  3   WA1
+YOUNGDR01  1992  Draff  Young     36  46  0  0   KCK
+EGANJO01   1993  John   Egan      32  50  0  0   HOU
+END01      1993  John   end end   32  50  7  0   HOU
+
+
+
+
+BEGIN01    1993  John   Proba1    32  50  2  0   HOU
+JONESKC01  1992  KC     Jones     48  34  3  4   WAC
+MOTTADI01  1991  Dick   Motta     48  34  4  5   WAS
+YOUNGDR01  1993  Draff  Young      0   3  3  0   KCK
+UNSELWE01  1994  Wes    Unseld    39  43  8  0   WA1
+UNSELWE01  1993  Wes    Unseld    30  25  7  3   WA1
+YOUNGDR01  1992  Draff  Young     36  46  0  0   KCK
+EGANJO01   1993  John   Egan      32  50  0  0   HOU
+END01      1993  John   end end   32  50  7  0   HOU
+EO01       2011  Even   Odd       48  34  3  4   WAC
+
+
+
+
+UNSELWE01  1994  Wes    Unseld    39  43  8  0   WA1
+UNSELWE01  1993  Wes    Unseld    30  25  7  3   WA1
+
+
+
+
+END01      1993  John   end end   32  50  7  0   HOU
+
+
+
+
+BEGIN	Begin		fuuls  	   N 
+WA1  	Washington  	Bullets    N
+HMV  	Houston  	Mavericks  A
+WAC  	Washington  	Caps       A
+KCK  	Kansas  	Kings      N
+HOU  	Houston  	Rockets    N
+WAS  	Washington  	Wizards    N
+KEN  	Kentucky  	Colonels   A
+END  	End  		fulljusi   A
+
+
+
+
+BEGIN	Begin		fuuls  	   N 
+WA1  	Washington  	Bullets    N
+HMV  	Houston  	Mavericks  A
+WAC  	Washington  	Caps       A
+KCK  	Kansas  	Kings      N
+HOU  	Houston  	Rockets    N
+WAS  	Washington  	Wizards    N
+KEN  	Kentucky  	Colonels   A
+END  	End  		fulljusi   A
+TB1  	Tampa 		Bulls 	   N
+
+
+
+
+WA1  	Washington  	Bullets    N
+WAC  	Washington 	 Caps      A
+WAS  	Washington  	Wizards    N
+
+
+
+
+Wes Unseld
+
+
+
+
+UNSELWE01  1993  Wes    Unseld    30  25  7  3   WA1
+
+
+

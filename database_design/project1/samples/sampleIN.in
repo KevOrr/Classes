@@ -1,0 +1,60 @@
+
+
+load_coaches c.txt
+
+
+
+print_coaches
+
+
+
+add_coach EO01 2011 Even Odd 48 34 3 4 WAC
+
+
+
+print_coaches
+
+ 
+
+
+coaches_by_name Unseld
+
+
+
+
+coaches_by_name end+end
+
+
+
+
+
+load_teams t.txt
+
+
+
+print_teams
+
+
+
+add_team TB1 Tampa Bulls N
+
+
+
+print_teams
+
+
+
+teams_by_city Washington
+
+
+
+best_coach 1993
+
+
+
+search_coaches lastname=Unseld season_win=30
+
+
+
+exit
+
