@@ -6,8 +6,6 @@ import os.path
 import functools
 import itertools
 
-import click
-
 COACH_FMT = '{:<9} {:<4} {:<10} {:<10} {:<3} {:<3} {:<3} {:<3} {:<3}'
 COACH_SHORT_FMT = '{:<10} {:<10}'
 COACH_HEADER = COACH_FMT.format('ID', 'Year', 'First', 'Last', 'sw', 'sl', 'pw', 'pl', 'team')
@@ -18,11 +16,11 @@ def create_empty_tables(conn):
     c = conn.cursor()
     c.executescript('''
     CREATE TABLE IF NOT EXISTS coaches(
-        id TEXT PRIMARY KEY, season INTEGER, first_name TEXT, last_name TEXT, team TEXT,
+        id TEXT, season INTEGER, first_name TEXT, last_name TEXT, team TEXT,
         season_win INTEGER, season_loss INTEGER, playoff_win INTEGER, playoff_loss INTEGER);
 
     CREATE TABLE IF NOT EXISTS teams(
-        team_id TEXT PRIMARY KEY, location TEXT, name TEXT, league TEXT);
+        team_id TEXT, location TEXT, name TEXT, league TEXT);
     ''')
     c.close()
     conn.commit()
@@ -32,8 +30,6 @@ def register_command(func):
     _commands[func.__name__] = func
     return func
 
-@click.group(invoke_without_command=True)
-@click.option('-f', '--db-file', type=click.Path(exists=False), default='nba.db')
 def main(db_file):
     conn = sqlite3.connect(db_file)
     create_empty_tables(conn)
@@ -61,18 +57,15 @@ def add_coach(conn, args):
     if len(args) != 9:
         print 'add_coach takes 9 arguments'
         return
+    print args
 
     c = conn.cursor()
-    try:
-        c.execute('''
-            INSERT INTO coaches
-            (id, season, first_name, last_name, season_win, season_loss, playoff_win, playoff_loss, team)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', args)
-    except sqlite3.IntegrityError:
-        print 'Primary key %s already exists' % repr(args[0])
-    finally:
-        c.close()
-        conn.commit()
+    c.execute('''
+        INSERT INTO coaches
+        (id, season, first_name, last_name, season_win, season_loss, playoff_win, playoff_loss, team)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', args)
+    c.close()
+    conn.commit()
 
 @register_command
 def add_team(conn, args):
@@ -81,16 +74,12 @@ def add_team(conn, args):
         return
 
     c = conn.cursor()
-    try:
-        c.execute('''
-            INSERT INTO teams
-            (team_id, location, name, league)
-            VALUES (?, ?, ?, ?)''', args)
-    except sqlite3.IntegrityError:
-        print 'Primary key %s already exists' % repr(args[0])
-    finally:
-        c.close()
-        conn.commit()
+    c.execute('''
+        INSERT INTO teams
+        (team_id, location, name, league)
+        VALUES (?, ?, ?, ?)''', args)
+    c.close()
+    conn.commit()
 
 @register_command
 def load_coaches(conn, args):
@@ -203,8 +192,6 @@ def best_coach(season):
     coach = c.fetchone()
     print COACH_SHORT_FMT.format(r['first_name'], r['last_name'])
 
-@main.command()
-@click.argument('selectors', type=str, nargs=-1)
 def search_coaches(selectors):
     pass
 
