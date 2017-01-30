@@ -78,7 +78,7 @@ dynarr<E>::~dynarr() {
 template <typename E>
 E & dynarr<E>::operator[](int i) throw(InvalidIndex) {
     if (i < 0 || i >= capacity)
-        throw new InvalidIndex("index must be greater than 0 and less than capacity");
+        throw InvalidIndex("index must be greater than 0 and less than capacity");
 
     return A[i];
 }
