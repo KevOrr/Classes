@@ -30,8 +30,8 @@ def register_command(func):
     _commands[func.__name__] = func
     return func
 
-def main(db_file):
-    conn = sqlite3.connect(db_file)
+def main():
+    conn = sqlite3.connect(':memory:')
     create_empty_tables(conn)
 
     print 'Type exit to exit'
@@ -57,14 +57,12 @@ def add_coach(conn, args):
     if len(args) != 9:
         print 'add_coach takes 9 arguments'
         return
-    print args
 
     c = conn.cursor()
     c.execute('''
         INSERT INTO coaches
         (id, season, first_name, last_name, season_win, season_loss, playoff_win, playoff_loss, team)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', args)
-    c.close()
     conn.commit()
 
 @register_command
@@ -94,7 +92,8 @@ def load_coaches(conn, args):
         reader = csv.reader(f)
         next(reader)
         for row in reader:
-            add_coach(conn, row[:2]+row[3:])
+            stripped = [f.strip() for f in row]
+            add_coach(conn, stripped[:2]+stripped[3:])
         conn.commit()
 
 @register_command
@@ -116,11 +115,13 @@ def load_teams(conn, args):
 @register_command
 def print_coaches(conn, args):
     c = conn.cursor()
-    c.execute('''SELECT id, season, first_name, last_name, season_win, season_loss,
-                        playoff_win, playoff_loss, team FROM coaches''')
-    if c.rowcount <= 0:
+    c.execute('SELECT COUNT(id) FROM coaches')
+    if c.fetchone()[0] == 0:
         print 'No coaches found'
         return
+
+    c.execute('''SELECT id, season, first_name, last_name, season_win, season_loss,
+                        playoff_win, playoff_loss, team FROM coaches''')
 
     print COACH_HEADER
     for row in c:
@@ -131,10 +132,12 @@ def print_coaches(conn, args):
 @register_command
 def print_teams(conn, args):
     c = conn.cursor()
-    c.execute('''SELECT team_id, location, name, league FROM teams''')
-    if c.rowcount <= 0:
+    c.execute('SELECT COUNT(team_id) FROM teams')
+    if c.fetchone()[0] == 0:
         print 'No teams found'
         return
+
+    c.execute('''SELECT team_id, location, name, league FROM teams''')
 
     print TEAM_HEADER
     for row in c:
@@ -150,11 +153,13 @@ def coaches_by_name(conn, args):
 
     name = args[0].replace('+', ' ')
     c = conn.cursor()
-    c.execute('''SELECT id, season, first_name, last_name, season_win, season_loss,
-                 playoff_win, playoff_loss, team FROM coaches WHERE last_name LIKE ?''', (name,))
-    if c.rowcount <= 0:
+    c.execute('SELECT COUNT(id) FROM coaches WHERE last_name LIKE ?', (name,))
+    if c.fetchone()[0] == 0:
         print 'No coaches found with name ' + repr(name)
         return
+
+    c.execute('''SELECT id, season, first_name, last_name, season_win, season_loss,
+                 playoff_win, playoff_loss, team FROM coaches WHERE last_name=?''', (name,))
 
     print COACH_HEADER
     for row in c:
@@ -168,22 +173,25 @@ def teams_by_city(conn, args):
 
     name = args[0].replace('+', ' ')
     c = conn.cursor()
-    c.execute('''SELECT team_id, location, name, league FROM teams WHERE location LIKE ?''', (name,))
-    if c.rowcount <= 0:
+    c.execute('SELECT COUNT(team_id) FROM teams WHERE location LIKE ?', (name,))
+    if c.fetchone()[0] == 0:
         print 'No teams found in ' + repr(name)
         return
+
+    c.execute('''SELECT team_id, location, name, league FROM teams WHERE location LIKE ?''', (name,))
 
     print TEAM_HEADER
     for row in c:
         print TEAM_FMT.format(*row)
 
 @register_command
-def best_coach(season):
+def best_coach(conn, args):
     if len(args) != 1:
         print 'best_coach takes 1 argument'
         return
 
-    c.execute('''SELECT TOP 1 first_name, last_name FROM coaches
+    c = conn.cursor()
+    c.execute('''SELECT first_name, last_name FROM coaches
                  ORDER BY (season_win + playoff_win - season_loss - playoff_loss) DESC''')
     if c.rowcount <= 0:
         print 'No coaches found'
@@ -193,7 +201,17 @@ def best_coach(season):
     print COACH_SHORT_FMT.format(r['first_name'], r['last_name'])
 
 def search_coaches(selectors):
-    pass
+    condition = ' AND '.join(selectors)
+    if condition:
+        condition = 'WHERE ' + condition
+
+    c.execute('SELECT COUNT(id) FROM coaches WHERE last_name LIKE ?', (name,))
+    if c.fetchone()[0] == 0:
+        print 'No coaches found matching selection'
+        return
+
+    c.execute('''SELECT id, season, first_name, last_name, season_win, season_loss,
+                 playoff_win, playoff_loss, team FROM coaches'''+condition)
 
 if __name__ == '__main__':
-    main(obj={})
+    main()
