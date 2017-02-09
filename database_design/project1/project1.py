@@ -6,10 +6,10 @@ import os.path
 import functools
 import itertools
 
-COACH_FMT = '{:<9} {:<4} {:<10} {:<10} {:<3} {:<3} {:<3} {:<3} {:<3}'
-COACH_SHORT_FMT = '{:<10} {:<10}'
+COACH_FMT = '{0:<9} {1:<4} {2:<10} {3:<10} {4:<3} {5:<3} {6:<3} {7:<3} {8:<3}'
+COACH_SHORT_FMT = '{0:<10} {1:<10}'
 COACH_HEADER = COACH_FMT.format('ID', 'Year', 'First', 'Last', 'sw', 'sl', 'pw', 'pl', 'team')
-TEAM_FMT = '{:<9} {:<15} {:<10} {:<1}'
+TEAM_FMT = '{0:<9} {1:<15} {2:<10} {3:<1}'
 TEAM_HEADER = TEAM_FMT.format('ID', 'Location', 'Name', 'League')
 
 def create_empty_tables(conn):
@@ -192,26 +192,37 @@ def best_coach(conn, args):
 
     c = conn.cursor()
     c.execute('''SELECT first_name, last_name FROM coaches
-                 ORDER BY (season_win + playoff_win - season_loss - playoff_loss) DESC''')
-    if c.rowcount <= 0:
+                 WHERE season=?
+                 ORDER BY (season_win + playoff_win - season_loss - playoff_loss) DESC''',
+              (args[0],))
+
+
+    coach = c.fetchone()
+    if coach:
+        print COACH_SHORT_FMT.format(coach[0], coach[1])
+    else:
         print 'No coaches found'
         return
 
-    coach = c.fetchone()
-    print COACH_SHORT_FMT.format(r['first_name'], r['last_name'])
-
-def search_coaches(selectors):
+@register_command
+def search_coaches(conn, selectors):
     condition = ' AND '.join(selectors)
     if condition:
         condition = 'WHERE ' + condition
 
-    c.execute('SELECT COUNT(id) FROM coaches WHERE last_name LIKE ?', (name,))
+    c = conn.cursor();
+
+    c.execute('''SELECT count(id) FROM coaches ''' + condition)
     if c.fetchone()[0] == 0:
-        print 'No coaches found matching selection'
+        print 'No results'
         return
 
     c.execute('''SELECT id, season, first_name, last_name, season_win, season_loss,
-                 playoff_win, playoff_loss, team FROM coaches'''+condition)
+                 playoff_win, playoff_loss, team FROM coaches ''' + condition)
+
+    print COACH_HEADER
+    for coach in c:
+        print COACH_FMT.format(*coach)
 
 if __name__ == '__main__':
     main()
