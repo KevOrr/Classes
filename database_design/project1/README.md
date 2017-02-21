@@ -1,0 +1,1 @@
+simply run ./project1
