@@ -212,17 +212,21 @@ def search_coaches(conn, selectors):
 
     c = conn.cursor();
 
-    c.execute('''SELECT count(id) FROM coaches ''' + condition)
-    if c.fetchone()[0] == 0:
-        print 'No results'
-        return
+    try:
+        c.execute('''SELECT count(id) FROM coaches ''' + condition)
+        if c.fetchone()[0] == 0:
+            print 'No results'
+            return
 
-    c.execute('''SELECT id, season, first_name, last_name, season_win, season_loss,
-                 playoff_win, playoff_loss, team FROM coaches ''' + condition)
+        c.execute('''SELECT id, season, first_name, last_name, season_win, season_loss,
+                     playoff_win, playoff_loss, team FROM coaches ''' + condition)
 
-    print COACH_HEADER
-    for coach in c:
-        print COACH_FMT.format(*coach)
+        print COACH_HEADER
+        for coach in c:
+            print COACH_FMT.format(*coach)
+
+    except sqlite3.OperationalError:
+        pass
 
 if __name__ == '__main__':
     main()
