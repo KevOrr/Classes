@@ -6,13 +6,13 @@
 using namespace std;
 
 class blockdata {
-  friend ostream& operator << (ostream&, const blockdata &);
+    friend ostream& operator << (ostream&, const blockdata &);
 
- public:
-  blockdata(unsigned int s, bool f, unsigned char *p);
-  unsigned char blocksize;
-  bool free;
-  unsigned char *blockptr;	    
+public:
+    blockdata(unsigned int s, bool f, unsigned char *p);
+    unsigned int blocksize;
+    bool free;
+    unsigned char *blockptr;
 };
 
 

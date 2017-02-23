@@ -8,25 +8,23 @@
 
 using namespace std;
 
-class MemoryManager
-{
-  public:
-   MemoryManager(unsigned int memsize);
-   ~MemoryManager();
-   unsigned char * malloc(unsigned int request);
-   void free(unsigned char * ptr2block);
-   void showBlockList();
+class MemoryManager {
+public:
+    MemoryManager(unsigned int memsize);
+    ~MemoryManager();
+    unsigned char * malloc(unsigned int request);
+    void free(unsigned char * ptr2block);
+    void showBlockList();
 
-  private:
-   unsigned int memsize;
-   unsigned char *baseptr;
-   dlNode<blockdata>* header;
-   dlNode<blockdata>* trailer;
+private:
+    unsigned int memsize;
+    unsigned char *baseptr;
+    dlNode<blockdata>* header;
+    dlNode<blockdata>* trailer;
 
-   void mergeForward(dlNode<blockdata> *p);
-   void mergeBackward(dlNode<blockdata> *p);
-   void splitBlock(dlNode<blockdata> *p,unsigned int chunksize);
+    void mergeForward(dlNode<blockdata> *p);
+    void mergeBackward(dlNode<blockdata> *p);
+    void splitBlock(dlNode<blockdata> *p,unsigned int chunksize);
 };
-  
-	
+
 #endif
