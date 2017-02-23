@@ -1,6 +1,3 @@
-.dir-locals.el
-.projectile
-
 *.py[cow]
 __pycache__
 venv
