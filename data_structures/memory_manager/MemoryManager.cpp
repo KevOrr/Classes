@@ -27,23 +27,24 @@ void MemoryManager::showBlockList()  {
 
 void MemoryManager::splitBlock(dlNode<blockdata> *p, unsigned int chunksize) {
     assert(chunksize <= p->info.blocksize);
-    if (chunksize == 0)
+    if (chunksize == 0 || chunksize == p->info.blocksize)
         return;
-    else if (chunksize == p->info.blocksize) {
-        p->info.free = false;
-        return;
-    }
 
     dlNode<blockdata> *next = p->next;
     blockdata unused(p->info.blocksize - chunksize, true, p->info.blockptr + chunksize);
+    p->info.blocksize = chunksize;
     p->next = new dlNode<blockdata>(unused, p, next);
     next->prev = p->next;
 }
 
 unsigned char * MemoryManager::malloc(unsigned int request) {
+    if (request == 0)
+        return nullptr;
+
     for (dlNode<blockdata> *cur = header->next; cur != trailer; cur = cur->next) {
         if (cur->info.free && cur->info.blocksize >= request) {
             splitBlock(cur, request);
+            cur->info.free = false;
             return cur->info.blockptr;
         }
     }

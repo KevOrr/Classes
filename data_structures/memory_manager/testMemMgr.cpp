@@ -17,16 +17,20 @@ int main() {
        std::cout << "Requesting memory size " << size << "..." << std::endl;
        unsigned char *p = heaper.malloc(size);
 
-       if (p) {
+       if (p)
            chunks.push_back(p);
-           heaper.showBlockList();
-       } else {
+       else
            std::cout << " FAILED" << std::endl;
-       }
+
+       heaper.showBlockList();
    }
 
-   while (auto n = chunks.size()) {
-       
+   while (auto still_allocated = chunks.size()) {
+       auto choice = std::uniform_int_distribution<std::vector<unsigned char *>::size_type>(0, still_allocated-1)(gen);
+       std::cout << "Freeing " << chunks[choice];
+       heaper.free(chunks[choice]);
+       chunks.erase(chunks.begin() + choice);
+       heaper.showBlockList();
    }
 
    return 0;

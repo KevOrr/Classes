@@ -1,14 +1,16 @@
+CXXFLAGS = -std=c++11 -g
+
 main:  MemoryManager.o blockdata.o testMemMgr.o
-	g++ -std=c++11 blockdata.o MemoryManager.o testMemMgr.o -o main
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 testMemMgr.o:  testMemMgr.cpp
-	g++ -std=c++11 -c testMemMgr.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $^
 
-blockdata.o: blockdata.h blockdata.cpp dlUtils.h
-	g++ -std=c++11 -c blockdata.cpp
+blockdata.o: blockdata.cpp blockdata.h dlUtils.h
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 MemoryManager.o: MemoryManager.cpp MemoryManager.h
-	g++ -std=c++11 -c MemoryManager.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 clean:
-	rm *.o
+	rm -f *.o main
