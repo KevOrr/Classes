@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Planetarium Remote</string>
+    <string name="action_settings">Settings</string>
+    <string name="skip_100_years">100 Years</string>
+    <string name="bt_pair">Connect</string>
+    <string name="app_label">Planetarium</string>
+    <string name="msg_connected">Connected to planetarium</string>
+    <string name="msg_connect_failed">Failed to connect to planetarium</string>
+    <string name="msg_send_failed">Failed to send data to Planetarium</string>
+    <string name="title_activity_device_discovery">Choose Device</string>
+    <string name="msg_not_connected">Make sure you connect first!</string>
+    <string name="msg_send_success">Sent date successfully!</string>
+</resources>
