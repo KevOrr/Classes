@@ -8,8 +8,8 @@ Bachelor of Science in Computer Science (BSCS) at the University of South Florid
 #### Spring 2016
 * [Program Design (C)](program_design/) (COP 3514)
 * [MAKE: Hands-On Engineering Design](make_course/) (EEL 4935/IDH 4930-008)
-  * [Planetarium-Arduino](https://github.com/KevOrr/Planetarium-Arduino)
-  * [Planetarium-Android](https://github.com/KevOrr/Planetarium-Android)
+  * [Planetarium-Arduino](make_course/planetarium/arduino/)
+  * [Planetarium-Android](make_course/planetarium/android/)
 
 #### Fall 2016
 * [Object Oriented Design (C++)](oo_design/) (COP 3331)
@@ -17,3 +17,4 @@ Bachelor of Science in Computer Science (BSCS) at the University of South Florid
 #### Spring 2017
 * [Data Structures (C++, Python)](data_structures/) (COP 4530)
 * [Database Design (Relational model, PostgreSQL, TSQL)](database_design/) (COP 4710)
+
