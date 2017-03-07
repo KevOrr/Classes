@@ -1,33 +1,28 @@
--- change xxx in this line to your NetID
-
-\o proj2-xxx.out
-
-
+\o proj2-U45623430.out
 
 -- Put your SQL statement under the following lines:
 
-
 --1. Find all the coaches who have coached exactly ONE team. List their first names followed by their last names;
-SELECT c1.firstname, c1.lastname
+SELECT DISTINCT c1.cid, c1.firstname, c1.lastname
 FROM coaches_season c1
 WHERE NOT EXISTS (SELECT null -- try to find a different entry where the same coach coached a different team
                   FROM coaches_season c2
                   WHERE lower(c2.cid) = lower(c1.cid) AND NOT (lower(c2.tid) = lower(c1.tid)));
 
 --2. Find all the players who played in a Boston team and a Denver team (this does not have to happen in the same season). List their first names only.
-SELECT p.ilkid, d1.tid, d2.tid
-FROM players p, draft d1, draft d2
-WHERE lower(p.ilkid) = lower(d1.ilkid) AND lower(p.ilkid) = lower(d2.ilkid)
+SELECT DISTINCT p.ilkid, p.firstname, p.lastname
+FROM players p, player_rs rs1, player_rs rs2
+WHERE lower(p.ilkid) = lower(rs1.ilkid) AND lower(p.ilkid) = lower(rs2.ilkid)
       AND EXISTS (SELECT 1
                   FROM teams t
-                  WHERE lower(d1.tid) = lower(t.tid) AND lower(t.location) = 'boston')
+                  WHERE lower(rs1.tid) = lower(t.tid) AND lower(t.location) = 'boston')
       AND EXISTS (SELECT 1
                   FROM teams t
-                  WHERE lower(d2.tid) = lower(t.tid) AND lower(t.location) = 'denver');
+                  WHERE lower(rs2.tid) = lower(t.tid) AND lower(t.location) = 'denver');
 
 
 --3. Find those who happened to be a coach and a player in the same team in the same season. List their first names, last names, the team where this happened, and the year(s) when this happened.
-SELECT cs.firstname, cs.lastname, t.name as tname, rs.year
+SELECT DISTINCT cs.cid, cs.firstname, cs.lastname, t.name as tname, rs.year
 FROM coaches_season cs, teams t, player_rs rs
 WHERE lower(cs.cid) = lower(rs.ilkid) AND cs.year = rs.year
       AND lower(rs.tid) = lower(t.tid) AND lower(cs.tid) = lower(t.tid);
@@ -54,7 +49,7 @@ WHERE cs.cid in (SELECT ranked_coaches.cid
 
 
 --6. Find the coaches who coached in ALL leagues. List their first names followed by their last names.
-SELECT cs.firstname, cs.lastname
+SELECT DISTINCT cs.cid, cs.firstname, cs.lastname
 FROM coaches_season cs
 WHERE NOT EXISTS (SELECT t.league
                   FROM teams t
@@ -65,10 +60,10 @@ WHERE NOT EXISTS (SELECT t.league
 
 
 --7. Find those who happened to be a coach and a player in the same season, but in different teams. List their first names, last names, the season and the teams this happened.
-SELECT cs.firstname, cs.lastname, coach_t.name as coach_tname, player_t.name as player_tname, rs.year
+SELECT DISTINCT cs.cid, cs.firstname, cs.lastname, coach_t.name as coach_tname, player_t.name as player_tname, rs.year
 FROM coaches_season cs, teams coach_t, teams player_t, player_rs rs
 WHERE lower(cs.cid) = lower(rs.ilkid) AND cs.year = rs.year
-AND lower(cs.tid) = lower(coach_t.tid) AND lower(rs.tid) = lower(player_t.tid);
+AND lower(cs.tid) = lower(coach_t.tid) AND lower(rs.tid) = lower(player_t.tid) AND NOT lower(cs.tid) = lower(rs.tid);
 
 
 
@@ -83,8 +78,16 @@ WHERE rs_career.pts > mj_pts.pts;
 
 
 --9. Find the second most successful coach in regular seasons in history. The level of success of a coach is measured as season_win /(season_win + season_loss). Note that you have to count in all seasons a coach attended to calculate this value.
+SELECT cs.firstname, cs.lastname
+FROM coaches_season cs
+GROUP BY cs.cid, cs.firstname, cs.lastname
+ORDER BY SUM(cs.season_win::float / (cs.season_win + cs.season_loss)) DESC
+LIMIT 1 OFFSET 1;
 
 
 --10. List the top 10 schools that sent the largest number of drafts to NBA. List the name of each school and the number of drafts sent. Order the results by number of drafts (hint: use "order by" to sort the results and 'limit xxx' to limit the number of rows returned);
-
-
+SELECT lower(trim(d.draft_from)) as school, COUNT(*)
+FROM draft d
+GROUP BY lower(trim(d.draft_from))
+ORDER BY COUNT(*) DESC
+LIMIT 10;
