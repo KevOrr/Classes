@@ -1,0 +1,5 @@
+I was in charge of animating the laptop which will be one of the last scenes of our project. This involved extracting the hinges and screen bevel into separate meshes. This allows them to be animated without deforming the entire body of the laptop.
+
+After extracting the hinges and bevel into separate objects, I parented one of the hinges to the laptop body, and then the other hinge and bevel were parented to the first hinge. Finally, I moved the pivots for the two hinges to the edge of the base. This makes the swinging motion smooth and natural.
+
+After rigging, I made a short animation of the movement of the laptop with two keyframes. I also made a camera that moves through the space with two keyframes.
