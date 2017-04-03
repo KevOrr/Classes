@@ -1,0 +1,12 @@
+* linguist-vendored
+
+icon.png linguist-vendored=false
+icon.svg linguist-vendored=false
+LICENSE linguist-vendored=false
+README.md linguist-vendored=false
+Acknowledgements linguist-vendored=false
+
+mobile/ linguist-vendored=false
+mobile/lib/ linguist-vendored
+
+wear/ linguist-vendored=false
