@@ -121,19 +121,21 @@ def inorder(T,f):
 # that starts "if __name__ == '__main__':"
 
 def preorder(T,f):
+    # based on the code in inorder(), we shouldn't traverse non-BSTs
     if is_bst(T) and T:
         f(T[0])
         preorder(T[1], f)
         preorder(T[2], f)
 
 def postorder(T,f):
+    # based on the code in inorder(), we shouldn't traverse non-BSTs
     if is_bst(T) and T:
         postorder(T[1], f)
         postorder(T[2], f)
         f(T[0])
 
 def tree_height(T):
-    if is_bst(T) and T:
+    if is_bintree(T) and T:
         return 1 + max(tree_height(T[1]), tree_height(T[2]))
     elif T == ():
         return 0
@@ -142,21 +144,21 @@ def balance(T):
     '''Returns the height of the left subtree of T
      minus the height of the right subtree of T
      i.e., the balance of the root of T'''
-    if is_bst(T) and T:
+    if is_bintree(T) and T:
         return tree_height(T[1]) - tree_height(T[2])
     elif T == ():
         return 0
 
 def minBalance(T):
     'returns the minimum value of balance(S) for all subtrees S of T'
-    if is_bst(T) and T:
+    if is_bintree(T) and T:
         return min((balance(T), minBalance(T[1]), minBalance(T[2])))
     elif T == ():
         return 0
 
 def maxBalance(T):
     'returns the maximum value of balance(S) for all subtrees S of T'
-    if is_bst(T) and T:
+    if is_bintree(T) and T:
         return max((balance(T), maxBalance(T[1]), maxBalance(T[2])))
     elif T == ():
         return 0
@@ -194,6 +196,7 @@ if __name__ == '__main__':
 
     # TEST CODE FOR THE FUNCTIONS YOU IMPLEMENTED GOES BELOW:
 
+    # BST, AVL
     #              2
     #        0 ────┴──── 5
     #   -2 ──┴── 1   3 ──┴── 7
@@ -208,6 +211,7 @@ if __name__ == '__main__':
                (3, (), ()),
                (7, (), ())))
 
+    # BST, not AVL
     #              2
     #        0 ────┴──── 5
     #   -2 ──┴── 1
@@ -220,6 +224,7 @@ if __name__ == '__main__':
                (1, (), ())),
               (5, (), ()))
 
+    # BST, not AVL
     #               2
     #        0 ─────┴───── 6
     #                  4 ──┴── 7
@@ -232,11 +237,46 @@ if __name__ == '__main__':
                 (5, (), ())),
                (7, (), ())))
 
+    # BST, AVL
+    #              2
+    #        0 ────┴──── 5
+    #   -2 ──┴── 1   3 ──┴── 7
+    # -5 ┴ -1        ┴─ 4
+    tree_d = (2,
+              (0,
+               (-2,
+                (-5, (), ()),
+                (-1, (), ())),
+               (1, (), ())),
+              (5,
+               (3,
+                (),
+                (4, (), ())),
+               (7, (), ())))
+
+    # not BST, not AVL
+    #              2
+    #        5 ────┴──── 0
+    #   -2 ──┴── 6  -1 ──┴── 7
+    # -5 ┴ -1
+    tree_e = (2,
+              (5,
+               (-2,
+                (-5, (), ()),
+                (-1, (), ())),
+               (6, (), ())),
+              (0,
+               (-1, (), ()),
+               (7, (), ())))
+
     # Preorder
     print('Test preorder... ', end='')
     l = []
     preorder(tree_a, l.append)
     assert l == [2, 0, -2, -5, -1, 1, 5, 3, 7]
+    l=[]
+    preorder(tree_d, l.append)
+    assert l == [2, 0, -2, -5, -1, 1, 5, 3, 4, 7]
     print('Passed')
 
     # Inorder
@@ -244,6 +284,9 @@ if __name__ == '__main__':
     l = []
     inorder(tree_b, l.append)
     assert l == [-5, -2, -1, 0, 1, 2, 5]
+    l = []
+    inorder(tree_e, l.append)
+    assert l == [] # based on the code in inorder(), we shouldn't traverse non-BSTs
     print('Passed')
 
     # Postorder
@@ -251,6 +294,9 @@ if __name__ == '__main__':
     l = []
     postorder(tree_c, l.append)
     assert l == [0, 3, 5, 4, 7, 6, 2]
+    l = []
+    postorder(tree_d, l.append)
+    assert l == [-5, -1, -2, 1, 0, 4, 3, 7, 5, 2]
     print('Passed')
 
     # Tree height
@@ -260,6 +306,8 @@ if __name__ == '__main__':
     assert tree_height(tree_a) == 4
     assert tree_height(tree_b) == 4
     assert tree_height(tree_c) == 4
+    assert tree_height(tree_d) == 4
+    assert tree_height(tree_e) == 4
     print('Passed')
 
     # Count (im)balance
@@ -267,6 +315,8 @@ if __name__ == '__main__':
     assert balance(tree_a) == 1
     assert balance(tree_b) == 2
     assert balance(tree_c) == -2
+    assert balance(tree_d) == 0
+    assert balance(tree_e) == 1
     print('Passed')
 
     # Testing for AVLness
@@ -274,4 +324,6 @@ if __name__ == '__main__':
     assert is_avl(tree_a)
     assert not is_avl(tree_b)
     assert not is_avl(tree_c)
+    assert is_avl(tree_d)
+    assert not is_avl(tree_e)
     print('Passed')
