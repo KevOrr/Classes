@@ -123,13 +123,13 @@ def inorder(T,f):
 def preorder(T,f):
     if is_bst(T) and T:
         f(T[0])
-        preorder(T[0])
-        preorder(T[0])
+        preorder(T[1], f)
+        preorder(T[2], f)
 
 def postorder(T,f):
     if is_bst(T) and T:
-        postorder(T[0])
-        postorder(T[0])
+        postorder(T[1], f)
+        postorder(T[2], f)
         f(T[0])
 
 def tree_height(T):
@@ -150,14 +150,14 @@ def balance(T):
 def minBalance(T):
     'returns the minimum value of balance(S) for all subtrees S of T'
     if is_bst(T) and T:
-        return min(minBalance(T[1]), minBalance(T[2]))
+        return min((balance(T), minBalance(T[1]), minBalance(T[2])))
     elif T == ():
         return 0
 
 def maxBalance(T):
     'returns the maximum value of balance(S) for all subtrees S of T'
     if is_bst(T) and T:
-        return max(maxBalance(T[1]), maxBalance(T[2]))
+        return max((balance(T), maxBalance(T[1]), maxBalance(T[2])))
     elif T == ():
         return 0
 
@@ -225,7 +225,7 @@ if __name__ == '__main__':
     #                  4 ──┴── 7
     #                3 ┴ 5
     tree_c = (2,
-              (0, (), ())
+              (0, (), ()),
               (6,
                (4,
                 (3, (), ()),
@@ -233,33 +233,45 @@ if __name__ == '__main__':
                (7, (), ())))
 
     # Preorder
+    print('Test preorder... ', end='')
     l = []
     preorder(tree_a, l.append)
     assert l == [2, 0, -2, -5, -1, 1, 5, 3, 7]
+    print('Passed')
 
     # Inorder
+    print('Test inorder... ', end='')
     l = []
     inorder(tree_b, l.append)
     assert l == [-5, -2, -1, 0, 1, 2, 5]
+    print('Passed')
 
     # Postorder
+    print('Test postorder... ', end='')
     l = []
     postorder(tree_c, l.append)
     assert l == [0, 3, 5, 4, 7, 6, 2]
+    print('Passed')
 
     # Tree height
+    print('Test tree_height... ', end='')
     assert tree_height(()) == 0
     assert tree_height((1, (), ())) == 1
     assert tree_height(tree_a) == 4
     assert tree_height(tree_b) == 4
     assert tree_height(tree_c) == 4
+    print('Passed')
 
     # Count (im)balance
+    print('Test balance... ', end='')
     assert balance(tree_a) == 1
     assert balance(tree_b) == 2
     assert balance(tree_c) == -2
+    print('Passed')
 
     # Testing for AVLness
+    print('Test is_avl... ', end='')
     assert is_avl(tree_a)
     assert not is_avl(tree_b)
     assert not is_avl(tree_c)
+    print('Passed')
