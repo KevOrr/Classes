@@ -1,6 +1,7 @@
 *.py[cow]
 __pycache__
 venv
+.python-version
 
 a.out
 *.o
