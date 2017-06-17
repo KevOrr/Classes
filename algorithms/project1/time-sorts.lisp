@@ -27,6 +27,9 @@
                      :collect size)))
 
 (defun test-once (size algo input-type &optional max-time)
+  (declare ((integer 1 1000000000) size))
+  (assert (<= size (expt 10 9)))
+
   (ignore-errors
    (let* ((command (list "sorting-algos/sorting"
                          (write-to-string size)
@@ -48,6 +51,12 @@
              0))))))
 
 (defun time-all (max-size size-multipliers sorting-algorithms input-types &optional max-time)
+  (declare ((integer 1 1000000000) max-size))
+  (assert (<= max-size (expt 10 9)))
+
+  ;;(uiop:run-program '("make" "clean") :output t)
+  ;;(uiop:run-program '("make") :output t)
+
   (let ((ht (make-hash-table :test #'equal)))
     (iter:iter
       (iter:with choices := (alexandria:map-product #'list
@@ -72,6 +81,20 @@
     (loop :for key :being :the :hash-key :in ht :using (hash-value times)
           :collect (list key (nreverse times)))))
 
+(defun get-stats (times)
+  (loop :for (params time-info) :in times
+        :for min-valid := (reduce #'min
+                                  (remove-if-not (lambda (one-test)
+                                                   (>= (cdr one-test) 20))
+                                                 time-info)
+                                  :key #'car)
+        :for max-valid := (reduce #'max
+                                  (remove-if-not (lambda (one-test)
+                                                   (< (cdr one-test) (* 10 60 1000)))
+                                                 time-info)
+                                  :key #'car)
+        :collect (list params min-valid max-valid)))
+
 (defun cl-ana-plot-times (&key (max-size (expt 10 9))
                             (max-time (* 31 60 1000))
                             (size-multipliers *array-size-multipliers*)
@@ -87,5 +110,8 @@
          (plots (loop :for time-info :in times
                       :for ((algo input-type) time) := time-info
                       :collect (plot2d (list (line time :title (format nil "~A, ~A" algo input-type)))))))
-    (draw (page plots))
+    (draw (page plots
+                :shown-title "Time efficiency for 4 sorting algorithms using 4 input types"
+                :layout '(4 . 4)
+                :scale '(1 . 1)))
     times))
