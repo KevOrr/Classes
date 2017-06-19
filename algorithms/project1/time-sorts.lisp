@@ -136,3 +136,20 @@
                           :terminal (png-term)
                           :output (format nil "output/~A-~A.png" algo input-type))))
     times))
+
+(defun write-times-csv (times path &optional (if-exists :supersede))
+  (ensure-directories-exist path)
+  (with-open-file (stream path :direction :output :if-exists if-exists)
+    (write-csv-row '("algorithm" "input type" "n_min" "t_min" "n_max" "t_max") :stream stream)
+    (loop :for experiment :in (get-stats times)
+          :do (destructuring-bind ((algo input-type) (nmin . tmin) (nmax . tmax)) experiment
+                (write-csv-row (list algo input-type nmin tmin nmax tmax)
+                               :stream stream)))))
+
+(defun write-object (object path)
+  (with-open-file (stream path :direction :output :if-exists :supersede)
+    (prin1 object stream)))
+
+(defun read-object (path)
+  (with-open-file (stream path :direction :input)
+    (read stream)))
