@@ -1,0 +1,17 @@
+Algorithm,Input Type,nmin,tmin,nmax,tmax
+selection,increasing,10000,82,100000,8285
+selection,decreasing,10000,84,100000,8421
+selection,constant,10000,82,100000,8283
+selection,random,10000,84,100000,8420
+insertion,increasing,10000000,24,1000000000,2472
+insertion,decreasing,10000,46,1000000,463830
+insertion,constant,10000000,24,1000000000,2477
+insertion,random,10000,46,1000000,464006
+mergesort,increasing,1000000,42,1000000000,62201
+mergesort,decreasing,1000000,115,1000000000,172232
+mergesort,constant,1000000,43,1000000000,62500
+mergesort,random,1000000,115,1000000000,172469
+quicksort,increasing,1000000,33,1000000000,46599
+quicksort,decreasing,1000000,116,1000000000,170442
+quicksort,constant,10000,35,100000,3512
+quicksort,random,1000000,116,1000000000,170431

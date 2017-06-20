@@ -1,6 +1,177 @@
+#+TITLE:     Project 1 Analysis
+#+AUTHOR:    Kevin Orr
+
+#+LATEX_HEADER: \usepackage{xfrac}
+
+# https://tex.stackexchange.com/a/2610/29334
+#+LATEX_HEADER: \let\originalleft\left
+#+LATEX_HEADER: \let\originalright\right
+#+LATEX_HEADER: \renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+#+LATEX_HEADER: \renewcommand{\right}{\aftergroup\egroup\originalright}
+
+#+BEGIN_SRC lisp :exports none :results none
+  (require 'quicklisp)
+  (ql:quickload :time-sorts)
+#+END_SRC
+
+#+NAME: insert-hlines
+#+BEGIN_SRC emacs-lisp :var table="" :exports none :results value
+  (append (subseq table 0 1)
+          '(hline)
+          (subseq table 1 5)
+          '(hline)
+          (subseq table 5 9)
+          '(hline)
+          (subseq table 9 13)
+          '(hline)
+          (subseq table 13 17))
+#+END_SRC
+
+* Results
+
+The provided program was run with all combinations of the sorting algorithms selection sort,
+insertion sort, merge sort, and quicksort; and input arrays that are strictly increasing, strictly
+decreasing, constant, or randomized. From these results we derive four variables:
+\( n_{min}, t_{min}, n_{max}, t_{max} \). They are defined as follows:
+
+#+BEGIN_EXPORT latex
+\begin{description}
+\item[$n_{min}$] The smallest array that took at least 20 ms to sort
+\item[$t_{min}$] The time it took to sort the array of size $n_{min}$
+\item[$n_{max}$] The largest array that took no longer than 10 minutes to sort
+\item[$t_{min}$] The time it took to sort the array of size $n_{max}$
+\end{description}
+#+END_EXPORT
+
+#+BEGIN_SRC lisp :package time-sorts :exports none :results none
+  (let ((times (read-object #p"results.expr.lisp")))
+    (defparameter *analysis-times* times)
+    (defparameter *analysis-stats* (get-stats times)))
+#+END_SRC
+
+#+NAME: stats-table
+#+BEGIN_SRC lisp :package time-sorts :post insert-hlines(table=*this*) :exports results :results value
+  (make-stats-table *analysis-stats* t)
+#+END_SRC
+
+#+RESULTS: stats-table
+| Algorithm | Input Type | $n_{min}$ | $t_{min}$ |  $n_{max}$ | $t_{max}$ |
+|-----------+------------+-----------+-----------+------------+-----------|
+| selection | increasing |     10000 |        82 |     100000 |      8285 |
+| selection | decreasing |     10000 |        84 |     100000 |      8421 |
+| selection | constant   |     10000 |        82 |     100000 |      8283 |
+| selection | random     |     10000 |        84 |     100000 |      8420 |
+|-----------+------------+-----------+-----------+------------+-----------|
+| insertion | increasing |  10000000 |        24 | 1000000000 |      2472 |
+| insertion | decreasing |     10000 |        46 |    1000000 |    463830 |
+| insertion | constant   |  10000000 |        24 | 1000000000 |      2477 |
+| insertion | random     |     10000 |        46 |    1000000 |    464006 |
+|-----------+------------+-----------+-----------+------------+-----------|
+| mergesort | increasing |   1000000 |        42 | 1000000000 |     62201 |
+| mergesort | decreasing |   1000000 |       115 | 1000000000 |    172232 |
+| mergesort | constant   |   1000000 |        43 | 1000000000 |     62500 |
+| mergesort | random     |   1000000 |       115 | 1000000000 |    172469 |
+|-----------+------------+-----------+-----------+------------+-----------|
+| quicksort | increasing |   1000000 |        33 | 1000000000 |     46599 |
+| quicksort | decreasing |   1000000 |       116 | 1000000000 |    170442 |
+| quicksort | constant   |     10000 |        35 |     100000 |      3512 |
+| quicksort | random     |   1000000 |       116 | 1000000000 |    170431 |
+
+* Plots
+
+The following plots show the behavior for our four sorting algorithms. Each algorithm was
+tested with array sizes of \( n 10^m \le 10^9 \) for
+\( n \in \{1, 2, 3, 4, 5, 6, 7, 8, 9\}, m \in \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9\} \).
+
+** Selection Sort
+#+ATTR_LATEX: :width 10cm
+[[./output/selection.png]]
+
+** Insertion Sort
+#+ATTR_LATEX: :width 10cm
+[[./output/insertion.png]]
+
+** Merge Sort
+#+ATTR_LATEX: :width 10cm
+[[./output/mergesort.png]]
+
+** QuickSort
+#+ATTR_LATEX: :width 10cm
+[[./output/quicksort.png]]
+
 * Analysis
 
-#+begin_src common-lisp
-(ql:quickload :time-sorts)
-(in-package :time-sorts)
-#+end_src
+The results from section [[Results]] were then used in the following calculations to determine the
+time complexity of the sorting algorithms. For each
+\( f_i \in \left\{ f_1(n) = n, f_2(n) = n \lg n, f_3(n) = n^2 \right\} \),
+I compared \( f_i(n_{max})/f_i(n_{min}) \) to \( t_max/t_min \). Ideally, the first ratio should
+be sufficiently close to the second when $f_i(n)$ corresponds to the theoretical time complexity
+of the algorithm of interest. These ratios are shown in the following table:
+
+#+BEGIN_SRC lisp :package time-sorts :post insert-hlines(table=*this*) :exports results :results value
+  (make-analysis-table *analysis-stats* t)
+#+END_SRC
+
+#+RESULTS:
+| Algorithm | Input Type | $t_{max}/t_{min}$ | $n_{max}/n_{min}$ | $\frac{n_{max} \lg n_{max}}{n_{min} \lg n_{min}}$ | $n_{max}^2/n_{min}^2$ |
+|-----------+------------+-------------------+-------------------+---------------------------------------------------+-----------------------|
+| selection | increasing |         101.03658 |              10.0 |                                              12.5 |                 100.0 |
+| selection | decreasing |            100.25 |              10.0 |                                              12.5 |                 100.0 |
+| selection | constant   |         101.01219 |              10.0 |                                              12.5 |                 100.0 |
+| selection | random     |          100.2381 |              10.0 |                                              12.5 |                 100.0 |
+|-----------+------------+-------------------+-------------------+---------------------------------------------------+-----------------------|
+| insertion | increasing |             103.0 |             100.0 |                                         128.57143 |               10000.0 |
+| insertion | decreasing |         10083.261 |             100.0 |                                             150.0 |               10000.0 |
+| insertion | constant   |        103.208336 |             100.0 |                                         128.57143 |               10000.0 |
+| insertion | random     |         10087.087 |             100.0 |                                             150.0 |               10000.0 |
+|-----------+------------+-------------------+-------------------+---------------------------------------------------+-----------------------|
+| mergesort | increasing |         1480.9762 |            1000.0 |                                            1500.0 |             1000000.0 |
+| mergesort | decreasing |         1497.6696 |            1000.0 |                                            1500.0 |             1000000.0 |
+| mergesort | constant   |         1453.4884 |            1000.0 |                                            1500.0 |             1000000.0 |
+| mergesort | random     |         1499.7305 |            1000.0 |                                            1500.0 |             1000000.0 |
+|-----------+------------+-------------------+-------------------+---------------------------------------------------+-----------------------|
+| quicksort | increasing |          1412.091 |            1000.0 |                                            1500.0 |             1000000.0 |
+| quicksort | decreasing |         1469.3276 |            1000.0 |                                            1500.0 |             1000000.0 |
+| quicksort | constant   |         100.34286 |              10.0 |                                              12.5 |                 100.0 |
+| quicksort | random     |         1469.2328 |            1000.0 |                                            1500.0 |             1000000.0 |
+
+** Theoretical time complexities
+
+| Algorithm | Best-case                | Average-case             | Worst-case                   |
+|-----------+--------------------------+--------------------------+------------------------------|
+| selection | $\Theta\left(n^2\right)$ | $\Theta\left(n^2\right)$ | $\Theta\left(n^2\right)$     |
+| insertion | $\Omega(n)$              | $\Theta\left(n^2\right)$ | $\textrm{O}\left(n^2\right)$ |
+| mergesort | $\Theta(n \lg n)$        | $\Theta(n \lg n)$        | $\Theta(n \lg n)$            |
+| quicksort | $\Omega(n \lg n)$        | $\Theta(n \lg n)$        | $\textrm{O}\left(n^2\right)$ |
+
+** Inferred time complexity of each case
+
+After comparing the two previous tables, the following conclusions were made:
+
+| Algorithm | Input Type | Complexity               | Case            |
+|-----------+------------+--------------------------+-----------------|
+| selection | increasing | $\Theta\left(n^2\right)$ | Any             |
+| selection | decreasing | $\Theta\left(n^2\right)$ | Any             |
+| selection | constant   | $\Theta\left(n^2\right)$ | Any             |
+| selection | random     | $\Theta\left(n^2\right)$ | Any             |
+|-----------+------------+--------------------------+-----------------|
+| insertion | increasing | $\Theta(n)$              | Best            |
+| insertion | decreasing | $\Theta\left(n^2\right)$ | Worst           |
+| insertion | constant   | $\Theta(n)$              | Best            |
+| insertion | random     | $\Theta\left(n^2\right)$ | Average         |
+|-----------+------------+--------------------------+-----------------|
+| mergesort | increasing | $\Theta(n \lg n)$        | Any             |
+| mergesort | decreasing | $\Theta(n \lg n)$        | Any             |
+| mergesort | constant   | $\Theta(n \lg n)$        | Any             |
+| mergesort | random     | $\Theta(n \lg n)$        | Any             |
+|-----------+------------+--------------------------+-----------------|
+| quicksort | increasing | $\Theta(n \lg n)$        | Best or Average |
+| quicksort | decreasing | $\Theta(n \lg n)$        | Best or Average |
+| quicksort | constant   | $\Theta\left(n^2\right)$ | Worst           |
+| quicksort | random     | $\Theta(n \lg n)$        | Best or Average |
+
+* Remarks
+
+Most of the timed results were quite spot-on when compared to the theoretical
+time complexities. The most inaccurate ratio was quicksort with an increasing
+input array, but this was only ~5.9% off.
