@@ -36,7 +36,7 @@
 
 
 \section{Results}
-\label{sec:orgc1b5b42}
+\label{sec:orgcc3118e}
 
 The provided program was run with all combinations of the sorting algorithms selection sort,
 insertion sort, merge sort, and quicksort; and input arrays that are strictly increasing, strictly
@@ -77,43 +77,43 @@ quicksort & random & 1000000 & 116 & 1000000000 & 170431\\
 \end{center}
 
 \section{Plots}
-\label{sec:org8c549a7}
+\label{sec:orgae00a53}
 
 The following plots show the behavior for our four sorting algorithms. Each algorithm was
 tested with array sizes of \(n 10^m \le 10^9\) for
 \(n \in \{1, 2, 3, 4, 5, 6, 7, 8, 9\}, m \in \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9\}\).
 
 \subsection{Selection Sort}
-\label{sec:orgeecb2ca}
+\label{sec:orgc278a57}
 \begin{center}
 \includegraphics[width=10cm]{./output/selection.png}
 \end{center}
 
 \subsection{Insertion Sort}
-\label{sec:orgae10026}
+\label{sec:orgec204bc}
 \begin{center}
 \includegraphics[width=10cm]{./output/insertion.png}
 \end{center}
 
 \subsection{Merge Sort}
-\label{sec:orgaffa08f}
+\label{sec:org05d5c9a}
 \begin{center}
 \includegraphics[width=10cm]{./output/mergesort.png}
 \end{center}
 
 \subsection{QuickSort}
-\label{sec:org8dd3665}
+\label{sec:orgff79b59}
 \begin{center}
 \includegraphics[width=10cm]{./output/quicksort.png}
 \end{center}
 
 \section{Analysis}
-\label{sec:org07f3f45}
+\label{sec:orgc7fdbd9}
 
-The results from section \ref{sec:orgc1b5b42} were then used in the following calculations to determine the
+The results from section \ref{sec:orgcc3118e} were then used in the following calculations to determine the
 time complexity of the sorting algorithms. For each
 \(f_i \in \left\{ f_1(n) = n, f_2(n) = n \lg n, f_3(n) = n^2 \right\}\),
-I compared \(f_i(n_{max})/f_i(n_{min})\) to \(t_max/t_min\). Ideally, the first ratio should
+I compared \(f_i(n_{max})/f_i(n_{min})\) to \(t_{max}/t_{min}\). Ideally, the first ratio should
 be sufficiently close to the second when \(f_i(n)\) corresponds to the theoretical time complexity
 of the algorithm of interest. These ratios are shown in the following table:
 
@@ -144,7 +144,7 @@ quicksort & random & 1469.2328 & 1000.0 & 1500.0 & 1000000.0\\
 \end{center}
 
 \subsection{Theoretical time complexities}
-\label{sec:org2062412}
+\label{sec:org9189fe7}
 
 \begin{center}
 \begin{tabular}{llll}
@@ -158,7 +158,7 @@ quicksort & \(\Omega(n \lg n)\) & \(\Theta(n \lg n)\) & \(\textrm{O}\left(n^2\ri
 \end{center}
 
 \subsection{Inferred time complexity of each case}
-\label{sec:org53e54fb}
+\label{sec:orgbf15c1b}
 
 After comparing the two previous tables, the following conclusions were made:
 
@@ -189,7 +189,7 @@ quicksort & random & \(\Theta(n \lg n)\) & Best or Average\\
 \end{center}
 
 \section{Remarks}
-\label{sec:org78dd563}
+\label{sec:orgdcdb557}
 
 Most of the timed results were quite spot-on when compared to the theoretical
 time complexities. The most inaccurate ratio was quicksort with an increasing

@@ -104,7 +104,7 @@ tested with array sizes of \( n 10^m \le 10^9 \) for
 The results from section [[Results]] were then used in the following calculations to determine the
 time complexity of the sorting algorithms. For each
 \( f_i \in \left\{ f_1(n) = n, f_2(n) = n \lg n, f_3(n) = n^2 \right\} \),
-I compared \( f_i(n_{max})/f_i(n_{min}) \) to \( t_max/t_min \). Ideally, the first ratio should
+I compared \( f_i(n_{max})/f_i(n_{min}) \) to \( t_{max}/t_{min} \). Ideally, the first ratio should
 be sufficiently close to the second when $f_i(n)$ corresponds to the theoretical time complexity
 of the algorithm of interest. These ratios are shown in the following table:
 
