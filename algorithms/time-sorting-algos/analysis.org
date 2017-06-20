@@ -43,14 +43,14 @@ decreasing, constant, or randomized. From these results we derive four variables
 \end{description}
 #+END_EXPORT
 
-#+BEGIN_SRC lisp :package time-sorts :exports none :results none
+#+BEGIN_SRC lisp :package algo.time-sorts :exports none :results none
   (let ((times (read-object #p"results.expr.lisp")))
     (defparameter *analysis-times* times)
     (defparameter *analysis-stats* (get-stats times)))
 #+END_SRC
 
 #+NAME: stats-table
-#+BEGIN_SRC lisp :package time-sorts :post insert-hlines(table=*this*) :exports results :results value
+#+BEGIN_SRC lisp :package algo.time-sorts :post insert-hlines(table=*this*) :exports results :results value
   (make-stats-table *analysis-stats* t)
 #+END_SRC
 
@@ -108,7 +108,7 @@ I compared \( f_i(n_{max})/f_i(n_{min}) \) to \( t_{max}/t_{min} \). Ideally, th
 be sufficiently close to the second when $f_i(n)$ corresponds to the theoretical time complexity
 of the algorithm of interest. These ratios are shown in the following table:
 
-#+BEGIN_SRC lisp :package time-sorts :post insert-hlines(table=*this*) :exports results :results value
+#+BEGIN_SRC lisp :package algo.time-sorts :post insert-hlines(table=*this*) :exports results :results value
   (make-analysis-table *analysis-stats* t)
 #+END_SRC
 

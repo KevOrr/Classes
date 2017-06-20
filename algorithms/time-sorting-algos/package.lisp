@@ -1,4 +1,4 @@
-(defpackage #:time-sorts
+(defpackage #:algo.time-sorts
   (:use #:cl #:cl-ana.plotting #:cl-csv)
   (:export #:*si-prefixes*
            #:*sorting-algorithms*

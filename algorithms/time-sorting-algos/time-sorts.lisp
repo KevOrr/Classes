@@ -1,4 +1,4 @@
-(in-package :time-sorts)
+(in-package :algo.time-sorts)
 
 (defparameter *si-prefixes* '((1 . nil)
                              (1000 . "thousands")
