@@ -6,5 +6,7 @@ venv
 a.out
 *.o
 
+*.fasl
+
 .#*
 *.swp
