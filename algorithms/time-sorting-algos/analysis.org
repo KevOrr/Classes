@@ -9,7 +9,7 @@
 #+LATEX_HEADER: \renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
 #+LATEX_HEADER: \renewcommand{\right}{\aftergroup\egroup\originalright}
 
-#+BEGIN_SRC lisp :exports none :results none
+#+BEGIN_SRC lisp :exports results :results none
   (require 'quicklisp)
   (ql:quickload :time-sorts)
 #+END_SRC
@@ -43,7 +43,7 @@ decreasing, constant, or randomized. From these results we derive four variables
 \end{description}
 #+END_EXPORT
 
-#+BEGIN_SRC lisp :package algo.time-sorts :exports none :results none
+#+BEGIN_SRC lisp :package algo.time-sorts :exports results :results none
   (let ((times (read-object #p"results.expr.lisp")))
     (defparameter *analysis-times* times)
     (defparameter *analysis-stats* (get-stats times)))
