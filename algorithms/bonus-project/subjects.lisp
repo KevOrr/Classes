@@ -1,38 +1,48 @@
+;;; This file emulates the functionality provided in supplied/dunningkruger.cpp
+;;; and supplied/driver.cpp
+
 (in-package :algo.bonus-project)
 
 (defparameter *low-competence* 25)
 (defparameter *high-competence* 90)
+
+(defun slightly-off-function (competence)
+  (cond ((< competence *low-competence*)
+         (+ (* 1.01 *low-competence*) (* -0.01 competence) 1.5))
+        ((>= competence *high-competence*)
+         (- competence 1.5))
+        (t competence)))
+
+(defun delusional-function (competence)
+  (cond ((< competence *low-competence*)
+         (+ (* 3 *low-competence*) (* -2 competence) 5.5))
+        ((>= competence *high-competence*)
+         (+ (* competence 0.5) *low-competence* -0.25))
+        (t competence)))
 
 (defun get-belief (subject)
   (ecase (car subject)
     (:subject
      (cdr subject))
     (:slightly-off
-     (let ((competence (cdr subject)))
-       (cond ((< competence *low-competence*)
-              (+ (* 1.01 *low-competence*) (* -0.01 competence) 1.5))
-             ((>= competence *high-competence*)
-              (- competence 1.5))
-             (t competence))))
+     (slightly-off-function (cdr subject)))
     (:delusional
-     (let ((competence (cdr subject)))
-       (cond ((< competence *low-competence*)
-              (+ (* 3 *low-competence*) (* -2 competence) 5.5))
-             ((>= competence *high-competence*)
-              (+ (* competence 0.5) *low-competence* -0.25))
-             (t competence))))))
+     (delusional-function (cdr subject)))))
+
+(defun considers-better (a b)
+  (> (get-belief a) (cdr b)))
 
 (defun subject<= (subject &rest more-subjects)
   (loop :for a :in (cons subject more-subjects)
         :for b :in more-subjects
-        :if (> (cdr a) (get-belief b))
+        :if (considers-better a b)
           :return nil
         :finally (return t)))
 
 (defun subject> (subject &rest more-subjects)
   (loop :for a :in (cons subject more-subjects)
         :for b :in more-subjects
-        :if (<= (cdr a) (get-belief b))
+        :unless (considers-better a b)
           :return nil
         :finally (return t)))
 
@@ -77,8 +87,7 @@
                (iter:for j :from (1+ i) :below n)
                (iter:in top (iter:counting (>= (cdr (aref subjects i))
                                                (cdr (aref subjects j)))))))))
-    (normcdf (/ (* count 2.0) n (1+ n)))
-    ))
+    (normcdf (/ (* count 2.0) n (1+ n)))))
 
 (defun make-subjects (type &optional (n 100))
   (shuffle
