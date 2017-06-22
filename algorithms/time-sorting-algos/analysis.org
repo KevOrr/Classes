@@ -1,6 +1,7 @@
 #+TITLE:     Project 1 Analysis
 #+AUTHOR:    Kevin Orr
 
+#+options: toc:nil
 #+LATEX_HEADER: \usepackage{xfrac}
 
 # https://tex.stackexchange.com/a/2610/29334

@@ -1,4 +1,4 @@
-% Created 2017-06-20 Tue 00:49
+% Created 2017-06-21 Wed 19:07
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -20,23 +20,21 @@
 \renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
 \renewcommand{\right}{\aftergroup\egroup\originalright}
 \author{Kevin Orr}
-\date{\today}
+\date{1/1/1111}
 \title{Project 1 Analysis}
 \hypersetup{
  pdfauthor={Kevin Orr},
  pdftitle={Project 1 Analysis},
  pdfkeywords={},
  pdfsubject={},
- pdfcreator={Emacs 25.1.2 (Org mode 9.0.8)}, 
+ pdfcreator={Emacs 25.2.2 (Org mode 9.0.7)}, 
  pdflang={English}}
 \begin{document}
 
 \maketitle
-\tableofcontents
-
 
 \section{Results}
-\label{sec:orgcc3118e}
+\label{sec:org018e136}
 
 The provided program was run with all combinations of the sorting algorithms selection sort,
 insertion sort, merge sort, and quicksort; and input arrays that are strictly increasing, strictly
@@ -77,40 +75,40 @@ quicksort & random & 1000000 & 116 & 1000000000 & 170431\\
 \end{center}
 
 \section{Plots}
-\label{sec:orgae00a53}
+\label{sec:orgad55c5e}
 
 The following plots show the behavior for our four sorting algorithms. Each algorithm was
 tested with array sizes of \(n 10^m \le 10^9\) for
 \(n \in \{1, 2, 3, 4, 5, 6, 7, 8, 9\}, m \in \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9\}\).
 
 \subsection{Selection Sort}
-\label{sec:orgc278a57}
+\label{sec:org20e9e2f}
 \begin{center}
 \includegraphics[width=10cm]{./output/selection.png}
 \end{center}
 
 \subsection{Insertion Sort}
-\label{sec:orgec204bc}
+\label{sec:orgc699f08}
 \begin{center}
 \includegraphics[width=10cm]{./output/insertion.png}
 \end{center}
 
 \subsection{Merge Sort}
-\label{sec:org05d5c9a}
+\label{sec:org92d86f9}
 \begin{center}
 \includegraphics[width=10cm]{./output/mergesort.png}
 \end{center}
 
 \subsection{QuickSort}
-\label{sec:orgff79b59}
+\label{sec:org47cd91a}
 \begin{center}
 \includegraphics[width=10cm]{./output/quicksort.png}
 \end{center}
 
 \section{Analysis}
-\label{sec:orgc7fdbd9}
+\label{sec:orgc51d159}
 
-The results from section \ref{sec:orgcc3118e} were then used in the following calculations to determine the
+The results from section \ref{sec:org018e136} were then used in the following calculations to determine the
 time complexity of the sorting algorithms. For each
 \(f_i \in \left\{ f_1(n) = n, f_2(n) = n \lg n, f_3(n) = n^2 \right\}\),
 I compared \(f_i(n_{max})/f_i(n_{min})\) to \(t_{max}/t_{min}\). Ideally, the first ratio should
@@ -144,7 +142,7 @@ quicksort & random & 1469.2328 & 1000.0 & 1500.0 & 1000000.0\\
 \end{center}
 
 \subsection{Theoretical time complexities}
-\label{sec:org9189fe7}
+\label{sec:org3fa29e7}
 
 \begin{center}
 \begin{tabular}{llll}
@@ -158,7 +156,7 @@ quicksort & \(\Omega(n \lg n)\) & \(\Theta(n \lg n)\) & \(\textrm{O}\left(n^2\ri
 \end{center}
 
 \subsection{Inferred time complexity of each case}
-\label{sec:orgbf15c1b}
+\label{sec:org194729f}
 
 After comparing the two previous tables, the following conclusions were made:
 
@@ -189,7 +187,7 @@ quicksort & random & \(\Theta(n \lg n)\) & Best or Average\\
 \end{center}
 
 \section{Remarks}
-\label{sec:orgdcdb557}
+\label{sec:org35a8301}
 
 Most of the timed results were quite spot-on when compared to the theoretical
 time complexities. The most inaccurate ratio was quicksort with an increasing
