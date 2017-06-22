@@ -1,0 +1,72 @@
+#+TITLE: Homework 7
+#+AUTHOR: Kevin Orr
+#+DATE: 06/21/2017
+
+#+options: toc:nil
+#+startup: showall
+
+#+LATEX_HEADER: \usepackage[boxed, linesnumbered, commentsnumbered, noend, noline]{algorithm2e}
+#+LATEX_HEADER: \usepackage{mathtools}
+#+LATEX_HEADER: \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+#+LATEX_HEADER: \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+#+LATEX_HEADER: \usepackage[margin=1.25in]{geometry}
+
+
+1. Take for example $\phi(12)$. The current pseudocode will find that 2 divides 12, so it will
+   then compute $\phi(2)$ and $\phi(6)$. In the call to $\phi(6)$, it will find that 2 again divides
+   6, and call $\phi(2)$ and $\phi(3)$. In this sense, when the argument has duplicate primes in its
+   prime factorization, it will call $\phi$ on each of those duplicates. This means that memoization
+   would be a good candidate for this algorithm.
+
+2. Since the function only takes one positive integral argument, a growing array would be the correct
+   data structure to use for memoization.
+
+3. Since all positive integers are co-prime with all least 1 (1 is co-prime with itself since it has
+   /no/ primes in its prime factorization), then $\phi(n)$ is positive for all positive $n$. A sentinel
+   value should be chosen that is not in this co-domain of $\phi$. A good choice is 0.
+   \pagebreak
+
+4. Below is a memoized version of the provided ~EulerPhi~ according to (2) and (3).
+   #+BEGIN_EXPORT latex
+   \begin{function}
+     \DontPrintSemicolon
+     \KwIn{$n$: a positive integer}
+     \KwOut{$\phi(n)$}
+     \TitleOfAlgo{eulerPhi}
+   
+     $memos = $ [\,] \;
+     \Return memoPhi(n, $memos$)\;
+   \end{function}
+   
+   \begin{function}
+     \DontPrintSemicolon
+     \KwIn{$n$: a positive integer}
+     \KwIn{$memos$: array of memoized results}
+     \KwOut{$\phi(n)$}
+     \TitleOfAlgo{memoPhi}
+     
+     \;
+     \tcp{Extend the array and fill the new elements with 0's:}
+     \For{$i = $ \rm{length}$(memos)$ \KwTo $n-1$}{
+       $memos[i] = 0$\;
+     }
+     
+     \;
+     \tcp{Check if function has been called before}
+     \If{$memos[n-1] \ne 0$}{
+       \Return $memos[n-1]$\;
+     }
+     
+     \;
+     \For{$a = 2$ \rm{to} $\floor*{\sqrt{n}}$}{
+       \If{$a$ \rm{divides} $n$}{
+         $b = n/a$\;
+         $g$ = gcd$(a,b)$\;
+         \Return memoPhi$(a)~ \cdot$ memoPhi$(b) \cdot g/$memoPhi$(g)$\;
+       }
+     }
+     
+     \;
+     \Return $n-1$\;
+   \end{function}
+   #+END_EXPORT
