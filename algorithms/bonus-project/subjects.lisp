@@ -60,22 +60,24 @@
 
 ;; Horner's method. (eval-polynomial '(1 2 3) x) -> {1 + 2x + 3x^2}
 ;; (eval-polynomial '(1 2 3) x) -> (+ 1 (* x (+ 2 (* x 3))))
-(defun eval-polynomial (coefficients var)
+(defun eval-polynomial (var coefficients)
   (reduce (lambda (old new) (+ new (* var old)))
           coefficients))
 
-(defun normcdf (x)
+(defun erf (x)
   (let* ((a1 0.254829592)
          (a2 -0.284496736)
          (a3 1.421413741)
          (a4 -1.453152027)
          (a5 1.061405429)
          (p 0.3275911)
-         (x (/ x (sqrt 2.0)))
-         (tee (/ 1.0 (1+ (* p x))))
-         (y (1- (* (eval-polynomial (list a5 a4 a3 a2 a1 0) tee)
-                   (exp (- (* x x)))))))
-    (* 0.5 (1+ y))))
+         (s (/ 1.0 (1+ (* p x)))))
+
+    (- 1 (* (eval-polynomial s (list a5 a4 a3 a2 a1 0))
+            (exp (- (* x x)))))))
+
+(defun normcdf (x &optional (mu 0) (sigma 1))
+  (* 0.5 (1+ (erf (/ (- x mu) sigma (sqrt 2))))))
 
 (defun score (subjects)
   (declare (vector subjects))
@@ -87,7 +89,7 @@
                (iter:for j :from (1+ i) :below n)
                (iter:in top (iter:counting (>= (cdr (aref subjects i))
                                                (cdr (aref subjects j)))))))))
-    (normcdf (/ (* count 2.0) n (1+ n)))))
+    (- 2 (* 2 (normcdf (/ (* count 6.0) n (1+ n)))))))
 
 (defun make-subjects (type &optional (n 100))
   (shuffle
@@ -96,7 +98,7 @@
            'vector)))
 
 (defun test-solution (sort-fn
-                      &optional
+                      &key
                         (subject-types '(:subject :slightly-off :delusional))
                         (repeat 5)
                         (n 100))

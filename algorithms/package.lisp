@@ -16,4 +16,4 @@
            #:read-object))
 
 (defpackage #:algo.bonus-project
-  (:use #:cl))
+  (:use #:cl #:cl-ana.plotting))
