@@ -5,19 +5,22 @@
 
 (defun plot-belief-functions ()
   (draw
-   (plot2d (list (line #'identity :title "Subject" :sampling '(:low 0 :high 100))
-                 (line #'slightly-off-function :title "Slightly off" :sampling '(:low 0 :high 100))
-                 (line #'delusional-function :title "Delusional" :sampling '(:low 0 :high 100)))
+   (plot2d (list (line #'identity :title "Subject" :sampling '(:low 0 :high 100 :nsamples 5000))
+                 (line #'slightly-off-function :title "Slightly off" :sampling '(:low 0 :high 100 :nsamples 5000))
+                 (line #'delusional-function :title "Delusional" :sampling '(:low 0 :high 100 :nsamples 5000)))
            :x-title "Competence"
            :y-title "Belief"
            :x-range '(0 . 100)
            :y-range '(0 . 100)
+           :x-tics (tics :sampling 10)
+           :y-tics (tics :sampling 10)
            :legend (legend :location '(:left :top)))))
 
 (defun plot-array (subjects)
   (draw (loop :for (nil . comp) :across subjects
               :for i :from 0
-              :collect (cons i comp))))
+              :collect (cons i comp)))
+  subjects)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -93,7 +96,7 @@
 (defun sort-extremes (subjects)
   (let* ((n (length subjects))
          (high-bound (ceiling (/ (* *high-competence* n) 100)))
-         (low-bound (floor (/ (* *low-competence* n) 100)))
+         (low-bound (floor (1+ (/ (* *low-competence* n) 100))))
          (high-count (make-array (- n high-bound) :element-type 'integer :initial-element 0))
          (low-count (make-array (1+ low-bound) :element-type 'integer :initial-element 0)))
 
@@ -105,7 +108,7 @@
 
     (loop :for i :from high-bound :below n :do
       (setf (aref high-count (- i high-bound))
-            (cons (loop :for j :from (1+ low-bound) :below high-bound
+            (cons (loop :for j :from (1+ low-bound) :below n
                         :counting (subject> (aref subjects i) (aref subjects j)))
                   (aref subjects i))))
 
