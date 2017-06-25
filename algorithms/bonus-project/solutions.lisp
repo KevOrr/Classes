@@ -95,7 +95,7 @@
 
 (defun sort-extremes (subjects)
   (let* ((n (length subjects))
-         (high-bound (ceiling (/ (* *high-competence* n) 100)))
+         (high-bound (ceiling (* *high-competence* n) 100))
          (low-bound (floor (1+ (/ (* *low-competence* n) 100))))
          (high-count (make-array (- n high-bound) :element-type 'integer :initial-element 0))
          (low-count (make-array (1+ low-bound) :element-type 'integer :initial-element 0)))
