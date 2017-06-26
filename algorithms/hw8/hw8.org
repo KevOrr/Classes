@@ -47,7 +47,6 @@
    \end{equation*}
    #+END_EXPORT
 
-
 3. This is the same time complexity as 2. The function will iterate over each pair of vertices no less than
    once if the graph is fully connected, and no more than once since it will skip over already-visited pairs.
    So it will iterate exactly $n^2$ times, making the total time complexity $\rm O(m^2n^2)$.

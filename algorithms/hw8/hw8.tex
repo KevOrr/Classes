@@ -1,4 +1,4 @@
-% Created 2017-06-26 Mon 00:23
+% Created 2017-06-26 Mon 00:41
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -64,10 +64,7 @@ loop, and the call to \texttt{getNeighbors} taking O(\(deg(v_i)\)) time.
           &= \rm O(m^2n^2)
 \end{align*}
 \end{equation*}
-\end{enumerate}
 
-
-\begin{enumerate}
 \item This is the same time complexity as 2. The function will iterate over each pair of vertices no less than
 once if the graph is fully connected, and no more than once since it will skip over already-visited pairs.
 So it will iterate exactly \(n^2\) times, making the total time complexity \(\rm O(m^2n^2)\).
