@@ -1,0 +1,53 @@
+#+TITLE: Homework 8
+#+AUTHOR: Kevin Orr
+#+DATE: June 25, 2017
+
+#+options: toc:nil
+
+#+LATEX_HEADER: \usepackage[boxed, linesnumbered, commentsnumbered, noend, noline]{algorithm2e}
+#+LATEX_HEADER: \usepackage{mathtools}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+#+LATEX_HEADER: \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+#+LATEX_HEADER: \usepackage[margin=1.25in]{geometry}
+
+1. The inner-most for loop runs $deg(V)$ times in the worst case, with each iteration taking
+   O(1) time, and the call to ~getNeighbors~ taking O($deg(v_j)$) time. The outer for loop also
+   runs $deg(v)$ times, with at most O(1) overhead per iteration in addition to the inner for
+   loop, and the call to ~getNeighbors~ taking O($deg(v_i)$) time.
+
+   #+BEGIN_EXPORT latex
+   \begin{equation*}
+   \begin{align*}
+     T_{for}(v_i, v_j) &= \rm O(deg(v_i)) + \sum_{v_x\in N(V_i)} \left[ \rm O(deg(v_j)) + \sum_{v_y\in N(v_j)} \rm O(1) \right] \\
+                       &= \rm O(deg(v_i)) + \sum_{v_x\in N(V_i)} \left[ \rm O(deg(v_j)) + \rm O(deg(v_j)) \right] \\
+                       &= \rm O(deg(v_i)) + \sum_{v_x\in N(V_i)} \rm O(deg(v_j)) \\
+                       &= \rm O(deg(v_i)) + \rm O(deg(v_i)) \rm O(deg(v_j)) \\
+                       &= \rm O(deg(v_i) + deg(v_i) deg(v_j)) \\
+                       &= \rm O(deg(v_i) deg(v_j))
+   \end{align*}
+   \end{equation*}
+   #+END_EXPORT
+
+2. 
+   #+BEGIN_EXPORT latex
+   \begin{equation*}
+   \begin{align*}
+     T(m, n) &= \sum_{v_i \in V} \sum_{v_j \in V} T_{for}(v_i, v_j) \\
+             &= \sum_{v_i \in V} \sum_{v_j \in V} \rm O(deg(v_i) deg(v_j)) \\
+             &= \sum_{v_i \in V} \left[ \rm O(deg(v_i)deg(v_1)) + \rm O(deg(v_i)deg(v_2)) + \ldots + \rm O(deg(v_i)deg(v_n)) \right] \\
+             &= \sum_{v_i \in V} \left[ \rm O(deg(v_i)deg(v_1) + deg(v_i)deg(v_2) + \ldots + deg(v_i)deg(v_n)) \right] \\
+             &= \sum_{v_i \in V} \left[ deg(v_i) \rm O(deg(v_1) + deg(v_2) + \ldots + deg(v_n)) \right] \\
+             &= \sum_{v_i \in V} \left[ deg(v_i) \rm O(2mn) \right] \\
+             &= \rm O(2mn) \sum_{v_i \in V} deg(v_i) \\
+             &= \rm O(2mn) \rm O(2mn) \\
+             &= \rm O(4m^2n^2) \\
+             &= \rm O(m^2n^2)
+   \end{align*}
+   \end{equation*}
+   #+END_EXPORT
+
+
+3. This is the same time complexity as 2. The function will iterate over each pair of vertices no less than
+   once if the graph is fully connected, and no more than once since it will skip over already-visited pairs.
+   So it will iterate exactly $n^2$ times, making the total time complexity $\rm O(m^2n^2)$.
