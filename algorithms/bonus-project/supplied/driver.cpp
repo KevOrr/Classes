@@ -6,10 +6,10 @@
 #include <iostream>
 using namespace std;
 
-#define CLASS_TO_TEST Delusional
-const int POP_SIZE = 1000;
+#define CLASS_TO_TEST SlightlyOff
+const int POP_SIZE = 10000;
 
-const int NTRIALS = 1;
+const int NTRIALS = 5;
 const unsigned int RANDOM_SEED[] = {0xDEADBEEF, 0xC0C0ABEE, 0xFEEDFACE, 0xDEBEDDED, 0xABEADED1};
 
 int main()
