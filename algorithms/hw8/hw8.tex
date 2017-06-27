@@ -1,4 +1,4 @@
-% Created 2017-06-26 Mon 00:41
+% Created 2017-06-27 Tue 17:25
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -28,7 +28,7 @@
  pdftitle={Homework 8},
  pdfkeywords={},
  pdfsubject={},
- pdfcreator={Emacs 25.2.2 (Org mode 9.0.8)}, 
+ pdfcreator={Emacs 25.2.2 (Org mode 9.0.9)}, 
  pdflang={English}}
 \begin{document}
 
@@ -49,24 +49,24 @@ loop, and the call to \texttt{getNeighbors} taking O(\(deg(v_i)\)) time.
                     &= \rm O(deg(v_i) deg(v_j))
 \end{align*}
 \end{equation*}
+\linebreak
 
 \item \begin{equation*}
 \begin{align*}
   T(m, n) &= \sum_{v_i \in V} \sum_{v_j \in V} T_{for}(v_i, v_j) \\
           &= \sum_{v_i \in V} \sum_{v_j \in V} \rm O(deg(v_i) deg(v_j)) \\
-          &= \sum_{v_i \in V} \left[ \rm O(deg(v_i)deg(v_1)) + \rm O(deg(v_i)deg(v_2)) + \ldots + \rm O(deg(v_i)deg(v_n)) \right] \\
-          &= \sum_{v_i \in V} \left[ \rm O(deg(v_i)deg(v_1) + deg(v_i)deg(v_2) + \ldots + deg(v_i)deg(v_n)) \right] \\
-          &= \sum_{v_i \in V} \left[ deg(v_i) \rm O(deg(v_1) + deg(v_2) + \ldots + deg(v_n)) \right] \\
-          &= \sum_{v_i \in V} \left[ deg(v_i) \rm O(2mn) \right] \\
-          &= \rm O(2mn) \sum_{v_i \in V} deg(v_i) \\
-          &= \rm O(2mn) \rm O(2mn) \\
-          &= \rm O(4m^2n^2) \\
-          &= \rm O(m^2n^2)
+          &= \sum_{v_i \in V} \sum_{v_j \in V} \rm O(deg(v_i)) \rm O(deg(v_j)) \\
+          &= \sum_{v_i \in V} \left[ \rm O(deg(v_i)) \sum_{v_j \in V} \rm O(deg(v_j)) \right] \\
+          &= \sum_{v_i \in V} deg(v_i) \rm O(2m) \\
+          &= \rm O(2m) \sum_{v_i \in V} deg(v_i) \\
+          &= \rm O(2m) \rm O(2m) \\
+          &= \rm O(4m^2) \\
+          &= \rm O(m^2)
 \end{align*}
 \end{equation*}
 
 \item This is the same time complexity as 2. The function will iterate over each pair of vertices no less than
-once if the graph is fully connected, and no more than once since it will skip over already-visited pairs.
-So it will iterate exactly \(n^2\) times, making the total time complexity \(\rm O(m^2n^2)\).
+once if the graph is fully connected, and no more than once since it will skip over already-visited pairs,
+making the total time complexity \(\rm O(m^2)\).
 \end{enumerate}
 \end{document}

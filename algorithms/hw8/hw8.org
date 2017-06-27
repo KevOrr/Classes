@@ -28,6 +28,7 @@
    \end{align*}
    \end{equation*}
    #+END_EXPORT
+   \linebreak
 
 2. 
    #+BEGIN_EXPORT latex
@@ -35,18 +36,17 @@
    \begin{align*}
      T(m, n) &= \sum_{v_i \in V} \sum_{v_j \in V} T_{for}(v_i, v_j) \\
              &= \sum_{v_i \in V} \sum_{v_j \in V} \rm O(deg(v_i) deg(v_j)) \\
-             &= \sum_{v_i \in V} \left[ \rm O(deg(v_i)deg(v_1)) + \rm O(deg(v_i)deg(v_2)) + \ldots + \rm O(deg(v_i)deg(v_n)) \right] \\
-             &= \sum_{v_i \in V} \left[ \rm O(deg(v_i)deg(v_1) + deg(v_i)deg(v_2) + \ldots + deg(v_i)deg(v_n)) \right] \\
-             &= \sum_{v_i \in V} \left[ deg(v_i) \rm O(deg(v_1) + deg(v_2) + \ldots + deg(v_n)) \right] \\
-             &= \sum_{v_i \in V} \left[ deg(v_i) \rm O(2mn) \right] \\
-             &= \rm O(2mn) \sum_{v_i \in V} deg(v_i) \\
-             &= \rm O(2mn) \rm O(2mn) \\
-             &= \rm O(4m^2n^2) \\
-             &= \rm O(m^2n^2)
+             &= \sum_{v_i \in V} \sum_{v_j \in V} \rm O(deg(v_i)) \rm O(deg(v_j)) \\
+             &= \sum_{v_i \in V} \left[ \rm O(deg(v_i)) \sum_{v_j \in V} \rm O(deg(v_j)) \right] \\
+             &= \sum_{v_i \in V} deg(v_i) \rm O(2m) \\
+             &= \rm O(2m) \sum_{v_i \in V} deg(v_i) \\
+             &= \rm O(2m) \rm O(2m) \\
+             &= \rm O(4m^2) \\
+             &= \rm O(m^2)
    \end{align*}
    \end{equation*}
    #+END_EXPORT
 
 3. This is the same time complexity as 2. The function will iterate over each pair of vertices no less than
-   once if the graph is fully connected, and no more than once since it will skip over already-visited pairs.
-   So it will iterate exactly $n^2$ times, making the total time complexity $\rm O(m^2n^2)$.
+   once if the graph is fully connected, and no more than once since it will skip over already-visited pairs,
+   making the total time complexity $\rm O(m^2)$.
