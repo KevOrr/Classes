@@ -17,9 +17,14 @@
            :legend (legend :location '(:left :top)))))
 
 (defun plot-array (subjects)
-  (draw (loop :for (nil . comp) :across subjects
-              :for i :from 0
-              :collect (cons i comp)))
+  (draw (plot2d (list (line (loop :for (nil . comp) :across subjects
+                             :for i :from 0
+                             :collect (cons i comp))
+                       :point-type "7"
+                       :point-size "0.4"))
+                :legend (legend :show nil)
+                :x-title "Position in array"
+                :y-title "Competence"))
   subjects)
 
 
@@ -89,7 +94,7 @@
                     :unless (= i j)
                       :do (incf (car (aref counts i))
                               (if (subject<= (aref subjects j) (aref subjects i)) 1 0))))
-    (coerce (loop :for (nil . subject) :across (sort counts #'< :key #'car)
+    (coerce (loop :for (nil . subject) :across (stable-sort counts #'< :key #'car)
                   :collect subject)
             'vector)))
 
@@ -113,10 +118,10 @@
                   (aref subjects i))))
 
     (concatenate 'vector
-                 (loop :for (nil . subject) :across (sort low-count #'> :key #'car)
+                 (loop :for (nil . subject) :across (stable-sort low-count #'> :key #'car)
                        :collect subject)
                  (subseq subjects (1+ low-bound) high-bound)
-                 (loop :for (nil . subject) :across (sort high-count #'< :key #'car)
+                 (loop :for (nil . subject) :across (stable-sort high-count #'< :key #'car)
                        :collect subject))))
 
 
