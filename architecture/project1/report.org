@@ -1,8 +1,10 @@
 #+TITLE: Architecture Project 1
 #+AUTHOR: Kevin Orr
-#+DATE: June 25, 2017
+#+DATE: July 2, 2017
 
 #+OPTIONS: toc:nil
+#+STARTUP: content
+#+LATEX_HEADER: \usepackage[margin=1in]{geometry}
 #+LATEX_HEADER: \usepackage{multirow}
 #+LATEX_HEADER: \renewcommand{\thesubsection}{\alph{subsection})}
 #+LATEX_HEADER: \renewcommand{\thesubsubsection}{\alph{subsubsection})}
@@ -14,9 +16,9 @@
    \begin{center}
    \begin{tabular}{|c|c|c|c|c|c|c|c|}
      \hline
-     \multirow{3}{*}{Benchmark} & \multirow{3}{*}{Instructions} & \multicolumn{6}{c|}{Instruction Distribution} \\ \cline{3-8}
+     \multirow{3}{*}{Benchmark} & \multirow{3}{*}{Instructions} & \multicolumn{6}{c|}{Instruction Class Distribution} \\ \cline{3-8}
      & & \multirow{2}{*}{Load} & \multirow{2}{*}{Store} & Uncond & Cond   & Integer  & FP\\
-     & &                       &                        & Branch & Branch & Comp     & Comp \\
+     & &                       &                        & Branch & Branch & Math     & Math \\
      \hline
      \texttt{anagram.alpha} & 4940 & 18.24\% & 19.64\% & 6.30\% & 11.76\% & 43.59\% & 0.18\% \\
      \texttt{go.alpha} & 545823087 & 30.62\% & 8.17\% & 2.58\% & 10.96\% & 47.64\% & 0.03\% \\
@@ -61,13 +63,12 @@
 * Alpha vs PISA
 ** ALPHA Benchmark Results
    #+BEGIN_EXPORT latex
-   \begin{table}[htb]
    \begin{center}
    \begin{tabular}{|c|c|c|c|c|c|c|c|}
      \hline
-     \multirow{3}{*}{Benchmark} & \multirow{3}{*}{Instructions} & \multicolumn{6}{c|}{Instruction Distribution} \\ \cline{3-8}
+     \multirow{3}{*}{Benchmark} & \multirow{3}{*}{Instructions} & \multicolumn{6}{c|}{Instruction Class Distribution} \\ \cline{3-8}
      & & \multirow{2}{*}{Load} & \multirow{2}{*}{Store} & Uncond & Cond   & Integer  & FP\\
-     & &                       &                        & Branch & Branch & Comp     & Comp \\
+     & &                       &                        & Branch & Branch & Math     & Math \\
      \hline
      \texttt{test-math} & 49310 & 17.14\% & 10.44\% & 3.95\% & 11.03\% & 55.40\% & 1.88\% \\
      \texttt{test-fmath} & 19399 & 17.64\% & 12.58\% & 4.72\% & 11.17\% & 53.29\% & 0.43\% \\
@@ -76,18 +77,16 @@
      \hline
    \end{tabular}
    \end{center}
-   \end{table}
    #+END_EXPORT
 
-** PISA
+** PISA Benchmark Results
    #+BEGIN_EXPORT latex
-   \begin{table}[htb]
    \begin{center}
    \begin{tabular}{|c|c|c|c|c|c|c|c|}
      \hline
-     \multirow{3}{*}{Benchmark} & \multirow{3}{*}{Instructions} & \multicolumn{6}{c|}{Instruction Distribution} \\ \cline{3-8}
+     \multirow{3}{*}{Benchmark} & \multirow{3}{*}{Instructions} & \multicolumn{6}{c|}{Instruction Class Distribution} \\ \cline{3-8}
      & & \multirow{2}{*}{Load} & \multirow{2}{*}{Store} & Uncond & Cond   & Integer  & FP\\
-     & &                       &                        & Branch & Branch & Comp     & Comp \\
+     & &                       &                        & Branch & Branch & Math     & Math \\
      \hline
      \texttt{test-math} & 213553 & 15.96\% & 10.67\% & 4.22\% & 13.84\% & 54.42\% & 0.88\% \\
      \texttt{test-fmath} & 53312 & 16.17\% & 14.47\% & 4.24\% & 15.08\% & 49.90\% & 0.11\% \\
@@ -96,8 +95,53 @@
      \hline
    \end{tabular}
    \end{center}
-   \end{table}
    #+END_EXPORT
    
 ** Comparison
+   #+BEGIN_SRC python :var alpha_table=raw-alpha-benchmarks pisa_table=raw-pisa-benchmarks :results none :exports none
+     import matplotlib.pyplot as plt
+     import numpy as np
+
+     index = np.arange(len(alpha_table))
+     bar_width = 0.35
+
+     alpha = plt.bar(index + bar_width, [row[1] for row in pisa_table], bar_width,
+                     color='r',
+                     log=True,
+                     label='PISA')
+
+     alpha = plt.bar(index, [row[1] for row in alpha_table], bar_width,
+                     color='b',
+                     log=True,
+                     label='ALPHA')
+
+     ax = plt.gca()
+     ax.set_ylim([1, 1e7])
+
+     plt.xlabel('Benchmark')
+     plt.ylabel('Instruction Count')
+     plt.xticks(index + bar_width / 2, [row[0] for row in alpha_table])
+     plt.legend()
+     plt.savefig('bar_comparison.png', dpi=200)
+   #+END_SRC
+
    The PISA ISA requires many more (1.8x - 4.3x) instructions than the \mbox{ALPHA} ISA for the same programs.
+   
+   [[./bar_comparison.png]]
+
+* noexport :noexport:
+  #+NAME: raw-alpha-benchmarks
+  | Benchmark   | Instructions |  Load | Store | Uncond Branch | Cond Branch | Integer Math | FP Math |
+  |-------------+--------------+-------+-------+---------------+-------------+--------------+---------|
+  | test-math   |        49310 | .1714 | .1044 |         .0395 |       .1103 |        .5540 |   .0188 |
+  | test-fmath  |        19399 | .1764 | .1258 |         .0472 |       .1117 |        .5329 |   .0043 |
+  | test-llong  |        10527 | .1766 | .1473 |         .0547 |       .1221 |        .4963 |   .0010 |
+  | test-printf |       983373 | .1799 | .1074 |         .0482 |       .1139 |        .5485 |   .0009 |
+
+  #+NAME: raw-pisa-benchmarks 
+  | Benchmark   | Instructions |  Load | Store | Uncond Branch | Cond Branch | Integer Math | FP Math |
+  |-------------+--------------+-------+-------+---------------+-------------+--------------+---------|
+  | test-math   |       213553 | .1596 | .1067 |         .0422 |       .1384 |        .5442 |   .0088 |
+  | test-fmath  |        53312 | .1617 | .1447 |         .0424 |       .1508 |        .4990 |   .0011 |
+  | test-llong  |        29495 | .1638 | .1811 |         .0437 |       .1540 |        .4570 |   .0000 |
+  | test-printf |      1813745 | .1922 | .0928 |         .0513 |       .1701 |        .4933 |   .0001 |

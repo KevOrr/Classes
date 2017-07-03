@@ -1,4 +1,4 @@
-% Created 2017-06-25 Sun 23:09
+% Created 2017-07-03 Mon 00:00
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -14,11 +14,12 @@
 \usepackage{amssymb}
 \usepackage{capt-of}
 \usepackage{hyperref}
+\usepackage[margin=1in]{geometry}
 \usepackage{multirow}
 \renewcommand{\thesubsection}{\alph{subsection})}
 \renewcommand{\thesubsubsection}{\alph{subsubsection})}
 \author{Kevin Orr}
-\date{June 25, 2017}
+\date{July 2, 2017}
 \title{Architecture Project 1}
 \hypersetup{
  pdfauthor={Kevin Orr},
@@ -32,16 +33,16 @@
 \maketitle
 
 \section{ALPHA}
-\label{sec:org6388402}
+\label{sec:org1ee1864}
 \subsection{Benchmark Results}
-\label{sec:orge4b8c79}
+\label{sec:org14c85d8}
 \begin{table}[htb]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
   \hline
-  \multirow{3}{*}{Benchmark} & \multirow{3}{*}{Instructions} & \multicolumn{6}{c|}{Instruction Distribution} \\ \cline{3-8}
+  \multirow{3}{*}{Benchmark} & \multirow{3}{*}{Instructions} & \multicolumn{6}{c|}{Instruction Class Distribution} \\ \cline{3-8}
   & & \multirow{2}{*}{Load} & \multirow{2}{*}{Store} & Uncond & Cond   & Integer  & FP\\
-  & &                       &                        & Branch & Branch & Comp     & Comp \\
+  & &                       &                        & Branch & Branch & Math     & Math \\
   \hline
   \texttt{anagram.alpha} & 4940 & 18.24\% & 19.64\% & 6.30\% & 11.76\% & 43.59\% & 0.18\% \\
   \texttt{go.alpha} & 545823087 & 30.62\% & 8.17\% & 2.58\% & 10.96\% & 47.64\% & 0.03\% \\
@@ -53,61 +54,60 @@
 \end{table}
 
 \subsection{Is the benchmark memory- or computationally-intensive?}
-\label{sec:orgfa77287}
+\label{sec:org4260b6d}
 \subsubsection{\texttt{anagram.alpha}}
-\label{sec:org01607c4}
+\label{sec:orgeca32e3}
 \textasciitilde{}38\% of the instructions are memory operations, and the rest are computational. This benchmark is mostly computationally-intensive.
 \subsubsection{\texttt{go.alpha}}
-\label{sec:org2e99dc9}
+\label{sec:orgd7fd98a}
 This benchmark has the same approximate memory/computation ration as \texttt{anagram.alpha}, so it is mostly computationally-intensive.
 \subsubsection{\texttt{compress95.alpha}}
-\label{sec:orga2d0592}
+\label{sec:org034678b}
 This benchmark has \textasciitilde{}80\% memory operations; it is mostly memory-intensive.
 \subsubsection{\texttt{cc1.alpha}}
-\label{sec:orgeea9b66}
+\label{sec:org6ebda75}
 This benchmark has only \textasciitilde{}36\% memory operations, with the rest computational. This is computationally-intensive.
 
 \subsection{Is the benchmark mainly using integer or floating point computations?}
-\label{sec:orgc063fbe}
+\label{sec:org0057d89}
 \subsubsection{\texttt{anagram.alpha}}
-\label{sec:org4888d35}
+\label{sec:org0b265ba}
 43.59\% Integer vs 0.18\% FP, so FP.
 \subsubsection{\texttt{go.alpha}}
-\label{sec:org42d612c}
+\label{sec:orgd8d8009}
 47.64\% Integer vs 0.03\% FP, so FP.
 \subsubsection{\texttt{compress95.alpha}}
-\label{sec:orgc460a80}
+\label{sec:org0bebbf9}
 13.62\% Integer vs 0.00\% FP, so FP.
 \subsubsection{\texttt{cc1.alpha}}
-\label{sec:org53b3f64}
+\label{sec:org554dbf7}
 46.30\% Integer vs 0.11\% FP, so FP.
 
 \subsection{What \% of the instructions executed are conditional branches? How many instructions are computed between each pair of conditional branches?}
-\label{sec:orgcbec6f3}
+\label{sec:org4e1189a}
 \subsubsection{\texttt{anagram.alpha}}
-\label{sec:org025cec7}
+\label{sec:orgc38d898}
 11.76\%. \(\Sigma\)(18.24\%, 19.64\%, 6.30\%, 43.59\%, 0.18\%)/11.76\% = 7.48
 \subsubsection{\texttt{go.alpha}}
-\label{sec:org6ae7f30}
+\label{sec:org3b97d90}
 10.96\%. \(\Sigma\)(30.62\%, 8.17\%, 2.58\%, 47.64\%, 0.03\%)/10.96\% = 8.12
 \subsubsection{\texttt{compress95.alpha}}
-\label{sec:orga79c833}
+\label{sec:org112c281}
 5.76\%. \(\Sigma\)(1.80\%, 78.53\%, 0.28\%, 13.62\%, 0.00\%)/5.76\% = 16.36
 \subsubsection{\texttt{cc1.alpha}}
-\label{sec:orgd4887c7}
+\label{sec:orgf94a670}
 4.12\%. \(\Sigma\)(24.67\%, 11.47\%, 13.33\%, 46.30\%, 0.11\%)/4.12\% = 23.25
 
 \section{Alpha vs PISA}
-\label{sec:org52aff2c}
+\label{sec:org2c048d6}
 \subsection{ALPHA Benchmark Results}
-\label{sec:orgb610585}
-\begin{table}[htb]
+\label{sec:orgabb86b8}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
   \hline
-  \multirow{3}{*}{Benchmark} & \multirow{3}{*}{Instructions} & \multicolumn{6}{c|}{Instruction Distribution} \\ \cline{3-8}
+  \multirow{3}{*}{Benchmark} & \multirow{3}{*}{Instructions} & \multicolumn{6}{c|}{Instruction Class Distribution} \\ \cline{3-8}
   & & \multirow{2}{*}{Load} & \multirow{2}{*}{Store} & Uncond & Cond   & Integer  & FP\\
-  & &                       &                        & Branch & Branch & Comp     & Comp \\
+  & &                       &                        & Branch & Branch & Math     & Math \\
   \hline
   \texttt{test-math} & 49310 & 17.14\% & 10.44\% & 3.95\% & 11.03\% & 55.40\% & 1.88\% \\
   \texttt{test-fmath} & 19399 & 17.64\% & 12.58\% & 4.72\% & 11.17\% & 53.29\% & 0.43\% \\
@@ -116,17 +116,15 @@ This benchmark has only \textasciitilde{}36\% memory operations, with the rest c
   \hline
 \end{tabular}
 \end{center}
-\end{table}
 
-\subsection{PISA}
-\label{sec:orgde703a7}
-\begin{table}[htb]
+\subsection{PISA Benchmark Results}
+\label{sec:orga30ce2a}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
   \hline
-  \multirow{3}{*}{Benchmark} & \multirow{3}{*}{Instructions} & \multicolumn{6}{c|}{Instruction Distribution} \\ \cline{3-8}
+  \multirow{3}{*}{Benchmark} & \multirow{3}{*}{Instructions} & \multicolumn{6}{c|}{Instruction Class Distribution} \\ \cline{3-8}
   & & \multirow{2}{*}{Load} & \multirow{2}{*}{Store} & Uncond & Cond   & Integer  & FP\\
-  & &                       &                        & Branch & Branch & Comp     & Comp \\
+  & &                       &                        & Branch & Branch & Math     & Math \\
   \hline
   \texttt{test-math} & 213553 & 15.96\% & 10.67\% & 4.22\% & 13.84\% & 54.42\% & 0.88\% \\
   \texttt{test-fmath} & 53312 & 16.17\% & 14.47\% & 4.24\% & 15.08\% & 49.90\% & 0.11\% \\
@@ -135,9 +133,12 @@ This benchmark has only \textasciitilde{}36\% memory operations, with the rest c
   \hline
 \end{tabular}
 \end{center}
-\end{table}
 
 \subsection{Comparison}
-\label{sec:org86f8c5d}
+\label{sec:org474c407}
 The PISA ISA requires many more (1.8x - 4.3x) instructions than the \mbox{ALPHA} ISA for the same programs.
+
+\begin{center}
+\includegraphics[width=.9\linewidth]{./bar_comparison.png}
+\end{center}
 \end{document}
