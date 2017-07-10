@@ -14,3 +14,6 @@
            #:write-times-csv
            #:write-object
            #:read-object))
+
+(defpackage #:algo.bonus-project
+  (:use #:cl #:cl-ana.plotting))
