@@ -1,6 +1,7 @@
 #include <cstddef>
 #include <cstdint>
-#include <utility>
+#include <tuple>
+#include <vector>
 #include <algorithm>
 #include <iostream>
 
@@ -15,84 +16,42 @@ void print_array(Subject* arr, size_t n) {
     std::cout << ")" << std::endl << std::endl;
 }
 
-template<typename T>
-uint_fast8_t median3(T a, T b, T c) {
-    if (a < b) {
-        if (b < c)
-            return b;
-        else if (a < c)
-            return c;
-        else
-            return a;
-    } else {
-        if (c < b)
-            return b;
-        else if (a < c)
-            return a;
-        else
-            return c;
-    }
-}
-
-template<typename T>
-size_t partition(T* arr, size_t low, size_t high) {
-    T p = (median3(arr[low], arr[(low + high)/2], arr[high]));
-
-    size_t left = low, right = high;
-    while (true) {
-        do {left++;} while (arr[left] < p);
-
-        do {right--;} while (arr[right] > p);
-
-        if (left >= right)
-            return right;
-        std::swap(arr[left], arr[right]);
-    }
-}
-
-template<typename T>
-void quicksort(T* arr, size_t low, size_t high) {
-    if (low < high) {
-        size_t p = partition(arr, low, high);
-        quicksort(arr, low, p);
-        quicksort(arr, p+1, high);
-    }
-}
-
-// int main() {
-//     int A[] = {1,6,7,5,3,3,4,6,8,9,7,6,3,4,67,357,34,256,46,24,36,23,246,34,34,1,143,1345,134,51345,3145,342,
-//                223,35,326,47,25,62,234,243,5,2,34,45,356,56,586,679,985,87,87,7,6,65,263,364,5,5,12,15,5,5326,
-//                6635,6,43,34,76,87,56,74,874,895,7089,978,86,7,6,341,45,32,32,65,65,76,748,78,7,7,643,652,532};
-
-//     size_t n = sizeof A / sizeof A[0];
-//     quicksort(A, 0, n-1);
-//     for (size_t i=0; i<n; i++) {
-//         std::cout << A[i] << " ";
-//     }
-
-//     std::cout << std::endl;
-// }
-
 void sort_relative(Subject* arr, size_t n) {
-    std::pair<size_t, Subject*> counts[n];
+    std::vector<std::tuple<size_t, size_t, Subject*>> counts;
+
+    size_t high_bound = ceil(HI_COMPETENCE * n / 100);
 
     for (size_t i=0; i<n; i++) {
-        size_t count = 0;
+        size_t count1 = 0;
+        size_t count2 = 0;
         for (size_t j=0; j<n; j++) {
             if (i != j) {
-                count += (arr[j] < arr[i]);
+                count1 += (arr[j] < arr[i]);
+                count2 += (arr[i] > arr[j]);
             }
         }
-        counts[i] = std::pair<size_t, Subject*>(count, arr + i);
+        counts.push_back(std::tuple<size_t, size_t, Subject*>(count1, count2, arr + i));
     }
 
-    std::sort(counts, counts+n, [](std::pair<size_t, Subject*> &a, std::pair<size_t, Subject*> &b){
-            return a.first < b.first;
-        });
+    std::sort(counts.begin(), counts.end(),
+              [](std::tuple<size_t, size_t, Subject*> &a, std::tuple<size_t, size_t, Subject*> &b){
+                  return std::get<0>(a) < std::get<0>(b);
+              });
+
+    size_t value = std::get<1>(counts[0]);
+    size_t idx = 0;
+    for (size_t i=0; i<n; i++) {
+        if (std::get<1>(counts[i]) > value) {
+            value = std::get<1>(counts[i]);
+            idx = i;
+        }
+    }
+
+    std::swap(counts[high_bound - 1], counts[idx]);
 
     Subject temp[n];
     for (size_t i=0; i<n; i++)
-        temp[i] = *counts[i].second;
+        temp[i] = *std::get<2>(counts[i]);
     std::copy(temp, temp+n, arr);
 }
 
@@ -142,8 +101,6 @@ void sort_extremes(Subject* arr, size_t n) {
 }
 
 void dksort(Subject* arr, int n) {
-    for (int i = 0; i < n; i++)
-        arr[i].setCompetence(100.0 * i / n);
     sort_relative(arr, n);
     sort_extremes(arr, n);
 }

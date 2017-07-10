@@ -27,76 +27,32 @@
                 :y-title "Competence"))
   subjects)
 
+(defun cheat-sort (subjects)
+  (let ((subjects (make-array (array-dimensions subjects) :initial-contents subjects)))
+    (sort subjects #'< :key #'cdr)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(defun make-agreement-matrix (subjects)
-  (let* ((n (length subjects))
-         (agrees (make-array (list n n) :element-type '(member 0 > <) :initial-element '0)))
-    (loop :for i :from 0 :below n :do
-      (loop :for j :from 0 :below n
-            :do (when (and (subject> (aref subjects i) (aref subjects j))
-                           (subject<= (aref subjects j) (aref subjects i)))
-                  (setf (aref agrees i j) '>)
-                  (setf (aref agrees j i) '<))))
-    agrees))
-
-(defun make-greater-matrix (subjects)
-  (let* ((n (length subjects))
-         (greater (make-array (list n n) :element-type 'bit :initial-element '0)))
-    (loop :for i :from 0 :below n :do
-      (loop :for j :from 0 :below n
-            :do (when (subject> (aref subjects i) (aref subjects j))
-                  (setf (aref greater i j) '1))))
-    greater))
-
-(defun make-less-matrix (subjects)
-  (let* ((n (length subjects))
-         (less (make-array (list n n) :element-type 'bit :initial-element '0)))
-    (loop :for i :from 0 :below n :do
-      (loop :for j :from 0 :below n
-            :do (when (subject<= (aref subjects j) (aref subjects i))
-                  (setf (aref less i j) '1))))
-    less))
-
-(defun directed-reachable (adjacency-matrix root-index target-index)
-  (let ((visited (make-array (array-dimension adjacency-matrix 0) :element-type 'bit :initial-element 0)))
-    (labels ((helper (my-root)
-               (cond ((= my-root target-index) t)
-                     (t (setf (aref visited my-root) 1)
-                        (loop :for v :from 0 :below (array-dimension adjacency-matrix 0) :do
-                          (if (and (= 1 (aref adjacency-matrix my-root v))
-                                   (= 0 (aref visited v)))
-                              (let ((foundp (helper v)))
-                                (if foundp
-                                    (return foundp)))))))))
-      (helper root-index))))
-
-(defun make-less-reachable-matrix (subjects)
-  (let* ((less-matrix (make-less-matrix subjects))
-         (less-reachable (make-array (array-dimensions less-matrix) :element-type 'bit :initial-element 0)))
-    (loop :for i :from 0 :below (length subjects) :do
-      (loop :for j :from 0 :below (length subjects) :do
-        (setf (aref less-reachable i j) (if (directed-reachable less-matrix i j) 1 0))))
-    less-reachable))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 (defun sort-by-superiority-count (subjects)
   (let* ((n (length subjects))
-         (counts (make-array n)))
+         (counts (make-array n))
+         (high-bound (ceiling (* *high-competence* n) 100)))
     (loop :for i :from 0 :below n
-          :do (setf (aref counts i) (cons 0 (aref subjects i)))
+          :do (setf (aref counts i) (list 0 0 (aref subjects i)))
               (loop :for j :from 0 :below n
                     :unless (= i j)
-                      :do (incf (car (aref counts i))
-                              (if (subject<= (aref subjects j) (aref subjects i)) 1 0))))
-    (coerce (loop :for (nil . subject) :across (stable-sort counts #'< :key #'car)
-                  :collect subject)
-            'vector)))
+                      :do (if (subject<= (aref subjects j) (aref subjects i))
+                              (incf (first (aref counts i))))
+                          (if (subject> (aref subjects i) (aref subjects j))
+                              (incf (second (aref counts i))))))
+
+    (setf counts (sort counts #'< :key #'first))
+    (rotatef (aref counts (1- high-bound))
+             (aref counts (iter:iter (iter:for i :from 0 :below n)
+                            (iter:finding i :maximizing (second (aref counts i))))))
+    (map 'vector #'third counts)))
 
 (defun sort-extremes (subjects)
   (let* ((n (length subjects))
@@ -118,11 +74,9 @@
                   (aref subjects i))))
 
     (concatenate 'vector
-                 (loop :for (nil . subject) :across (stable-sort low-count #'> :key #'car)
-                       :collect subject)
+                 (map 'vector #'cdr (stable-sort low-count #'> :key #'car))
                  (subseq subjects (1+ low-bound) high-bound)
-                 (loop :for (nil . subject) :across (stable-sort high-count #'< :key #'car)
-                       :collect subject))))
+                 (map 'vector #'cdr (stable-sort high-count #'< :key #'car)))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
