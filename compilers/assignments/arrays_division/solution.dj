@@ -1,0 +1,61 @@
+// I pledge my Honor that I have not cheated, and will not cheat, on this assignment
+// Kevin Orr
+
+class LinkedList extends Object {
+  nat data;
+  LinkedList next;
+
+  LinkedList cons (nat newData) {
+    LinkedList newFront;
+    newFront = new LinkedList();
+    newFront.data = newData;
+    newFront.next = this;
+    newFront;
+  }
+
+  nat get (nat index) {
+    if (index) {
+      this.next.get(index - 1);
+    } else {
+      this.data;
+    }
+  }
+}
+
+class Math extends Object {
+  nat div (nat num, nat denom) {
+    nat quotient;
+
+    while (!(num < denom)) {
+      num = num - denom;
+      quotient = quotient + 1;
+    }
+
+    quotient;
+  }
+}
+
+main {
+  LinkedList ll;
+  nat length;
+  nat input;
+  nat num;
+  nat denom;
+
+  ll = new LinkedList();
+
+  input = readNat();
+  ll.data = input;
+
+  while (input) {
+    length = length + 1;
+    input = readNat();
+    ll = ll.cons(input);
+  }
+
+  // List is reversed, so count from the end
+  num = ll.get(length - readNat() - 1);
+  denom = ll.get(length - readNat() - 1);
+
+  printNat(new Math().divide(num, denom));
+}

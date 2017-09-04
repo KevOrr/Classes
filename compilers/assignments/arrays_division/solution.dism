@@ -1,3 +1,6 @@
+;;; I pledge my Honor that I have not cheated, and will not cheat, on this assignment
+;;; Kevin Orr
+
 ;;; R[0] := 0
 ;;; R[1] := 1
 ;;; R[2] := Fill pointer
@@ -9,26 +12,26 @@
   mov 0 0                       ; Not necessary, but just to be explicit
   mov 1 1
 
-INPUT:
+#INPUT:
   rdn 3                         ; Read into R[3]
   beq 3 0 #ENDINPUT             ; If we got a zero, jump to indices prompt
-  str 0 0 1                     ; M[R[0]] <- R[1]
-  add 0 0 1                     ; Increment fill pointer
+  str 2 0 3                     ; M[R[0]] <- R[3]
+  add 2 2 1                     ; Increment fill pointer
   jmp 0 #INPUT                  ; Continue loop
 
-ENDINPUT:
+#ENDINPUT:
   rdn 4                         ; Prompt for i
   lod 4 4 0                     ; Fetch A[i]
   rdn 5                         ; Prompt for j
   lod 5 5 0                     ; Fetch A[j]
 
 ;;; Count number of times that numerator >= denominator after `numerator -= denominator`
-DIVIDE:
+#DIVIDE:
   blt 4 5 #PRINT                ; If numerator now less than denominator, break
   sub 4 4 5                     ; numerator -= denominator
   add 6 6 1                     ; quotient++
   jmp 0 #DIVIDE                 ; repeat
 
-PRINT:
+#PRINT:
   ptn 6                         ; Print quotient
   hlt 0
