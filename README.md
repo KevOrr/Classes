@@ -25,7 +25,6 @@ Bachelor of Science in Computer Science (BSCS) at the University of South Florid
 #### Fall 2017
 * [Systems Security](systems_security/) (CIS 4930-001)
 * [Intro to Artificial Intelligence](ai/) (CIS 4930-002)
-* [Compilers](compilers/) (COP 4620)
 
 ## Copyright
 The author(s) maintain all rights to all applicable content in this repository,
