@@ -8,10 +8,7 @@
 
 static unsigned long *total;
 
-#define EXITERROR()                                                     \
-    do {                                                                \
-        error_at_line(errno, errno, __FILE__, __LINE__, "pid %llu", (long long unsigned)getpid()); \
-    } while(0)
+#define EXITERROR() error_at_line(errno, errno, __FILE__, __LINE__, "pid %llu", (long long unsigned)getpid())
 
 static void process1() {
     for (unsigned int i=0; i<100000; i++)
