@@ -1,26 +1,26 @@
 class Point {
-   public float x, y;
+    public PVector p;
 
-   public Point(float x, float y){
-     this.x = x;
-     this.y = y;
-   }
+    public Point(float x, float y) {
+        p = new PVector(x,y);
+    }
 
-   public Point(PVector p){
-     this.x = p.x;
-     this.y = p.y;
-   }
+    public Point(PVector _p0) {
+        p = _p0;
+    }
 
-   public void draw(){
-     ellipseMode(CENTER);
-     ellipse(p.x, p.y, 10, 10);
-   }
+    public void draw() {
+        ellipse(p.x,p.y, 10,10);
+    }
 
-   public float distance(Point o){
-     return Math.sqrt(Math.pow(this.x - o.x, 2) + Math.pow(this.y - o.y))
-   }
+    float getX() { return p.x; }
+    float getY() { return p.y; }
 
-   public String toString(){
-     return String.format("Point(%f, %f)", this.x, this.y);
-   }
+    public float distance(Point o) {
+        return PVector.dist(p, o.p);
+    }
+
+    public String toString() {
+        return p.toString();
+    }
 }
