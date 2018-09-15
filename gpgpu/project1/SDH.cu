@@ -146,6 +146,12 @@ void PDH_gpu() {
 #endif
         );
 
+    cudaError_t err = cudaGetLastError();
+    if (err != cudaSuccess) {
+        printf("CUDA ERROR: %s\n", cudaGetErrorString(err));
+        puts("This is probably due to a too-large block count");
+    }
+
     // Copy histogram from device and cleanup
     cudaFree(d_atoms);
     cudaMemcpy(histogram, d_buckets, sizeof(*histogram) * num_buckets, cudaMemcpyDeviceToHost);
@@ -159,7 +165,8 @@ void PDH_gpu() {
 
     for (unsigned long long i=0; i<num_threads; i++) {
         printf("%llu: idx=%d, ran=%d, i=%d, j=%d, dist=%f, bucket=%d\n",
-               i, h_dinfo[i].idx, h_dinfo[i].ran, h_dinfo[i].i, h_dinfo[i].j, h_dinfo[i].dist, h_dinfo[i].which_bucket);
+               i, h_dinfo[i].idx, h_dinfo[i].ran, h_dinfo[i].i, h_dinfo[i].j,
+               h_dinfo[i].dist, h_dinfo[i].which_bucket);
     }
 #endif
 }
@@ -224,6 +231,7 @@ int main(int argc, char **argv)
     }
 
     // CPU implementation
+    puts("Running CPU version...");
     memset(histogram, 0, sizeof(*histogram) * num_buckets);
     gettimeofday(&startTime, &Idunno);
     PDH_baseline();
@@ -231,6 +239,7 @@ int main(int argc, char **argv)
     output_histogram();
 
     // GPU implementation
+    puts("\nRunning GPU version...");
     memset(histogram, 0, sizeof(*histogram) * num_buckets);
     gettimeofday(&startTime, &Idunno);
     PDH_gpu();
