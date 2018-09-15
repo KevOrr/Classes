@@ -106,8 +106,8 @@ void PDH_kernel(long n_threads, bucket *d_buckets, int n_buckets, const atom *d_
     double dist = sqrt(deltax*deltax + deltay*deltay + deltaz*deltaz);
     int h_pos = (int) (dist / w);
     if (h_pos >= 0 && h_pos < n_buckets)
-        atomicAdd(&d_buckets[h_pos].d_cnt, 1);
-        // d_buckets[h_pos].d_cnt++;
+        // atomicAdd(&d_buckets[h_pos].d_cnt, 1);
+        d_buckets[h_pos].d_cnt++;
 
 #ifdef DEBUG
     d_dinfo[idx].idx = idx;
@@ -125,6 +125,7 @@ void PDH_gpu() {
     // allocate histogram
     bucket *d_buckets;
     cudaMalloc(&d_buckets, sizeof(*histogram) * num_buckets);
+    cudaMemset(d_buckets, 0, sizeof(*histogram) * num_buckets);
 
 #ifdef DEBUG
     // allocate debuginfo
