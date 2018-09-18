@@ -3,47 +3,55 @@ import java.util.*;
 static class Event implements Comparable<Event> {
     public static int START = 1;
     public static int END = 2;
+    public static int INTERSECT = 3;
 
     public float y;
     public int type;
-    public Edge l;
+    public Edge e1, e2;
 
-    public Event(float y, int type, Edge l) {
+    public Event(float y, int type, Edge e1, Edge e2) {
         this.y = y;
         this.type = type;
-        this.l = l;
+        this.e1 = e1;
+        this.e2 = e2;
     }
 
     @Override
     public int compareTo(Event other) {
-        int result = Float.compareTo(this.y, other.y);
+        int result = new Float(this.y).compareTo(other.y);
         if (result == 0)
-            return Int.compareTo(this.type, other.type);
+            return new Integer(this.type).compareTo(other.type);
         return result;
     }
 }
 
-class Intervals {
+static class Intervals {
     public Intervals left = null;
     public Intervals right = null;
     public ArrayList<Edge> here;
     public float x;
 
     public Intervals(ArrayList<Edge> edges) {
-        float minX = FLOAT_MAX;
-        float maxX = FLOAT_MIN;
+        this(edges, getMinX(edges), getMaxX(edges));
+    }
 
-        for (Edge e : edges) {
-            minX = min(minX, e.e.minX());
-            maxX = max(maxX, e.e.maxX());
-        }
+    private static float getMinX(ArrayList<Edge> edges) {
+        float minX = Float.MAX_VALUE;
+        for (Edge e : edges)
+            minX = min(minX, e.minX());
+        return minX;
+    }
 
-        this(edges, minX, maxX);
+    private static float getMaxX(ArrayList<Edge> edges) {
+        float maxX = Float.MIN_VALUE;
+        for (Edge e : edges)
+            maxX = max(maxX, e.maxX());
+        return maxX;
     }
 
     private Intervals(ArrayList<Edge> edges, float minX, float maxX) {
-        ArrayList<Edges> left = new ArrayList<Edges>();
-        ArrayList<Edges> right = new ArrayList<Edges>();
+        ArrayList<Edge> left = new ArrayList<Edge>();
+        ArrayList<Edge> right = new ArrayList<Edge>();
         this.here = new ArrayList<Edge>();
 
         float center = (minX + maxX) / 2.0;
@@ -64,20 +72,20 @@ class Intervals {
             this.right = new Intervals(right, center, maxX);
     }
 
-    public ArrayList<Edges> find(float minX, float maxX) {
+    public ArrayList<Edge> find(float minX, float maxX) {
         if (minX < this.x)
             if (this.left != null)
                 return this.left.find(minX, maxX);
             else
-                return null
+                return null;
         else if (this.x < maxX)
             if (this.right != null)
                 return this.right.find(minX, maxX);
             else
-                return null
+                return null;
         else {
-            ArrayList<Edges> result = new ArrayList<Edges>();
-            for (Edge e : input_edges)
+            ArrayList<Edge> result = new ArrayList<Edge>();
+            for (Edge e : here)
                 if (e.minX() >= minX && e.maxX() <= maxX)
                     result.add(e);
             return result;
@@ -106,7 +114,7 @@ public static float crossY(Edge e, float y) {
     return (1 - alpha)*e.p0.getX() + alpha*e.p1.getX();
 }
 
-public static int insertLine(ArrayList<Point> active, Edge e, float eventX, float sweepY) {
+public static int insertLine(ArrayList<Edge> active, Edge e, float eventX, float sweepY) {
     int a = 0;
     int b = active.size();
 
@@ -125,7 +133,7 @@ public static int insertLine(ArrayList<Point> active, Edge e, float eventX, floa
     return a;
 }
 
-public static void checkIntersect
+// public static void checkIntersect
 
 
 public static void OptimizedLineSegmentSetIntersection
@@ -134,32 +142,66 @@ public static void OptimizedLineSegmentSetIntersection
 {
     output_intersections.clear();
 
-    TreeSet<Event> events = new TreeSet<Event>();
+    PriorityQueue<Event> events = new PriorityQueue<Event>();
     for (Edge e : input_edges) {
-        events.add(new Event(e.minY(), Event.START, e));
-        events.add(new Event(e.maxY(), Event.END, e));
+        events.add(new Event(e.minY(), Event.START, e, null));
+        events.add(new Event(e.maxY(), Event.END, e, null));
     }
 
     // Collections.sort(events, Comparator.comparing((Event e) -> e.y).reversed());
     Intervals intervals = new Intervals(input_edges);
-    ArrayList<Point> active = new ArrayList();
+    ArrayList<Edge> active = new ArrayList();
 
-    for (Event e : events) {
+    while (events.size() > 0) {
+        Event e = events.poll();
         if (e.type == Event.START) {
             float x;
-            if (e.p0.getY() == e.y)
-                x = e.po.getX();
-            else if (e.p1.getY() == e.y)
-                x = e.p1.getY();
+            if (e.e1.p0.getY() == e.y)
+                x = e.e1.p0.getX();
+            else if (e.e1.p1.getY() == e.y)
+                x = e.e1.p1.getY();
             else
                 throw new IllegalStateException("This shouldn't have happened");
 
-            int insertionPoint = insertLine(active, e.l, x, e.y);
+            int insertionPoint = insertLine(active, e.e1, x, e.y);
 
             if (insertionPoint > 0) {
-                
+                Edge e1 = active.get(insertionPoint - 1);
+                Edge e2 = active.get(insertionPoint);
+                Point p = e1.intersectionPoint(e2);
+                if (p != null) {
+                    output_intersections.add(p);
+                    events.add(new Event(p.getY(), Event.INTERSECT, e1, e2));
+                }
             }
+
+            if (insertionPoint < active.size()) {
+                Edge e1 = active.get(insertionPoint);
+                Edge e2 = active.get(insertionPoint + 1);
+                Point p = e1.intersectionPoint(e2);
+                if (p != null) {
+                    output_intersections.add(p);
+                    events.add(new Event(p.getY(), Event.INTERSECT, e1, e2));
+                }
+            }
+        } else if (e.type == Event.END) {
+            active.removeIf(new Predicate<Edge>() {
+                    @Override
+                    public boolean evaluate(Edge edge) {
+                        return edge == e.e1;
+                    }
+                });
+        } else if (e.type == Event.INTERSECTION) {
+            int leftIdx = 0;
+            for (leftIdx=0; leftIdx<active.size()-1; leftIdx++)
+                if (active.get(leftIdx) == e.e1)
+                    break;
+            leftIdx--;
+
+            assert leftIdx >= 0 && leftIdx < active.size();
+            assert active.get(leftIdx + 1) == e.e2;
+
+            Collections.swap(active, leftIdx, leftIdx + 1);
         }
     }
-
 }
