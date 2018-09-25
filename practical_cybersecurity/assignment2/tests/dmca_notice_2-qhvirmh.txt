@@ -1,0 +1,95 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+VIA EMAIL:Notice of Claimed Infringement via Email
+CASE:419286721
+DATE:2016-03-22T01:14:39Z
+
+Dear Sir/Madam,
+
+We are writing this message on behalf of Argus, INC.
+
+We have received information leading us to believe that an individual has utilized the IP address 131.247.226.172 at the noted date and time below to host and/or facilitate the downloading and/or streaming of content (listed below) in which Argus is the copyright owner and/or the owner of exclusive rights in such content (the "Argus Properties").  No one is authorized to exhibit, reproduce, transmit, or otherwise distribute Argus Properties without the express written permission of Argus, and the unauthorized distribution of Argus Properties constitutes copyright infringement.  This conduct may also violate the laws of other countries, international law, and/or treaty obligations.
+The title in question is: Malware Economics
+
+As the owner of the IP address, Argus requests that American University immediately do the following:
+
+1. Contact the subscriber who has engaged in the conduct described above and take steps to prevent the subscriber from further downloading or uploading Argus content without authorization; and
+2. Take appropriate action against the account holder under your Abuse Policy/Terms of Service Agreement.
+
+We have a good faith belief that use of the copyrighted materials described above is not authorized by the copyright owner, its agent, or the law.
+
+We state, under penalty of perjury, that we are authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.
+
+This letter is not a complete statement of Argus's rights in connection with this matter, and nothing contained herein constitutes an express or implied wavier of any rights or remedies of Argus in connection with this matter, all of which are expressly reserved.
+
+We appreciate your assistance and thank you for your cooperation in this matter.  Your prompt response is requested.
+
+Any further enquiries can be directed to copyright@ip-echelon.com.  Please include this message with your enquiry to ensure a quick response.
+
+Respectfully,
+
+John Smith
+CEO
+Email: copyright@argus.com
+Address: 1234, E Fowler Ave, Tampa, Florida-33613, United States
+
+- ------------- Infringement Details ----------------------------------
+Title:        Malware Economics
+Timestamp:    2016-03-22T01:14:39Z
+IP Address:   192.168.226.172
+Port:         42351
+Type:         BitTorrent
+Torrent Hash: ab74a605234593de774bf12b1d726c24225de80a
+Filename:     Malware Economics.HD
+Filesize:     448 MB
+- ---------------------------------------------------------------------
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Infringement xmlns="http://www.acns.net/ACNS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.acns.net/ACNS http://www.acns.net/v1.2/ACNS2v1_2.xsd">
+   <Case>
+     <ID>419286721</ID>
+     <Status>Open</Status>
+     <Severity>Normal</Severity>
+   </Case>
+   <Complainant>
+     <Entity>Argus, Inc.</Entity>
+     <Contact>argus - Compliance</Contact>
+     <Address>1234 E Fowler Ave Tampa FL 33613 United States of America</Address>
+     <Phone>+1 (123) 456 7890</Phone>
+     <Email>copyright@ip-echelon.com</Email>
+   </Complainant>
+   <Service_Provider>
+     <Entity>American University</Entity>
+     <Email>contact@argus.com</Email>
+   </Service_Provider>
+   <Source>
+     <TimeStamp>2016-03-22T01:14:39Z</TimeStamp>
+     <IP_Address>192.168.226.172</IP_Address>
+     <Port>42351</Port>
+     <Type>BitTorrent</Type>
+     <SubType Protocol="BITTORRENT" BaseType="P2P"/>
+     <Number_Files>1</Number_Files>
+   </Source>
+   <Content>
+     <Item>
+       <TimeStamp>2016-03-22T01:14:39Z</TimeStamp>
+       <Title>Malware Economics</Title>
+       <FileName>Malware Economics.HD</FileName>
+       <FileSize>470205852</FileSize>
+       <Hash Type="SHA1">ab74a605234593de774bf12b1d726c24225de80a</Hash>
+     </Item>
+   </Content>
+</Infringement>
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQEcBAEBAgAGBQJW8JyAAAoJEN5LM3Etqs/WBPsH/RcLJwyGYdXEQVBOspiqL4A7
+nPXsUi4QUyb5O0RfA4D4s4V33d1L1rM6b36t5VgYKtyUA6A2dnGjl24GAtU1YD6L
+pJwuxDxMk0LApjYHMBF6yDhWfZwXTHH0RWbgrYTO/2Qdq+xuCMU6Xym1P8yumDfd
+SL1LXyLYqJ737lLHGz8Z4mcLEy1naIJ5lYRYO42gg5FrWilWTi2BInLmjBX7gkoH
+A+FMDdXs6ZlKQLHg6mLhgzgHyWr3TRwSKJ0o3axsSI35rAE6pOpLbKmD3YgwQ3mL
+sR/R1H+tcBovD6ykvRVM4PyffOB9G4JcvLyUrvgf9q8pTRhmgBb5edq0Y5O1whA=
+=p38U
+-----END PGP SIGNATURE-----

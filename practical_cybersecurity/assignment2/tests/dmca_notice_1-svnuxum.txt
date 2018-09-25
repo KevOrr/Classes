@@ -1,0 +1,96 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+VIA EMAIL:Notice of Claimed Infringement via Email
+CASE:11223344556
+DATE:2016-03-21T15:30:27Z
+
+Dear Sir/Madam,
+
+We are writing this message on behalf of Argus, INC..
+
+We have received information leading us to believe that an individual has utilized the IP address 192.168.224.63 at the noted date and time below to host and/or facilitate the downloading and/or streaming of content (listed below) in which Argus is the copyright owner and/or the owner of exclusive rights in such content (the "Argus Properties").  No one is authorized to exhibit, reproduce, transmit, or otherwise distribute Argus Properties without the express written permission of Argus, and the unauthorized distribution of Argus Properties constitutes copyright infringement.  This conduct may also violate the laws of other countries, international law, and/or treaty obligations.
+The title in question is: Ethical Hacking
+
+As the owner of the IP address, Argus requests that American University immediately do the following:
+
+1. Contact the subscriber who has engaged in the conduct described above and take steps to prevent the subscriber from further downloading or uploading Argus content without authorization; and
+2. Take appropriate action against the account holder under your Abuse Policy/Terms of Service Agreement.
+
+We have a good faith belief that use of the copyrighted materials described above is not authorized by the copyright owner, its agent, or the law.
+
+We state, under penalty of perjury, that we are authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.
+
+This letter is not a complete statement of Argus's rights in connection with this matter, and nothing contained herein constitutes an express or implied wavier of any rights or remedies of Argus in connection with this matter, all of which are expressly reserved.
+
+We appreciate your assistance and thank you for your cooperation in this matter.  Your prompt response is requested.
+
+Any further enquiries can be directed to copyright@argus.com.  Please include this message with your enquiry to ensure a quick response.
+
+Respectfully,
+
+John Smith
+CEO
+Argus Inc.
+Email: copyright@argus.com
+Address: 1234, E Fowler Ave, Tampa, Florida-33613, United States
+
+- ------------- Infringement Details ----------------------------------
+Title:        Ethical Hacking
+Timestamp:    2016-03-21T15:30:27Z
+IP Address:   192.168.224.63
+Port:         39713
+Type:         BitTorrent
+Torrent Hash: 60e1552c1bb62413291f12365b532edf6101b2ba
+Filename:     Ethical.Hacking.HD
+Filesize:     227 MB
+- ---------------------------------------------------------------------
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Infringement xmlns="http://www.acns.net/ACNS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.acns.net/ACNS http://www.acns.net/v1.2/ACNS2v1_2.xsd">
+   <Case>
+     <ID>418830724</ID>
+     <Status>Open</Status>
+     <Severity>Normal</Severity>
+   </Case>
+   <Complainant>
+     <Entity>Argus, Inc.</Entity>
+     <Contact>argus - Compliance</Contact>
+     <Address>1234 E Fowler Ave Tampa FL 33613 United States of America</Address>
+     <Phone>+1 (123) 456 7890</Phone>
+     <Email>copyright@argus.com</Email>
+   </Complainant>
+   <Service_Provider>
+     <Entity>American University</Entity>
+     <Email>contact@amu.edu</Email>
+   </Service_Provider>
+   <Source>
+     <TimeStamp>2016-03-21T15:30:27Z</TimeStamp>
+     <IP_Address>192.168.224.63</IP_Address>
+     <Port>39713</Port>
+     <Type>BitTorrent</Type>
+     <SubType Protocol="BITTORRENT" BaseType="P2P"/>
+     <Number_Files>1</Number_Files>
+   </Source>
+   <Content>
+     <Item>
+       <TimeStamp>2016-03-21T15:30:27Z</TimeStamp>
+       <Title>Ethical Hacking</Title>
+       <FileName>Ethical.Hacking.HD</FileName>
+       <FileSize>238408945</FileSize>
+       <Hash Type="SHA1">60e1552c1bb62413291f12365b532edf6101b2ba</Hash>
+     </Item>
+   </Content>
+</Infringement>
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQEcBAEBAgAGBQJW8BbZAAoJEN5LM3Etqs/WhY8IAJfdnnJGc1sJ0cdBv/AcNle6
+DNKIF8L2qod3zSNqThoYFPCJZM4MxT0zzV+H7oYKcIc/wJAYvd3zmHQI5u1pqn9G
+dr2PotyjLEYJGLQr8pZdhIwPnMxM866LGHD4y0HGW0cZIqosKHLT6mqpScVfSK4C
+WIjnxYlz5zkt8H31thmvJwiLZ8UzMtXKcAtiabBHC00sMpMKSBw4S+6p50noCx9z
+4o+asj9IBm04v6pYrDIsnCxdv7sLYwecIsmgDvOTZlwvR+ZecONJInzYGgVBsVP5
+QM1Iaq0LsUl1oUIgJ5/OHEwyAk1OH4tPu3WRX8a4AU/K81RilH6yVepH26+Jdnc=
+=I5Ku
+-----END PGP SIGNATURE-----

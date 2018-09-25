@@ -1,0 +1,114 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+American University 
+
+Re:  Unauthorized Use of Argus, INC.. Property 
+
+Notice ID: 30-314604183
+Notice Date: 20 Mar 2016 20:05:14 GMT
+Email: contact@amu.edu
+
+Dear Sir or Madam: 
+
+Argus, INC.. and its affiliated companies (collectively, "Argus") are the exclusive owners of copyrights in numerous movies and television shows. 
+You are receiving this notice because an Internet account on your network was identified as having been recently used  to illegally copy and/or distribute (e.g. download, upload) Argus  content.  The specific Argus content involved, the IP address where the infringement occurred, and the date and time of the infringement are documented below.  
+  
+This unauthorized copying and distribution constitutes copyright infringement under Section 106 of the U.S. Copyright Act.  These are serious offenses which could lead to legal consequences for the account holder.  Also, depending upon the type of service American University is providing to this IP address, it may have legal and/or equitable liability if it does not expeditiously remove or disable access to the property listed below, or if it fails to implement a policy that provides for termination of subscribers who are repeat infringers (see, 17 U.S.C. 512).
+
+Although various legal and equitable remedies may be available to Argus as a result of such infringement, Argus believes that the entire Internet community benefits when these matters are resolved cooperatively.  We urge you to take immediate action to effect removal of the detected infringement listed in the below report, including: 
+
+(1) Notify the account holder of this infringement 
+
+(2) Require the account holder remove the infringing material  
+
+(3) Disable access to the infringing material  
+
+(4) Take appropriate action against the account holder under your Abuse Policy/Terms of Service 
+
+If your account holder has questions about this notice, please refer him/her to the website http://www.respectcopyrights.org which offers resources to help users ensure that their Internet accounts are not being used to violate copyright laws and provides information on how theft of movies and TV shows damages our economy and costs thousands of Americans their jobs.
+
+Today there are many exciting and innovative sources of authorized movie and television content available to users online.  We encourage you to refer your account holder to the website http://wheretowatch.com where they will find an array of legal choices.  
+
+We appreciate your efforts to cooperate in addressing content theft and fostering legal consumption of movies and TV shows.  Please send us a prompt response indicating the actions you have taken to resolve this matter.  Please reference the above noted Notice ID 30-314604183 in all correspondence, which should be directed to: 
+
+Email:  Argus@copyright-compliance.com
+
+The undersigned has a good faith belief that use of Argus's property in the manner described herein is not authorized by Argus, its agents or the law.  Also, we hereby state that the information in this notification is accurate and, under penalty of perjury under the laws of the State of California and the United States, that the undersigned is authorized to act on behalf of Argus with respect to this matter. 
+
+Please be advised that this letter is not and is not intended to be a complete statement of Argus’s rights in connection with this matter, and nothing contained herein constitutes an express or implied waiver of any rights, remedies, or defenses of Argus, all of which are specifically reserved.   
+
+Sincerely, 
+
+John Smith
+CEO
+Argus Inc.
+Email: copyright@argus.com
+Address: 1234, E Fowler Ave, Tampa, Florida-33613, United States
+
+*pgp public key is available on the key server at http://pgp.mit.edu
+
+Note: The information transmitted in this Notice is intended only for the person or entity to which it is addressed and may contain confidential and/or privileged material.  Any review, reproduction, retransmission, dissemination or other use of, or taking of any action in reliance upon, this information by persons or entities other than the intended recipient is prohibited.  If you received this in error, please contact the sender and delete the material from all computers.
+
+This infringement notice contains an XML tag that can be used to automate the processing of this data.  If you would like more information on how to use this tag please contact John.
+
+
+Evidentiary Information: 
+Notice ID: 30-314604183
+Asset: Security in Digital World 
+Infringing FileName: Security in the Digital World.mp4
+Timestamp: 20 Mar 2016 20:01:50 GMT GMT
+Last Seen Date: 20 Mar 2016 20:01:50 GMT GMT
+File Size: 2678273949 
+IP Address: 192.168.226.153
+Port ID: 51857 
+Protocol: BitTorrent
+
+- - ---Start ACNS XML
+<?xml version="1.0" encoding="UTF-8"?>
+<Infringement xmlns="http://www.acns.net/ACNS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.acns.net/ACNS http://www.acns.net/v1.2/ACNS2v1_2.xsd">
+    <Case>
+        <ID>30-314604183</ID>
+        <Status>Open</Status>
+    </Case>
+    <Complainant>
+        <Entity>Irdeto USA, Inc</Entity>
+        <Contact>John Smith</Contact>
+        <Address>P.O. Box 640442, San Jose, CA 95164</Address>
+        <Phone>408-492-8546,408-727-6743</Phone>
+        <Email>Argus@copyright-compliance.com</Email>
+    </Complainant>
+    <Service_Provider>
+        <Entity>American University</Entity>
+        <Email>contact@amu.edu</Email>
+    </Service_Provider>
+    <Source>
+        <TimeStamp>2016-03-20T20:01:50.000Z</TimeStamp>
+        <IP_Address>192.168.226.153</IP_Address>
+        <Port>51857</Port>
+        <Type>BitTorrent</Type>
+        <Number_Files>1</Number_Files>
+        <Deja_Vu>No</Deja_Vu>
+    </Source>
+    <Content>
+        <Item>
+            <TimeStamp>2016-03-20T20:01:50.000Z</TimeStamp>
+            <Title>Security in Digital World</Title>
+            <FileName>Security in Digital World.mp4</FileName>
+            <FileSize>2678273949</FileSize>
+            <URL>incoming</URL>
+        </Item>
+    </Content>
+</Infringement>
+- - ---End ACNS XML
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (MingW32)
+
+iQEcBAEBAgAGBQJW7wJ6AAoJEHq7LeKQQtys6zAIAJGG5YdykPQ0V8UcJJu66MY6
+TxwFuJ1LmgHhwOzdWp510mgCZqwzFUC2WwdkFMWY2g+6aaPCJaFMTwEzyOnPRMrI
+0HDBS8vhrfvhSITB3dVm/UpHVCUQ2GtNaAJQCSvCOyMXLZ1i7oHzxw8xmCZB2WzU
+3yr36puByRdKIDBIVnzHalN0P6SUHIgIUuJR4bay6QjLgP96SlVUUlY2nZrnkoG9
+s0xBbFs/ZlKK19ujTmyu/bPql5EsDYnuuVuK/1SnOzFSnYYXyhsXX7MIfXHNhuI/
+HV0gGmrkcda21rgEEMolOcMRABM0TsOd5x03+F8yAMkjsf7PN29b3voJnCwaw/Q=
+=M1p8
+-----END PGP SIGNATURE-----

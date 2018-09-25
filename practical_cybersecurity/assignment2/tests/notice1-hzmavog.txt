@@ -1,0 +1,48 @@
+Greetings,
+The following host(s) have been identified as communicating with a known
+sinkhole. A sinkhole may be monitored for behavior consistent with
+known malicious patterns.
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Infringement xmlns="http://www.acns.net/ACNS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.acns.net/ACNS http://www.acns.net/v1.2/ACNS2v1_2.xsd">
+   <Case>
+     <ID>418830724</ID>
+     <Status>Open</Status>
+     <Severity>Normal</Severity>
+   </Case>
+   <Complainant>
+     <Entity>Argus, Inc.</Entity>
+     <Contact>argus - Compliance</Contact>
+     <Address>1234 E Fowler Ave Tampa FL 33613 United States of America</Address>
+     <Phone>+1 (123) 456 7890</Phone>
+     <Email>botnet@argus.com</Email>
+   </Complainant>
+   <Service_Provider>
+     <Entity>American University</Entity>
+     <Email>contact@amu.edu</Email>
+   </Service_Provider>
+   <Source>
+     <TimeStamp>2016-03-21T14:54:27Z</TimeStamp>
+     <IP_Address>192.168.226.52</IP_Address>
+     <Port>33631</Port>
+     <Destination_IP>195.22.28.196</Destination_IP>
+     <Destination_Port>1</Destination_Port>
+   </Source>
+</Infringement>
+
+All the data that we have for each observation is provided. If data such
+as source port, destination address, etc, is not provided, then we don't
+have that data. We may have additional observations collected during the
+reporting period, value depending on multiple factors (NATing, source
+port availability, etc.)
+If you feel you've received this report in error, please let us know.
+---------------
+Regarding Sinkholes:
+A sinkhole is a device designed to accept and analyze traffic. Sinkholes
+are often used to mitigate malicious activity as well as identify hosts
+that are compromised and should be targeted for remediation.
+Sinkholes and Trapping Malicious Traffic
+http://www.shadowserver.org/wiki/pmwiki.php/Stats/Sinkholes
+SINKHOLING BOTNETS
+http://la.trendmicro.com/media/misc/sinkholing-botnets-technical-paper-en.pdf
+----------------
