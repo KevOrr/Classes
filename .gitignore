@@ -10,3 +10,10 @@ a.out
 
 .#*
 *.swp
+.projectile
+
+.gdb_history
+GPATH
+GRTAGS
+GTAGS
+peda-session*.txt
