@@ -12,7 +12,7 @@
 #include <sys/time.h>
 
 
-#define BOX_SIZE	23000 /* size of the data box on one dimension            */
+const long BOX_SIZE = 23000; /* size of the data box on one dimension */
 
 /* descriptors for single atom in the tree */
 typedef struct atomdesc {
@@ -37,11 +37,11 @@ struct debuginfo {
 };
 
 
-bucket * histogram;		/* list of all buckets in the histogram   */
-unsigned long long	PDH_acnt;	/* total number of data points            */
-int num_buckets;		/* total number of buckets in the histogram */
-double   PDH_res;		/* value of w                             */
-atom * atom_list;		/* list of all data points                */
+bucket * histogram;  /* list of all buckets in the histogram   */
+unsigned long long PDH_acnt; /* total number of data points            */
+int num_buckets;  /* total number of buckets in the histogram */
+double PDH_res;  /* value of w                             */
+atom * atom_list;  /* list of all data points                */
 
 /* These are for an old way of tracking time */
 struct timezone Idunno;
@@ -49,7 +49,7 @@ struct timeval startTime, endTime;
 
 
 /*
-	distance of two points in the atom_list
+ distance of two points in the atom_list
 */
 double p2p_distance(int ind1, int ind2) {
 
@@ -65,7 +65,7 @@ double p2p_distance(int ind1, int ind2) {
 
 
 /*
-	brute-force SDH solution in a single CPU thread
+ brute-force SDH solution in a single CPU thread
 */
 int PDH_baseline() {
     int i, j, h_pos;
@@ -107,7 +107,9 @@ void PDH_kernel(long n_threads, bucket *d_buckets, int n_buckets, const atom *d_
     int h_pos = (int) (dist / w);
     if (h_pos >= 0 && h_pos < n_buckets)
         // atomicAdd(&d_buckets[h_pos].d_cnt, 1);
-        d_buckets[h_pos].d_cnt++;
+        d_buckets[h_pos*n_threads + idx].d_cnt++; // Coalesce!
+
+
 
 #ifdef DEBUG
     d_dinfo[idx].idx = idx;
@@ -145,6 +147,7 @@ void PDH_gpu() {
                                                  , d_dinfo
 #endif
         );
+    // cudaDeviceSynchronize();
 
     cudaError_t err = cudaGetLastError();
     if (err != cudaSuccess) {
@@ -173,7 +176,7 @@ void PDH_gpu() {
 
 
 /*
-	set a checkpoint and show the (natural) running time in seconds
+ set a checkpoint and show the (natural) running time in seconds
 */
 double report_running_time(const char *type) {
     long sec_diff, usec_diff;
@@ -190,7 +193,7 @@ double report_running_time(const char *type) {
 
 
 /*
-	print the counts in all buckets of the histogram
+ print the counts in all buckets of the histogram
 */
 void output_histogram() {
     int i;
@@ -213,7 +216,7 @@ int main(int argc, char **argv)
     int i;
 
     PDH_acnt = atoi(argv[1]);
-    PDH_res	 = atof(argv[2]);
+    PDH_res = atof(argv[2]);
     // printf("args are %d and %f\n", PDH_acnt, PDH_res);
 
     num_buckets = (int)(BOX_SIZE * 1.732 / PDH_res) + 1;
@@ -224,7 +227,7 @@ int main(int argc, char **argv)
 
     srand(1);
     /* generate data following a uniform distribution */
-    for(i = 0;  i < PDH_acnt; i++) {
+    for(i = 0; i < PDH_acnt; i++) {
         atom_list[i].x_pos = ((double)(rand()) / RAND_MAX) * BOX_SIZE;
         atom_list[i].y_pos = ((double)(rand()) / RAND_MAX) * BOX_SIZE;
         atom_list[i].z_pos = ((double)(rand()) / RAND_MAX) * BOX_SIZE;
